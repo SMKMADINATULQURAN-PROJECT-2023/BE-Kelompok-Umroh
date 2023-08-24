@@ -89,11 +89,11 @@ export class SiswaService extends BaseResponse {
 
         created_by: {
           id: true,
-          nama: true,
+          username: true,
         },
         updated_by: {
           id: true,
-          nama: true,
+          username: true,
         },
       },
       skip: limit,

@@ -1,21 +1,31 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import BaseResponse from 'src/utils/response/base.response';
-import { User } from './auth.entity';
+import { User } from './entity/auth.entity';
 import { Repository } from 'typeorm';
 import { ResponseSuccess } from 'src/interface/response';
-import { LoginDto, RegisterDto, ResetPasswordDto } from './auth.dto';
+import {
+  LoginDto,
+  RegisterDto,
+  ResetPasswordDto,
+  LoginAdminDto,
+} from './auth.dto';
 import { hash, compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { jwt_config } from 'src/config/jwt.config';
 import { MailService } from '../mail/mail.service';
-import { ResetPassword } from './reset_password.entity';
+import { ResetPassword } from './entity/reset_password.entity';
 import { randomBytes } from 'crypto';
+import { Admin } from './entity/admin.entity';
 
 @Injectable()
 export class AuthService extends BaseResponse {
   constructor(
     @InjectRepository(User) private readonly authRepository: Repository<User>,
+    @InjectRepository(Admin)
+    private readonly adminRepository: Repository<Admin>,
     @InjectRepository(ResetPassword)
     private readonly resetPasswordRepository: Repository<ResetPassword>,
     private jwtService: JwtService,
@@ -54,10 +64,13 @@ export class AuthService extends BaseResponse {
       },
       select: {
         id: true,
-        nama: true,
+        avatar: true,
+        username: true,
         email: true,
         password: true,
-        refresh_token: true,
+        telephone: true,
+        tempat_lahir: true,
+        tanggal_lahir: true,
       },
     });
 
@@ -76,7 +89,61 @@ export class AuthService extends BaseResponse {
     if (checkPassword) {
       const jwtPayload: jwtPayload = {
         id: checkUserExists.id,
-        nama: checkUserExists.nama,
+        username: checkUserExists.username,
+        email: checkUserExists.email,
+        telephone: checkUserExists.telephone,
+        tempat_lahir: checkUserExists.tempat_lahir,
+        tanggal_lahir: checkUserExists.tanggal_lahir,
+      };
+
+      const access_token = await this.generateJWT(jwtPayload, '1d');
+      const refresh_token = await this.generateJWT(jwtPayload, '7d');
+      await this.authRepository.save({
+        refresh_token: refresh_token,
+        id: checkUserExists.id,
+      }); // simpan refresh token ke dalam tabel
+      return this._success('Login Success', {
+        ...checkUserExists,
+        access_token: access_token,
+        refresh_token: refresh_token,
+      });
+    } else {
+      throw new HttpException(
+        'email dan password tidak sama',
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
+  }
+
+  async loginAdmin(payload: LoginAdminDto): Promise<ResponseSuccess> {
+    const checkUserExists = await this.adminRepository.findOne({
+      where: {
+        email: payload.email,
+      },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        password: true,
+      },
+    });
+
+    if (!checkUserExists) {
+      throw new HttpException(
+        'User tidak ditemukan',
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
+
+    const checkPassword = await compare(
+      payload.password,
+      checkUserExists.password,
+    );
+
+    if (checkPassword) {
+      const jwtPayload: jwtPayload = {
+        id: checkUserExists.id,
+        username: checkUserExists.username,
         email: checkUserExists.email,
       };
 
@@ -104,9 +171,16 @@ export class AuthService extends BaseResponse {
       where: {
         id: id,
       },
+      select: {
+        id: true,
+        avatar: true,
+        username: true,
+        email: true,
+        telephone: true,
+      },
     });
 
-    return this._success(process.env.DB_PORT, user);
+    return this._success(process.env.PORT, user);
   }
 
   async forgotPassword(email: string): Promise<ResponseSuccess> {
@@ -126,7 +200,7 @@ export class AuthService extends BaseResponse {
     const link = `${process.env.BASE_CLIENT_URL}/auth/reset-password/${user.id}/${token}`;
     await this.mailService.sendForgotPassword({
       email: email,
-      name: user.nama,
+      username: user.username,
       link: link,
     });
 
@@ -138,7 +212,7 @@ export class AuthService extends BaseResponse {
     };
 
     await this.resetPasswordRepository.save(payload);
-
+    console.log(token);
     return this._success('Silahkan Cek Email');
   }
 

@@ -8,12 +8,12 @@ export class MailService {
 
   async sendForgotPassword(payload: MailResetPasswordDto) {
     await this.mailService.sendMail({
-      to: payload.email,
-      subject: 'Lupa Password',
-      template: './lupa_password',
+      to: payload.email, //email yang dituju
+      subject: 'Lupa Password', //Subject didalam Email
+      template: './lupa_password', //file template didalam folder templates
       context: {
         link: payload.link,
-        name: payload.name,
+        username: payload.username,
       },
     });
   }

@@ -6,7 +6,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { User } from '../auth/auth.entity';
+import { User } from '../auth/entity/auth.entity';
 import { Siswa } from '../siswa/siswa.entity';
 
 export enum Kategori {

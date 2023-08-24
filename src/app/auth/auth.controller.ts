@@ -18,12 +18,12 @@ export class AuthController {
   constructor(private authService: AuthService) {}
   @Post('register')
   async register(@Body() payload: RegisterDto) {
-    if (payload.secret_key !== process.env.SECRET_KEY) {
-      throw new HttpException(
-        'SECRET KEY FAIL',
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
-    }
+    // if (payload.secret_key !== process.env.SECRET_KEY) {
+    //   throw new HttpException(
+    //     'SECRET KEY FAIL',
+    //     HttpStatus.UNPROCESSABLE_ENTITY,
+    //   );
+    // }
     return this.authService.register(payload);
   }
 
@@ -32,9 +32,11 @@ export class AuthController {
     return this.authService.login(payload);
   }
 
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard) // impelementasi guard pada route , hal ini berarti endpoint profile hanya bisa diakses jika client membawa token
   @Get('profile')
   async profile(@Req() req) {
+    // hasil validate dari jwt strategy akan ditambakan pada req.user. isi object req.user akan sama dengan payload dari jwt token. Silahkan coba console.log(req.user)
+
     const { id } = req.user;
     return this.authService.myProfile(id);
   }

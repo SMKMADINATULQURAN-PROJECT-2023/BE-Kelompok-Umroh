@@ -7,7 +7,7 @@ import {
   JoinColumn,
   OneToMany,
 } from 'typeorm';
-import { User } from '../auth/auth.entity';
+import { User } from '../auth/entity/auth.entity';
 import { Catatan } from '../catatan/catatan.entity';
 
 @Entity()

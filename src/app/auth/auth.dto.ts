@@ -1,19 +1,12 @@
-import { PartialType, PickType } from '@nestjs/mapped-types';
-import {
-  IsEmail,
-  IsInt,
-  IsNotEmpty,
-  IsString,
-  Length,
-  MinLength,
-} from 'class-validator';
+import { PickType } from '@nestjs/mapped-types';
+import { IsDate, IsEmail, IsInt, IsString, MinLength } from 'class-validator';
 
 export class UserDto {
   @IsInt()
   id: number;
 
   @IsString()
-  nama: string;
+  username: string;
 
   @IsString()
   avatar: string;
@@ -27,14 +20,17 @@ export class UserDto {
   password: string;
 
   @IsString()
+  @MinLength(10)
+  telephone: string;
+
+  @IsString()
+  tempat_lahir: string;
+
+  @IsDate()
+  tanggal_lahir: Date;
+
+  @IsString()
   refresh_token: string;
-
-  @IsString()
-  @IsNotEmpty()
-  secret_key: string;
-
-  @IsString()
-  role: string;
 }
 
 export class ResetPasswordDto {
@@ -44,10 +40,12 @@ export class ResetPasswordDto {
 }
 
 export class RegisterDto extends PickType(UserDto, [
-  'nama',
+  'username',
   'email',
   'password',
-  'secret_key',
+  'telephone',
 ]) {}
 
 export class LoginDto extends PickType(UserDto, ['email', 'password']) {}
+
+export class LoginAdminDto extends PickType(UserDto, ['email', 'password']) {}

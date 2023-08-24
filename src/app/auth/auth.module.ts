@@ -2,17 +2,18 @@ import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './auth.entity';
+import { User } from './entity/auth.entity';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { jwt_config } from 'src/config/jwt.config';
 import { JwtStrategy } from './jwt.strategy';
 import { MailModule } from '../mail/mail.module';
-import { ResetPassword } from './reset_password.entity';
+import { ResetPassword } from './entity/reset_password.entity';
+import { Admin } from './entity/admin.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, ResetPassword]),
+    TypeOrmModule.forFeature([User, ResetPassword, Admin]),
     PassportModule.register({
       defaultStrategy: 'jwt',
       property: 'user',

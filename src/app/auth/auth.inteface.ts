@@ -1,5 +1,8 @@
 interface jwtPayload {
   id: number;
-  nama: string;
+  username: string;
   email: string;
+  telephone?: string;
+  tempat_lahir?: string;
+  tanggal_lahir?: Date;
 }
