@@ -125,7 +125,16 @@ export class AuthService extends BaseResponse {
         username: true,
         email: true,
         password: true,
+        role: {
+          id: true,
+          role_name: true,
+          actions: {
+            id: true,
+            action_name: true,
+          },
+        },
       },
+      relations: ['role', 'role.actions'], // Nama relasi dan relasi bersarang
     });
 
     if (!checkUserExists) {
@@ -145,6 +154,7 @@ export class AuthService extends BaseResponse {
         id: checkUserExists.id,
         username: checkUserExists.username,
         email: checkUserExists.email,
+        role: checkUserExists.role,
       };
 
       const access_token = await this.generateJWT(jwtPayload, '1d');
@@ -167,16 +177,16 @@ export class AuthService extends BaseResponse {
   }
 
   async myProfile(id: number): Promise<ResponseSuccess> {
-    const user = await this.authRepository.findOne({
+    const user = await this.adminRepository.findOne({
       where: {
         id: id,
       },
       select: {
         id: true,
-        avatar: true,
+        // avatar: true,
         username: true,
         email: true,
-        telephone: true,
+        // telephone: true,
       },
     });
 
@@ -197,7 +207,7 @@ export class AuthService extends BaseResponse {
       );
     }
     const token = randomBytes(32).toString('hex');
-    const link = `${process.env.BASE_CLIENT_URL}/auth/reset-password/${user.id}/${token}`;
+    const link = `${process.env.MAIL_CLIENT_URL}auth/reset-password/${user.id}/${token}`;
     await this.mailService.sendForgotPassword({
       email: email,
       username: user.username,

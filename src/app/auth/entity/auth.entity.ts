@@ -44,10 +44,6 @@ export class User extends BaseEntity {
   @JoinColumn({ name: 'UserGoogle_email', referencedColumnName: 'email' })
   google: UserGoogle;
 
-  @OneToOne(() => Role)
-  @JoinColumn()
-  role: Role;
-
   @Column({ nullable: true })
   refresh_token: string;
 

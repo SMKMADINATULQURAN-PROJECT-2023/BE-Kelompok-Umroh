@@ -12,13 +12,14 @@ import { join } from 'path';
       transport: {
         host: process.env.MAIL_HOST,
         port: Number(process.env.MAIL_PORT),
+        secure: true,
         auth: {
-          user: process.env.MAIL_USER,
-          pass: process.env.MAIL_PASS,
+          user: process.env.MAIL_USERNAME,
+          pass: process.env.MAIL_PASSWORD,
         },
       },
       defaults: {
-        from: '"No Reply" <noreply@example.com>',
+        from: 'AL-HILAL <latihan-email@smkmadinatulquran.sch.id>',
       },
       template: {
         dir: join(__dirname, 'templates'),

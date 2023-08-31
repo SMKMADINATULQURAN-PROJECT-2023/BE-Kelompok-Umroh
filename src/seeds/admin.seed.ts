@@ -1,7 +1,7 @@
+import { UserRole } from 'src/app/auth/entity/role.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-
 import { Admin } from 'src/app/auth/entity/admin.entity';
 import { hashSync } from 'bcrypt';
 
@@ -18,20 +18,22 @@ export class AdminSeeder {
         username: 'admin umrah',
         email: 'adminumrah@gmail.com',
         password: hashSync('adminumrah123', 10),
+        role: { id: 1 },
       },
       // Tambahkan data lainnya sesuai kebutuhan
     ];
-    adminsData.map(async (data) => {
+
+    for (const data of adminsData) {
       const email: string = data.email;
-      const check = this.adminRepository.findOne({
+      const check = await this.adminRepository.findOne({
         where: {
           email,
         },
       });
       if (!check) {
-        const admin = this.adminRepository.create(adminsData);
+        const admin = this.adminRepository.create(data);
         await this.adminRepository.save(admin);
       }
-    });
+    }
   }
 }

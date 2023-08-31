@@ -15,6 +15,9 @@ import { SiswaModule } from './app/siswa/siswa.module';
 import { CatatanModule } from './app/catatan/catatan.module';
 import { AdminSeeder } from './seeds/admin.seed';
 import { Admin } from './app/auth/entity/admin.entity';
+import { Role } from './app/auth/entity/role.entity';
+import { Action } from './app/auth/entity/action.entity';
+import { RoleActionSeeder } from './seeds/role_action.seed';
 
 @Module({
   imports: [
@@ -26,7 +29,7 @@ import { Admin } from './app/auth/entity/admin.entity';
       isGlobal: true,
     }),
     TypeOrmModule.forRoot(typeOrmConfig),
-    TypeOrmModule.forFeature([Admin]),
+    TypeOrmModule.forFeature([Admin, Role, Action]),
     AuthModule,
     MailModule,
     UploadModule,
@@ -34,6 +37,6 @@ import { Admin } from './app/auth/entity/admin.entity';
     CatatanModule,
   ],
   controllers: [AppController, UploadController],
-  providers: [AppService, UniqueValidator, AdminSeeder],
+  providers: [AppService, UniqueValidator, AdminSeeder, RoleActionSeeder],
 })
 export class AppModule {}

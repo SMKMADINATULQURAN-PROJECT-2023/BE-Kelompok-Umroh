@@ -26,9 +26,8 @@ export class Admin extends BaseEntity {
   refresh_token: string;
 
   @OneToOne(() => Role)
-  @JoinColumn()
+  @JoinColumn({ name: 'role_id' })
   role: Role;
-
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 

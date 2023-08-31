@@ -5,6 +5,8 @@ import {
   Column,
   JoinTable,
   ManyToMany,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { Role } from './role.entity';
 
@@ -19,10 +21,9 @@ export class Action extends BaseEntity {
   @Column()
   description: string;
 
-  @ManyToMany(() => Role, {
-    cascade: true,
-  })
-  role: Role[];
+  @ManyToOne(() => Role, (role) => role.actions)
+  @JoinColumn({ name: 'role_id' })
+  roles: Role[];
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;

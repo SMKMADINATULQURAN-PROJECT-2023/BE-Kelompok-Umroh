@@ -44,6 +44,8 @@ export class RegisterDto extends PickType(UserDto, [
   'email',
   'password',
   'telephone',
+  'tempat_lahir',
+  'tanggal_lahir',
 ]) {}
 
 export class LoginDto extends PickType(UserDto, ['email', 'password']) {}

@@ -5,11 +5,16 @@ import {
   Column,
   ManyToMany,
   JoinTable,
+  OneToOne,
+  JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { Action } from './action.entity';
+import { User } from './auth.entity';
 export enum UserRole {
   ADMIN = 'Admin',
   CONTENTCREATOR = 'Content Creator',
+  TRAVEL = 'Travel',
 }
 @Entity()
 export class Role extends BaseEntity {
@@ -23,11 +28,8 @@ export class Role extends BaseEntity {
   })
   role_name: UserRole;
 
-  @ManyToMany(() => Action, {
-    cascade: true,
-  })
-  @JoinTable()
-  action: Action[];
+  @OneToMany(() => Action, (action) => action.roles)
+  actions: Action[];
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;

@@ -5,4 +5,5 @@ interface jwtPayload {
   telephone?: string;
   tempat_lahir?: string;
   tanggal_lahir?: Date;
+  role?: any;
 }

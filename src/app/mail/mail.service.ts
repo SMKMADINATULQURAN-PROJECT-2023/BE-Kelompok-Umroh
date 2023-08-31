@@ -10,7 +10,7 @@ export class MailService {
     await this.mailService.sendMail({
       to: payload.email, //email yang dituju
       subject: 'Lupa Password', //Subject didalam Email
-      template: './lupa_password', //file template didalam folder templates
+      template: './lupaPassword', //file template didalam folder templates
       context: {
         link: payload.link,
         username: payload.username,

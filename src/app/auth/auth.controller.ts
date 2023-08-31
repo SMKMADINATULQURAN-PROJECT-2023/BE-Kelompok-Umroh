@@ -32,6 +32,11 @@ export class AuthController {
     return this.authService.login(payload);
   }
 
+  @Post('login/admin')
+  async loginAdmin(@Body() payload: LoginDto) {
+    return this.authService.loginAdmin(payload);
+  }
+
   @UseGuards(JwtGuard) // impelementasi guard pada route , hal ini berarti endpoint profile hanya bisa diakses jika client membawa token
   @Get('profile')
   async profile(@Req() req) {
