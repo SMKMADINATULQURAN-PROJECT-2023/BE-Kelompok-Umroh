@@ -19,7 +19,7 @@ import { join } from 'path';
         },
       },
       defaults: {
-        from: 'AL-HILAL <latihan-email@smkmadinatulquran.sch.id>',
+        from: 'UMRAH 48 <latihan-email@smkmadinatulquran.sch.id>',
       },
       template: {
         dir: join(__dirname, 'templates'),

@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Role, UserRole } from 'src/app/auth/entity/role.entity';
-import { Action } from 'src/app/auth/entity/action.entity';
-import { Admin } from 'src/app/auth/entity/admin.entity';
-import { hashSync } from 'bcrypt';
+import { Role, UserRole } from 'src/app/role/entity/role.entity';
+import { Action } from 'src/app/action/entity/action.entity';
 
 @Injectable()
 export class RoleActionSeeder {

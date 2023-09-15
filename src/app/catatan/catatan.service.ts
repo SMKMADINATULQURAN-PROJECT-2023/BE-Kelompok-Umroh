@@ -1,11 +1,5 @@
-import {
-  HttpException,
-  HttpStatus,
-  Inject,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import { Between, Like, Repository } from 'typeorm';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Repository } from 'typeorm';
 import { REQUEST } from '@nestjs/core';
 import BaseResponse from 'src/utils/response/base.response';
 import { InjectRepository } from '@nestjs/typeorm';

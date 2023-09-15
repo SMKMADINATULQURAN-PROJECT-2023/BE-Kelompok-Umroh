@@ -8,8 +8,10 @@ import {
 } from 'typeorm';
 import { UserFacebook } from './facebook.entity';
 import { UserGoogle } from './google.entity';
-import { Role } from './role.entity';
-
+export enum JenisKelamin {
+  LAKI = 'Laki-Laki',
+  PEREMPUAN = 'Perempuan',
+}
 @Entity()
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -35,6 +37,13 @@ export class User extends BaseEntity {
 
   @Column({ nullable: true })
   tanggal_lahir: Date;
+
+  @Column({
+    type: 'enum',
+    enum: JenisKelamin,
+    default: JenisKelamin.LAKI,
+  })
+  jenis_kelamin: JenisKelamin;
 
   @OneToOne(() => UserFacebook, (u) => u.user)
   @JoinColumn({ name: 'UserFacebook_email', referencedColumnName: 'email' })

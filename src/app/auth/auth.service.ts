@@ -18,7 +18,7 @@ import { jwt_config } from 'src/config/jwt.config';
 import { MailService } from '../mail/mail.service';
 import { ResetPassword } from './entity/reset_password.entity';
 import { randomBytes } from 'crypto';
-import { Admin } from './entity/admin.entity';
+import { Admin } from '../admin/entities/admin.entity';
 
 @Injectable()
 export class AuthService extends BaseResponse {
@@ -28,6 +28,7 @@ export class AuthService extends BaseResponse {
     private readonly adminRepository: Repository<Admin>,
     @InjectRepository(ResetPassword)
     private readonly resetPasswordRepository: Repository<ResetPassword>,
+
     private jwtService: JwtService,
     private mailService: MailService,
   ) {
@@ -42,16 +43,8 @@ export class AuthService extends BaseResponse {
   } //membuat method untuk generate jwt
 
   async register(payload: RegisterDto): Promise<ResponseSuccess> {
-    const checkUserExists = await this.authRepository.findOne({
-      where: {
-        email: payload.email,
-      },
-    });
-    if (checkUserExists) {
-      throw new HttpException('User already registered', HttpStatus.FOUND);
-    }
-
     payload.password = await hash(payload.password, 12);
+
     await this.authRepository.save(payload);
 
     return this._success('Register Berhasil');

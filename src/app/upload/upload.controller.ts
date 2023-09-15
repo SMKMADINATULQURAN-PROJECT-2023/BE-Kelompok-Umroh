@@ -7,7 +7,6 @@ import {
   Post,
   UploadedFile,
   UploadedFiles,
-  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
@@ -15,9 +14,7 @@ import { diskStorage } from 'multer';
 import { ResponseSuccess } from 'src/interface/response';
 import BaseResponse from 'src/utils/response/base.response';
 import * as fs from 'fs';
-import { JwtGuard } from '../auth/auth.guard';
 
-@UseGuards(JwtGuard)
 @Controller('upload')
 export class UploadController extends BaseResponse {
   constructor() {
@@ -35,16 +32,14 @@ export class UploadController extends BaseResponse {
     }),
   )
   @Post('file')
-  async uploadFile(
-    @UploadedFile() file: Express.Multer.File,
-  ): Promise<ResponseSuccess> {
+  async uploadFile(@UploadedFile() file: Express.Multer.File): Promise<void> {
     try {
       const url = `${process.env.BASE_SERVER_URL}/uploads/${file.filename}`;
-      return this._success('OK', {
-        file_url: url,
-        file_name: file.filename,
-        file_size: file.size,
-      });
+      // return this._success('OK', {
+      //   file_url: url,
+      //   file_name: file.filename,
+      //   file_size: file.size,
+      // });
     } catch (err) {
       throw new HttpException('Ada Kesalahan', HttpStatus.BAD_REQUEST);
     }

@@ -9,7 +9,7 @@ import { jwt_config } from 'src/config/jwt.config';
 import { JwtStrategy } from './jwt.strategy';
 import { MailModule } from '../mail/mail.module';
 import { ResetPassword } from './entity/reset_password.entity';
-import { Admin } from './entity/admin.entity';
+import { Admin } from '../admin/entities/admin.entity';
 
 @Module({
   imports: [

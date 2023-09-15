@@ -6,8 +6,6 @@ import {
   UseGuards,
   Req,
   Param,
-  HttpException,
-  HttpStatus,
 } from '@nestjs/common';
 import { LoginDto, RegisterDto, ResetPasswordDto } from './auth.dto';
 import { AuthService } from './auth.service';

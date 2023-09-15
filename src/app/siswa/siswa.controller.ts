@@ -9,26 +9,21 @@ import {
   Put,
   Query,
   UploadedFile,
-  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import {
-  CreateSiswaArrayDto,
   ImportSiswaDto,
   UpdateSiswaDto,
   findAllSiswaDto,
   findCatatanDto,
 } from './siswa.dto';
 
-import { JwtGuard } from '../auth/auth.guard';
 import { Pagination } from 'src/utils/decorator/pagination.decorator';
 import { InjectUpdatedBy } from 'src/utils/decorator/inject-updated_by.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { SiswaService } from './siswa.service';
-import { query } from 'express';
 
-@UseGuards(JwtGuard)
 @Controller('siswa')
 export class SiswaController {
   constructor(private siswaService: SiswaService) {}
