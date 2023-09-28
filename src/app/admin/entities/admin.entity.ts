@@ -13,10 +13,10 @@ export class Admin extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: true })
   avatar: string;
 
-  @Column()
+  @Column({ nullable: true })
   id_avatar: string;
 
   @Column({ nullable: false, unique: true })
@@ -25,15 +25,15 @@ export class Admin extends BaseEntity {
   @Column({ unique: true, nullable: false })
   email: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: false })
   password: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'text' })
   refresh_token: string;
 
   @ManyToOne(() => Role)
   @JoinColumn({ name: 'role_id' })
-  role: Role;
+  role_id: Role;
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;

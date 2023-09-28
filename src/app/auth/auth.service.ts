@@ -5,13 +5,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import BaseResponse from 'src/utils/response/base.response';
 import { User } from './entity/auth.entity';
 import { Repository } from 'typeorm';
-import { ResponseSuccess } from 'src/interface/response';
-import {
-  LoginDto,
-  RegisterDto,
-  ResetPasswordDto,
-  LoginAdminDto,
-} from './auth.dto';
+import { ResponseSuccess } from 'src/interface';
+import { LoginDto, RegisterDto, ResetPasswordDto } from './auth.dto';
 import { hash, compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { jwt_config } from 'src/config/jwt.config';
@@ -19,6 +14,7 @@ import { MailService } from '../mail/mail.service';
 import { ResetPassword } from './entity/reset_password.entity';
 import { randomBytes } from 'crypto';
 import { Admin } from '../admin/entities/admin.entity';
+import { NotFoundException } from '@nestjs/common/exceptions';
 
 @Injectable()
 export class AuthService extends BaseResponse {
@@ -53,7 +49,7 @@ export class AuthService extends BaseResponse {
   async login(payload: LoginDto): Promise<ResponseSuccess> {
     const checkUserExists = await this.authRepository.findOne({
       where: {
-        email: payload.email,
+        telephone: payload.telephone,
       },
       select: {
         id: true,
@@ -66,13 +62,7 @@ export class AuthService extends BaseResponse {
         tanggal_lahir: true,
       },
     });
-
-    if (!checkUserExists) {
-      throw new HttpException(
-        'User tidak ditemukan',
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
-    }
+    if (!checkUserExists) throw new NotFoundException('User Tidak Ditemkan');
 
     const checkPassword = await compare(
       payload.password,
@@ -108,82 +98,45 @@ export class AuthService extends BaseResponse {
     }
   }
 
-  async loginAdmin(payload: LoginAdminDto): Promise<ResponseSuccess> {
-    const checkUserExists = await this.adminRepository.findOne({
+  async loginGoogle(email: string): Promise<ResponseSuccess> {
+    const checkUserExists = await this.authRepository.findOne({
       where: {
-        email: payload.email,
+        email: email,
       },
-      select: {
-        id: true,
-        username: true,
-        email: true,
-        password: true,
-        role: {
-          id: true,
-          role_name: true,
-          actions: {
-            id: true,
-            action_name: true,
-          },
-        },
-      },
-      relations: ['role', 'role.actions'], // Nama relasi dan relasi bersarang
+    });
+    if (!checkUserExists)
+      throw new NotFoundException('Email Tidak ditemukan, Silahkan Register');
+    const jwtPayload: jwtPayload = {
+      id: checkUserExists.id,
+      username: checkUserExists.username,
+      email: checkUserExists.email,
+      telephone: checkUserExists.telephone,
+      tempat_lahir: checkUserExists.tempat_lahir,
+      tanggal_lahir: checkUserExists.tanggal_lahir,
+    };
+    const access_token = await this.generateJWT(jwtPayload, '1d');
+    const refresh_token = await this.generateJWT(jwtPayload, '7d');
+
+    await this.authRepository.save({
+      refresh_token: refresh_token,
+      id: checkUserExists.id,
     });
 
-    if (!checkUserExists) {
-      throw new HttpException(
-        'User tidak ditemukan',
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
-    }
-
-    const checkPassword = await compare(
-      payload.password,
-      checkUserExists.password,
-    );
-
-    if (checkPassword) {
-      const jwtPayload: jwtPayload = {
-        id: checkUserExists.id,
-        username: checkUserExists.username,
-        email: checkUserExists.email,
-        role: checkUserExists.role,
-      };
-
-      const access_token = await this.generateJWT(jwtPayload, '1d');
-      const refresh_token = await this.generateJWT(jwtPayload, '7d');
-      await this.authRepository.save({
-        refresh_token: refresh_token,
-        id: checkUserExists.id,
-      }); // simpan refresh token ke dalam tabel
-      return this._success('Login Success', {
-        ...checkUserExists,
-        access_token: access_token,
-        refresh_token: refresh_token,
-      });
-    } else {
-      throw new HttpException(
-        'email dan password tidak sama',
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
-    }
+    return this._success('Login Success', {
+      ...checkUserExists,
+      access_token: access_token,
+      refresh_token: refresh_token,
+    });
   }
 
-  async myProfile(id: number): Promise<ResponseSuccess> {
-    const user = await this.adminRepository.findOne({
+  async profile(id: number): Promise<ResponseSuccess> {
+    const user = await this.authRepository.findOne({
       where: {
         id: id,
       },
-      select: {
-        id: true,
-        // avatar: true,
-        username: true,
-        email: true,
-        // telephone: true,
-      },
     });
 
-    return this._success(process.env.PORT, user);
+    return this._success('Berhasil Menemukan Profile', user);
   }
 
   async forgotPassword(email: string): Promise<ResponseSuccess> {
@@ -193,12 +146,7 @@ export class AuthService extends BaseResponse {
       },
     });
 
-    if (!user) {
-      throw new HttpException(
-        'Email tidak ditemukan',
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
-    }
+    if (!user) throw new NotFoundException('Email Tidak ditemukan');
     const token = randomBytes(32).toString('hex');
     const link = `${process.env.MAIL_CLIENT_URL}auth/reset-password/${user.id}/${token}`;
     await this.mailService.sendForgotPassword({

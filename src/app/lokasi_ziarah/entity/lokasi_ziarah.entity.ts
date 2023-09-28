@@ -12,7 +12,7 @@ export class LokasiZiarah extends BaseEntity {
   id_thumbnail: string;
 
   @Column()
-  ziarah_name: string;
+  name: string;
 
   @Column()
   location: string;

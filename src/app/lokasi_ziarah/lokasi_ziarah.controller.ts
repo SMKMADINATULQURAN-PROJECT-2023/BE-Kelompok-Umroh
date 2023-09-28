@@ -32,7 +32,7 @@ export class LokasiZiarahController {
     return this.ziarahService.create(payload, file);
   }
 
-  @Get('list')
+  @Get()
   async get(@Pagination() payload: FindZiarahDto) {
     return this.ziarahService.get(payload);
   }

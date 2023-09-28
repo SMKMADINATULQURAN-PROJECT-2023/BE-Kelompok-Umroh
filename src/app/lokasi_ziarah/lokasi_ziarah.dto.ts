@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { OmitType, PartialType } from '@nestjs/mapped-types';
 
-import { IsInt, IsNotEmpty, IsString } from 'class-validator';
+import { IsInt, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { PageRequestDto } from 'src/utils/dto/page.dto';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class LokasiZiarahDto {
 
   @IsString()
   @IsNotEmpty()
-  ziarah_name: string;
+  name: string;
 
   @IsString()
   @IsNotEmpty()
@@ -36,5 +36,9 @@ export class LokasiZiarahDto {
 
 export class CreateZiarahDto extends OmitType(LokasiZiarahDto, ['id']) {}
 
-export class FindZiarahDto extends PageRequestDto {}
+export class FindZiarahDto extends PageRequestDto {
+  @IsString()
+  @IsOptional()
+  keyword: string;
+}
 export class UpdateZiarahDto extends PartialType(LokasiZiarahDto) {}

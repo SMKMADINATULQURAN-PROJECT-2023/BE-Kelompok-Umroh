@@ -6,12 +6,8 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Action } from '../../action/entity/action.entity';
+import { UserRole } from 'src/interface';
 
-export enum UserRole {
-  ADMIN = 'Admin',
-  CONTENTCREATOR = 'Content Creator',
-  TRAVEL = 'Travel',
-}
 @Entity()
 export class Role extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -20,12 +16,11 @@ export class Role extends BaseEntity {
   @Column({
     type: 'enum',
     enum: UserRole,
-    default: UserRole.ADMIN,
   })
   role_name: UserRole;
 
-  @OneToMany(() => Action, (action) => action.roles)
-  actions: Action[];
+  @OneToMany(() => Action, (action) => action.role_id)
+  action_id: Action[];
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;

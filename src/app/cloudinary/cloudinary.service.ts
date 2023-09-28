@@ -13,4 +13,13 @@ export class CloudinaryService {
     });
     return { url: secure_url, public_id };
   }
+
+  async deleteImage(id: string) {
+    return new Promise((resolve, reject) => {
+      v2.uploader
+        .destroy(id)
+        .then((res) => resolve(res))
+        .catch((er) => reject(er));
+    });
+  }
 }

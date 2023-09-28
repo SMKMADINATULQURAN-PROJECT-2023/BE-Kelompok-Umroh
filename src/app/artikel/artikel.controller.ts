@@ -13,7 +13,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { ArtikelService } from './artikel.service';
-import { CreateArtikelDto } from './dto/artikel.dto';
+import { CreateArtikelDto, UpdateArtikelDto } from './dto/artikel.dto';
 import { Pagination } from 'src/utils/decorator/pagination.decorator';
 import { FileInterceptorCustom } from 'src/utils/decorator/fileInterceptor.decorator';
 import { JwtGuard } from '../auth/auth.guard';
@@ -31,28 +31,28 @@ export class ArtikelController {
     @InjectAuthor() createArtikelDto: CreateArtikelDto,
     @Req() req,
   ) {
-    const { username, role } = req.user;
-    console.log(role.role_name);
-    if (role.role_name == 'Admin' || role.role_name == 'Content Creator') {
-      return this.artikelService.create(createArtikelDto, file, username);
-    } else {
-      return new HttpException('Invalid Token', HttpStatus.UNAUTHORIZED);
-    }
+    const { id } = req.user;
+    return this.artikelService.create(createArtikelDto, file, id);
   }
 
-  @Get('list')
+  @Get()
   findAll(@Pagination() query) {
     return this.artikelService.findAll(query);
   }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.artikelService.findOne(+id);
-  // }
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.artikelService.findOne(+id);
+  }
 
+  @FileInterceptorCustom('file_update', 'artikel')
   @Put('update/:id')
-  update(@Param('id') id: string, @Body() updateArtikelDto) {
-    return this.artikelService.update(+id, updateArtikelDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateArtikelDto: UpdateArtikelDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.artikelService.update(+id, updateArtikelDto, file);
   }
 
   @Delete('delete/:id')

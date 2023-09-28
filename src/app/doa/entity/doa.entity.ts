@@ -27,7 +27,7 @@ export class Doa extends BaseEntity {
 
   @ManyToOne(() => KategoriDoa)
   @JoinColumn({ name: 'kategori_id' })
-  kategori: KategoriDoa;
+  kategori_id: KategoriDoa;
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;

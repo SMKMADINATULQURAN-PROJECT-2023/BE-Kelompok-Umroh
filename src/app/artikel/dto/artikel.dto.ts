@@ -7,7 +7,6 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { SiswaDto } from 'src/app/siswa/siswa.dto';
 
 export class ArtikelDto {
   @IsInt()
@@ -17,15 +16,13 @@ export class ArtikelDto {
 
   id_thumbnail: string;
 
+  @IsNotEmpty()
   @IsString()
   title: string;
 
+  @IsNotEmpty()
   @IsString()
   description: string;
-
-  @IsObject()
-  @IsOptional()
-  author: { username: string };
 }
 
 export class CreateArtikelDto extends OmitType(ArtikelDto, ['id']) {}

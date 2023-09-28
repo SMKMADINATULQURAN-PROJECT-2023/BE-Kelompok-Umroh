@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Role, UserRole } from 'src/app/role/entity/role.entity';
+import { Role } from 'src/app/role/entity/role.entity';
+import { UserRole } from 'src/interface';
 import { Action } from 'src/app/action/entity/action.entity';
 
 @Injectable()
@@ -14,7 +15,7 @@ export class RoleActionSeeder {
   ) {}
 
   async create(): Promise<any> {
-    const actionsData = [
+    const action_idData = [
       {
         action_name: 'Dashboard',
         description: 'dapat mengakses dashboard',
@@ -26,8 +27,8 @@ export class RoleActionSeeder {
     ];
 
     // Membuat dan menyimpan objek Action
-    const actions = await Promise.all(
-      actionsData.map(async (data) => {
+    const action_id = await Promise.all(
+      action_idData.map(async (data) => {
         const { action_name, description } = data;
         const check = await this.actionRepository.findOne({
           where: {
@@ -42,23 +43,23 @@ export class RoleActionSeeder {
       }),
     );
 
-    // Membuat objek Role dan mengaitkannya dengan Actions yang telah dibuat
+    // Membuat objek Role dan mengaitkannya dengan Action_id yang telah dibuat
     const rolesData = [
       {
         role_name: UserRole.ADMIN,
-        actions: actions,
+        action_id: action_id,
       },
     ];
     for (const data of rolesData) {
-      const { role_name, actions } = data;
+      const { role_name, action_id } = data;
       const check = await this.roleRepository.findOne({
         where: {
           role_name,
         },
-        relations: ['actions'],
+        relations: ['action_id'],
       });
       if (!check) {
-        const role = this.roleRepository.create({ role_name, actions });
+        const role = this.roleRepository.create({ role_name, action_id });
         await this.roleRepository.save(role);
       }
     }

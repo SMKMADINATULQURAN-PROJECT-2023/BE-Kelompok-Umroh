@@ -1,17 +1,6 @@
-import {
-  Entity,
-  BaseEntity,
-  PrimaryGeneratedColumn,
-  Column,
-  OneToOne,
-  JoinColumn,
-} from 'typeorm';
-import { UserFacebook } from './facebook.entity';
-import { UserGoogle } from './google.entity';
-export enum JenisKelamin {
-  LAKI = 'Laki-Laki',
-  PEREMPUAN = 'Perempuan',
-}
+import { JenisKelamin } from 'src/interface';
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from 'typeorm';
+
 @Entity()
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -26,7 +15,10 @@ export class User extends BaseEntity {
   @Column({ unique: true, nullable: false })
   email: string;
 
-  @Column({ nullable: true })
+  @Column({ unique: true, nullable: false })
+  email_verified: string;
+
+  @Column({ unique: true, nullable: false })
   password: string;
 
   @Column({ nullable: true })
@@ -41,19 +33,13 @@ export class User extends BaseEntity {
   @Column({
     type: 'enum',
     enum: JenisKelamin,
-    default: JenisKelamin.LAKI,
   })
   jenis_kelamin: JenisKelamin;
 
-  @OneToOne(() => UserFacebook, (u) => u.user)
-  @JoinColumn({ name: 'UserFacebook_email', referencedColumnName: 'email' })
-  facebook: UserFacebook;
+  @Column({ type: 'text' })
+  slug: string;
 
-  @OneToOne(() => UserGoogle, (u) => u.user)
-  @JoinColumn({ name: 'UserGoogle_email', referencedColumnName: 'email' })
-  google: UserGoogle;
-
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'text' })
   refresh_token: string;
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })

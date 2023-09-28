@@ -30,18 +30,17 @@ export class AuthController {
     return this.authService.login(payload);
   }
 
-  @Post('login/admin')
-  async loginAdmin(@Body() payload: LoginDto) {
-    return this.authService.loginAdmin(payload);
+  @Post('google-login')
+  async googleLogin(@Body() email: string) {
+    return this.authService.loginGoogle(email);
   }
 
   @UseGuards(JwtGuard) // impelementasi guard pada route , hal ini berarti endpoint profile hanya bisa diakses jika client membawa token
   @Get('profile')
   async profile(@Req() req) {
     // hasil validate dari jwt strategy akan ditambakan pada req.user. isi object req.user akan sama dengan payload dari jwt token. Silahkan coba console.log(req.user)
-
     const { id } = req.user;
-    return this.authService.myProfile(id);
+    return this.authService.profile(id);
   }
 
   @Post('lupa-password')

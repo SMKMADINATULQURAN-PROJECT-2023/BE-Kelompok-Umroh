@@ -3,29 +3,34 @@ import {
   IsInt,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   MinLength,
 } from 'class-validator';
 import { IsUnique } from 'src/utils/validator/unique.validator';
 import { Admin } from '../entities/admin.entity';
-import { OmitType, PartialType } from '@nestjs/mapped-types';
+import { OmitType, PartialType, PickType } from '@nestjs/mapped-types';
+import { PageRequestDto } from 'src/utils/dto/page.dto';
 
 export class AdminDto {
   @IsInt()
   id: number;
 
+  @IsNotEmpty()
   @IsString()
-  @IsUnique([Admin, 'username'])
   username: string;
 
-  @IsString()
-  avatar: string;
+  avatar: any;
 
+  id_avatar: string;
+
+  @IsNotEmpty()
   @IsString()
   @IsEmail()
   @IsUnique([Admin, 'email'])
   email: string;
 
+  @IsNotEmpty()
   @IsString()
   @MinLength(8)
   password: string;
@@ -35,8 +40,22 @@ export class AdminDto {
 
   @IsNumber()
   @IsNotEmpty()
-  role: number;
+  role_id: number;
 }
 
-export class CreateAdminDto extends OmitType(AdminDto, ['id']) {}
+export class FindAdminDto extends PageRequestDto {
+  @IsString()
+  @IsOptional()
+  keyword: string;
+}
+export class CreateAdminDto extends OmitType(AdminDto, [
+  'id',
+  'avatar',
+  'id_avatar',
+  'refresh_token',
+]) {}
 export class UpdateAdminDto extends PartialType(AdminDto) {}
+export class RefreshTokenDto extends PickType(AdminDto, [
+  'id',
+  'refresh_token',
+]) {}

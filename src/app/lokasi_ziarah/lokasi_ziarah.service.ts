@@ -6,10 +6,10 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ResponsePagination, ResponseSuccess } from 'src/interface/response';
+import { ResponsePagination, ResponseSuccess } from 'src/interface';
 import BaseResponse from 'src/utils/response/base.response';
 import { LokasiZiarah } from './entity/lokasi_ziarah.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import {
   CreateZiarahDto,
   FindZiarahDto,
@@ -58,8 +58,19 @@ export class LokasiZiarahService extends BaseResponse {
   }
 
   async get(query: FindZiarahDto): Promise<ResponsePagination> {
-    const { page, pageSize, limit } = query;
+    const { page, pageSize, limit, keyword } = query;
+    const filterKeyword = [];
+
+    if (keyword) {
+      filterKeyword.push(
+        { name: Like(`%${keyword}%`) },
+        { location: Like(`%${keyword}%`) },
+        { description: Like(`%${keyword}%`) },
+      );
+    }
+
     const result = await this.ziarahRepository.find({
+      where: filterKeyword,
       skip: limit,
       take: pageSize,
     });
@@ -98,6 +109,7 @@ export class LokasiZiarahService extends BaseResponse {
       file?.mimetype == 'image/jpeg' ||
       file?.mimetype == 'image/jpg'
     ) {
+      await this.cloudinary.deleteImage(check.id_thumbnail);
       const { public_id, url } = await this.cloudinary.uploadImage(
         file,
         'lokasi ziarah',
@@ -129,6 +141,7 @@ export class LokasiZiarahService extends BaseResponse {
         HttpStatus.NOT_FOUND,
       );
     }
+    await this.cloudinary.deleteImage(check.id_thumbnail);
     await this.ziarahRepository.delete(id);
     return this._success('Berhasil Menghapus Lokasi Ziarah');
   }

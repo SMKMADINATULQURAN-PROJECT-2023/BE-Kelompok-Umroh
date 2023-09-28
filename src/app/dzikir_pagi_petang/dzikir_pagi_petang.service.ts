@@ -6,7 +6,7 @@ import { DzikirPagi } from './entity/dzikir_pagi.entity';
 import { Repository } from 'typeorm';
 import { DzikirPetang } from './entity/dzikir_petang.entity';
 import BaseResponse from 'src/utils/response/base.response';
-import { ResponseSuccess } from 'src/interface/response';
+import { ResponseSuccess } from 'src/interface';
 import { HttpStatus } from '@nestjs/common/enums';
 import { HttpException } from '@nestjs/common/exceptions';
 import { CreateDzikirPagiPetangArrayDto } from './dzikir_pagi_petang.dto';

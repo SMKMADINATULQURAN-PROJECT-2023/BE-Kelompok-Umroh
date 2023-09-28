@@ -17,7 +17,7 @@ export class AdminSeeder {
         username: 'admin umrah',
         email: 'adminumrah@gmail.com',
         password: hashSync('adminumrah123', 10),
-        role: { id: 1 },
+        role_id: { id: 1 },
       },
       // Tambahkan data lainnya sesuai kebutuhan
     ];

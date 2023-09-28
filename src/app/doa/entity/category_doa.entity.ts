@@ -15,8 +15,8 @@ export class KategoriDoa extends BaseEntity {
   @Column()
   nama_kategori: string;
 
-  @OneToMany(() => Doa, (doa) => doa.kategori, { cascade: true })
-  doa: Doa[];
+  @OneToMany(() => Doa, (doa) => doa.kategori_id, { cascade: true })
+  doa_id: Doa[];
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;

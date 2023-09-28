@@ -19,9 +19,9 @@ export class Action extends BaseEntity {
   @Column()
   description: string;
 
-  @ManyToOne(() => Role, (role) => role.actions)
+  @ManyToOne(() => Role)
   @JoinColumn({ name: 'role_id' })
-  roles: Role[];
+  role_id: Role;
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;

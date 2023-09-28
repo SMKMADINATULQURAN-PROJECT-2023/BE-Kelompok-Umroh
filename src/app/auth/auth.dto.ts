@@ -8,7 +8,7 @@ import {
   MinLength,
 } from 'class-validator';
 
-import { JenisKelamin } from './entity/auth.entity';
+import { JenisKelamin } from 'src/interface';
 
 export class UserDto {
   @IsInt()
@@ -59,6 +59,5 @@ export class RegisterDto extends PickType(UserDto, [
   'jenis_kelamin',
 ]) {}
 
-export class LoginDto extends PickType(UserDto, ['email', 'password']) {}
-
+export class LoginDto extends PickType(UserDto, ['telephone', 'password']) {}
 export class LoginAdminDto extends PickType(UserDto, ['email', 'password']) {}

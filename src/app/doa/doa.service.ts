@@ -2,7 +2,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import BaseResponse from 'src/utils/response/base.response';
-import { ResponsePagination, ResponseSuccess } from 'src/interface/response';
+import { ResponsePagination, ResponseSuccess } from 'src/interface';
 import { PageRequestDto } from 'src/utils/dto/page.dto';
 import {
   CreateDoaArrayDto,
@@ -30,7 +30,7 @@ export class DoaService extends BaseResponse {
         createDoaDto.data.map(async (data) => {
           const dataSave = {
             ...data,
-            kategori: { id: data.kategori_id },
+            kategori_id: { id: data.kategori_id },
           };
           try {
             await this.doaRepo.save(dataSave);
@@ -74,7 +74,7 @@ export class DoaService extends BaseResponse {
 
   async updateDoa(
     id: number,
-    updateDoaDto: UpdateKategoriDoaDto,
+    payload: UpdateKategoriDoaDto,
   ): Promise<ResponseSuccess> {
     const check = await this.doaRepo.findOne({
       where: { id: id },
@@ -86,7 +86,8 @@ export class DoaService extends BaseResponse {
       );
     }
     await this.doaRepo.save({
-      ...updateDoaDto,
+      ...payload,
+      kategori_id: { id: payload.kategori_id },
       id,
     });
     return this._success('Berhasil Mengupdate Doa');
@@ -94,7 +95,7 @@ export class DoaService extends BaseResponse {
 
   async updateKategori(
     id: number,
-    updateKategoriDto: UpdateKategoriDoaDto,
+    payload: UpdateKategoriDoaDto,
   ): Promise<ResponseSuccess> {
     const check = await this.kategoriRepo.findOne({
       where: { id: id },
@@ -106,7 +107,7 @@ export class DoaService extends BaseResponse {
       );
     }
     await this.kategoriRepo.save({
-      ...updateKategoriDto,
+      ...payload,
       id,
     });
     return this._success('Berhasil Mengupdate Kategori');

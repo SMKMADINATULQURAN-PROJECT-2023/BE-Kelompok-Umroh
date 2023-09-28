@@ -25,8 +25,11 @@ export class Artikel extends BaseEntity {
   @Column({ type: 'text' })
   description: string;
 
-  @ManyToOne(() => Admin)
-  @JoinColumn({ name: 'author', referencedColumnName: 'username' })
+  @ManyToOne(() => Admin, {
+    onDelete: 'SET NULL',
+    cascade: ['insert', 'update'],
+  })
+  @JoinColumn({ name: 'author' })
   author: Admin;
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })

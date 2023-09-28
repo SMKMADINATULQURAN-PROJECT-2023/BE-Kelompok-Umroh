@@ -7,24 +7,24 @@ import { Pagination } from 'src/utils/decorator/pagination.decorator';
 export class DzikirPagiPetangController {
   constructor(private dzikirPagiPetangService: DzikirPagiPetangService) {}
 
-  @Post('pagi/create-bulk')
-  async createBulkDzikirPagi(@Body() payload: CreateDzikirPagiPetangArrayDto) {
-    return this.dzikirPagiPetangService.createBulkDzikirPagi(payload);
-  }
+  // @Post('pagi/create-bulk')
+  // async createBulkDzikirPagi(@Body() payload: CreateDzikirPagiPetangArrayDto) {
+  //   return this.dzikirPagiPetangService.createBulkDzikirPagi(payload);
+  // }
 
-  @Post('petang/create-bulk')
-  async createBulkDzikirPetang(
-    @Body() payload: CreateDzikirPagiPetangArrayDto,
-  ) {
-    return this.dzikirPagiPetangService.createBulkDzikirPetang(payload);
-  }
+  // @Post('petang/create-bulk')
+  // async createBulkDzikirPetang(
+  //   @Body() payload: CreateDzikirPagiPetangArrayDto,
+  // ) {
+  //   return this.dzikirPagiPetangService.createBulkDzikirPetang(payload);
+  // }
 
-  @Get('pagi/list')
+  @Get('pagi')
   async getDzikirPagi(@Pagination() query) {
     return this.dzikirPagiPetangService.getDzikirPagi(query);
   }
 
-  @Get('petang/list')
+  @Get('petang')
   async getDzikirPetang(@Pagination() query) {
     return this.dzikirPagiPetangService.getDzikirPetang(query);
   }
