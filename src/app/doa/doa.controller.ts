@@ -20,7 +20,7 @@ export class DoaController {
   async createKategori(@Body() createKategoriDto: CreateKategoriDto) {
     return this.doaService.createKategoriDoa(createKategoriDto);
   }
-  @Get('list')
+  @Get()
   async get(@Pagination() query) {
     return this.doaService.get(query);
   }
@@ -40,7 +40,7 @@ export class DoaController {
     return this.doaService.removeDoa(+id);
   }
 
-  @Delete('kategori/ delete/:id')
+  @Delete('kategori/delete/:id')
   async removeKategoriDoa(id: string) {
     return this.doaService.removeKategori(+id);
   }

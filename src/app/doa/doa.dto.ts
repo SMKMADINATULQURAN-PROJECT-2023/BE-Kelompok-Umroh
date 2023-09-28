@@ -16,11 +16,11 @@ export class DoaDto {
 
   @IsString()
   @IsNotEmpty()
-  nama_kategori: string;
+  kategori_name: string;
 
   @IsString()
   @IsNotEmpty()
-  nama: string;
+  name: string;
 
   @IsString()
   @IsNotEmpty()
@@ -39,7 +39,7 @@ export class DoaDto {
   kategori_id: number;
 }
 
-export class CreateKategoriDto extends PickType(DoaDto, ['nama_kategori']) {}
+export class CreateKategoriDto extends PickType(DoaDto, ['kategori_name']) {}
 export class CreateDoaDto extends OmitType(DoaDto, ['id']) {}
 export class UpdateKategoriDoaDto extends PartialType(DoaDto) {}
 

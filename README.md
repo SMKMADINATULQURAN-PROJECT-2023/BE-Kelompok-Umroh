@@ -8,12 +8,12 @@
 
 #### Refresh Token
 
-```bash
+```markdown
 /auth/refresh_token
 ```
 
 **Method : GET**
-### Headers
+Headers
 
 |     Name      |  Status  |        |
 | :-----------: | :------: | :----: |
@@ -21,39 +21,40 @@
 
 #### Login
 
-```bash
+```markdown
 /auth/login
 ```
 
 **Method : POST**
 
-### Body
+Body
 
-|   Name    |  Status  |  Type  |
-| :-------: | :------: | :----: |
-| telephone | Required | String |
-| password  | Required | String |
+|   Name   |  Status  |   Type      |
+| :------: | :------: | :-----: |
+|   telephone    | Required | String |
+| password | Required | String  |
 
 #### Register
 
-```bash
+```markdown
 /auth/register
 ```
 
 **Method : POST**
 
-### Body
+Body
 
-|     Name      |  Status  |  type   |
-| :-----------: | :------: | :-----: |
+|   Name   |  Status  |    type     |
+| :------: | :------: | :-----: |
 |   username    | Required | Integer |
 |   telephone   | Required | String  |
-|   password    | Required | String  |
-| jenis_kelamin | Required | Integer |
+| password | Required | String  |
+| jenis_kelamin  | Required | Integer |
+
 
 #### List (Admin only)
 
-```bash
+```markdown
 /user
 ```
 
@@ -61,62 +62,64 @@
 
 Params
 
-| Name  |  Status  |  tyoe   |                   description                   |
-| :---: | :------: | :-----: | :---------------------------------------------: |
-| page  | Optional | Integer |                                                 |
-| limit | Optional | Integer |                                                 |
+| Name  |  Status  |   tyoe      |             description           |
+| :---: | :------: | :-----: | :--------------------: |
+| page  | Optional | Integer |                        |
+| limit | Optional | Integer |                        |
 |  key  | Optional | String  | Search by username, telephone and jenis_kelamin |
 
 #### Detail
 
-```bash
+```markdown
 /user/[slug]
 ```
 
 **Method : GET**
 
-### Headers
+Headers
 
-|     Name      |  Status  |  type  |
+|     Name      |  Status  |    type    |
 | :-----------: | :------: | :----: |
 | Authorization | Required | String |
 
 #### Edit
 
-```bash
+```markdown
 /user/edit-profile/[slug]
 ```
 
 **Method : PUT**
 
-### Headers
+Headers
 
-|     Name      |  Status  |  type  |
+|     Name      |  Status  |    type    |
 | :-----------: | :------: | :----: |
 | Authorization | Required | String |
 
-### Body
+Body
 
-|     Name      |  Status  |         |
-| :-----------: | :------: | :-----: |
-|     nama      | Optional | String  |
-|   username    | required | Integer |
-|     email     | Optional | Integer |
-|   telephone   | Required | String  |
-| tempat_lahir  | Required | String  |
-| tanggal_lahir | Required | String  |
+|            Name            |  Status  |                                                                        |
+| :------------------------: | :------: | :--------------------------------------------------------------------: |
+|            nama            | Optional |                                 String                                 |
+|           username            | required |                                Integer                                 |
+|            email            | Optional |                                Integer                                 |
+|           telephone           | Required |                                 String                                 |
+|             tempat_lahir             | Required |                                 String                                 |    
+|             tanggal_lahir             | Required |                                 String                                 |  
+
+
 
 ## Admin
 
 #### Login
 
-```bash
+```markdown
 /admin/login
 ```
 
 **Method : POST**
 
-### Body
+Body
 
 |   Name   |  Status  |        |
 | :------: | :------: | :----: |
@@ -125,23 +128,23 @@ Params
 
 #### Register (Only administrator)
 
-```bash
+```markdown
 /admin/register
 ```
 
 Note : **Admin is added by administrator** <br/>
 **Method : POST**
 
-### Body
+Body
 
 |   Name   |  Status  |         |
 | :------: | :------: | :-----: |
-| username | Required | String  |
+|  username   | Required | String  |
 |  email   | Required | String  |
 | password | Required | String  |
 | id_role  | Required | Integer |
 
-### Headers
+Headers
 
 |     Name      |  Status  |        |
 | :-----------: | :------: | :----: |
@@ -149,7 +152,7 @@ Note : **Admin is added by administrator** <br/>
 
 #### List (Only admin)
 
-```bash
+```markdown
 /admin
 ```
 
@@ -163,7 +166,7 @@ Params
 | limit | Optional | Integer |                 |
 |  key  | Optional | String  | Search by email |
 
-### Headers
+Headers
 
 |     Name      |  Status  |        |
 | :-----------: | :------: | :----: |
@@ -171,21 +174,22 @@ Params
 
 ## Artikel
 
-```bash
+
+```markdown
 /artikel/create
 ```
 
 **Method : POST**
 
-### Body
+Body
 
-|    Name     |  Status  |        |
-| :---------: | :------: | :----: |
-|    title    | Required | String |
-| description | Required | String |
+|   Name    |  Status  |        |
+| :-------: | :------: | :----: |
+|   title   | Required | String |
+|  description   | Required | String |
 | file_create | Required |  File  |
 
-### Headers
+Headers
 
 |     Name      |  Status  |                     |
 | :-----------: | :------: | :-----------------: |
@@ -194,43 +198,43 @@ Params
 
 #### Edit (Admin only)
 
-```bash
+```markdown
 /artikel/edit/[slug]
 ```
 
 **Method : PUT**
 
-### Body
+Body
 
-|    Name     |  Status  |        |
-| :---------: | :------: | :----: |
-|    tilte    | Optional | String |
-| description | Optional | String |
+|   Name    |  Status  |        |
+| :-------: | :------: | :----: |
+|   tilte   | Optional | String |
+|  description   | Optional | String |
 | file_update | Optional |  File  |
 
-### Headers
+Headers
 
-|    name     |  Status  |        type         |
+|     Name      |  Status  |                     |
 | :-----------: | :------: | :-----------------: |
 | Content-Type  | Required | multipart/form-data |
 | Authorization | Required |       String        |
 
 #### Delete (Admin only)
 
-```bash
+```markdown
 /artikel/delete/[slug]
 ```
 
 **Method : DELETE**
-### Headers
+Headers
 
-|     Name      |  Status  |  type  |
+|     Name      |  Status  |        |
 | :-----------: | :------: | :----: |
 | Authorization | Required | String |
 
 #### List
 
-```bash
+```markdown
 /artikel
 ```
 
@@ -238,16 +242,105 @@ Params
 
 Params
 
-| Name  |  Status  |        type         |   description   |
+| Name  |  Status  |                     |                 |
 | :---: | :------: | :-----------------: | :-------------: |
 | page  | Optional |       Integer       |                 |
 | limit | Optional |       Integer       |                 |
 |  key  | Optional |       String        | Search by judul |
+| sort  | Optional | "terbaru","terlama" | Search by judul |
 
 #### Detail
 
-```bash
+```markdown
 /artikel/[slug]
 ```
 
 **Method : GET**
+
+
+## Doa
+
+
+```markdown
+/doa/create
+```
+
+**Method : POST**
+
+Body
+
+|   Name    |  Status  |        |
+| :-------: | :------: | :----: |
+|   name   | Required | String |
+|  arab   | Required | String |
+| latin | Required |  String  |
+| arti | Required |  String  |
+| katigori_id | Required |  Integer  |
+
+Headers
+
+|     Name      |  Status  |                     |
+| :-----------: | :------: | :-----------------: |
+| Authorization | Required |       String        |
+
+#### Edit (Admin only)
+
+```markdown
+/doa/edit/[slug]
+```
+
+**Method : PUT**
+
+Body
+
+|   Name    |  Status  |        |
+| :-------: | :------: | :----: |
+|   name   | Required | String |
+|  arab   | Required | String |
+| latin | Required |  String  |
+| arti | Required |  String  |
+| katigori_id | Required |  Integer  |
+
+Headers
+
+|     Name      |  Status  |                     |
+| :-----------: | :------: | :-----------------: |
+| Authorization | Required |       String        |
+
+#### Delete (Admin only)
+
+```markdown
+/doa/delete/[slug]
+```
+
+**Method : DELETE**
+Headers
+
+|     Name      |  Status  |        |
+| :-----------: | :------: | :----: |
+| Authorization | Required | String |
+
+#### List
+
+```markdown
+/doa
+```
+
+**Method : GET**
+
+Params
+
+| Name  |  Status  |                     |                 |
+| :---: | :------: | :-----------------: | :-------------: |
+| page  | Optional |       Integer       |                 |
+| limit | Optional |       Integer       |                 |
+|  key  | Optional |       String        | Search by name |
+
+#### Detail
+
+```markdown
+/doa/[slug]
+```
+
+**Method : GET**
+

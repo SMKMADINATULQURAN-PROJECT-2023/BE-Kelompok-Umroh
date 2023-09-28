@@ -19,11 +19,11 @@ export class DoaSeeder extends BaseResponse {
     try {
       const doaData = dataDoa.data;
       for (const data of doaData) {
-        const { nama, arab, arti, kategori_id } = data;
+        const { name, arab, arti, kategori_id } = data;
 
         const check = await this.doaRepo.findOne({
           where: {
-            nama,
+            name,
             arab,
             arti,
           },

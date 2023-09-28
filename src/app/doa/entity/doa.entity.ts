@@ -14,7 +14,7 @@ export class Doa extends BaseEntity {
   id: number;
 
   @Column()
-  nama: string;
+  name: string;
 
   @Column({ type: 'text', collation: 'utf8mb4_unicode_ci' })
   arab: string;

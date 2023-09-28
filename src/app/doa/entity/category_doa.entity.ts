@@ -13,7 +13,7 @@ export class KategoriDoa extends BaseEntity {
   id: number;
 
   @Column()
-  nama_kategori: string;
+  kategori_name: string;
 
   @OneToMany(() => Doa, (doa) => doa.kategori_id, { cascade: true })
   doa_id: Doa[];
