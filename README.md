@@ -29,10 +29,10 @@ Headers
 
 Body
 
-|   Name   |  Status  |   Type      |
-| :------: | :------: | :-----: |
-|   telephone    | Required | String |
-| password | Required | String  |
+|   Name    |  Status  |  Type  |
+| :-------: | :------: | :----: |
+| telephone | Required | String |
+| password  | Required | String |
 
 #### Register
 
@@ -44,13 +44,12 @@ Body
 
 Body
 
-|   Name   |  Status  |    type     |
-| :------: | :------: | :-----: |
-|   username    | Required | Integer |
-|   telephone   | Required | String  |
-| password | Required | String  |
-| jenis_kelamin  | Required | Integer |
-
+|     Name      |  Status  |           type           |
+| :-----------: | :------: | :----------------------: |
+|   username    | Required |          String          |
+|   telephone   | Required |          String          |
+|   password    | Required |          String          |
+| jenis_kelamin | Required | "Laki-Laki", "Perempuan" |
 
 #### List (Admin only)
 
@@ -62,11 +61,11 @@ Body
 
 Params
 
-| Name  |  Status  |   tyoe      |             description           |
-| :---: | :------: | :-----: | :--------------------: |
-| page  | Optional | Integer |                        |
-| pageSize | Optional | Integer |                        |
-|  keyword  | Optional | String  | Search by username, telephone and jenis_kelamin |
+|   Name   |  Status  |  tyoe   |                   description                   |
+| :------: | :------: | :-----: | :---------------------------------------------: |
+|   page   | Optional | Integer |                                                 |
+| pageSize | Optional | Integer |                                                 |
+| keyword  | Optional | String  | Search by username, telephone and jenis_kelamin |
 
 #### Detail
 
@@ -78,7 +77,7 @@ Params
 
 Headers
 
-|     Name      |  Status  |    type    |
+|     Name      |  Status  |  type  |
 | :-----------: | :------: | :----: |
 | Authorization | Required | String |
 
@@ -92,22 +91,21 @@ Headers
 
 Headers
 
-|     Name      |  Status  |    type    |
+|     Name      |  Status  |  type  |
 | :-----------: | :------: | :----: |
 | Authorization | Required | String |
 
 Body
 
-|            Name            |  Status  |                                                                        |
-| :------------------------: | :------: | :--------------------------------------------------------------------: |
-|            nama            | Optional |                                 String                                 |
-|           username            | required |                                Integer                                 |
-|            email            | Optional |                                Integer                                 |
-|           telephone           | Required |                                 String                                 |
-|             tempat_lahir             | Required |                                 String                                 |    
-|             tanggal_lahir             | Required |                                 String                                 |  
-
-
+|     Name      |  Status  |                          |
+| :-----------: | :------: | :----------------------: |
+|     nama      | Optional |          String          |
+|   username    | required |          String          |
+|     email     | Optional |          String          |
+|   telephone   | Required |          String          |
+| tempat_lahir  | Required |          String          |
+| tanggal_lahir | Required |           Date           |
+| jenis_kelamin | Required | "Laki-Laki", "Perempuan" |
 
 ## Admin
 
@@ -139,7 +137,7 @@ Body
 
 |   Name   |  Status  |         |
 | :------: | :------: | :-----: |
-|  username   | Required | String  |
+| username | Required | String  |
 |  email   | Required | String  |
 | password | Required | String  |
 | id_role  | Required | Integer |
@@ -160,11 +158,11 @@ Headers
 
 Params
 
-| Name  |  Status  |         |                 |
-| :---: | :------: | :-----: | :-------------: |
-| page  | Optional | Integer |                 |
+|   Name   |  Status  |         |                 |
+| :------: | :------: | :-----: | :-------------: |
+|   page   | Optional | Integer |                 |
 | pageSize | Optional | Integer |                 |
-|  keyword  | Optional | String  | Search by email |
+| keyword  | Optional | String  | Search by email |
 
 Headers
 
@@ -174,7 +172,6 @@ Headers
 
 ## Artikel
 
-
 ```markdown
 /artikel/create
 ```
@@ -183,10 +180,10 @@ Headers
 
 Body
 
-|   Name    |  Status  |        |
-| :-------: | :------: | :----: |
-|   title   | Required | String |
-|  description   | Required | String |
+|    Name     |  Status  |        |
+| :---------: | :------: | :----: |
+|    title    | Required | String |
+| description | Required | String |
 | file_create | Required |  File  |
 
 Headers
@@ -206,10 +203,10 @@ Headers
 
 Body
 
-|   Name    |  Status  |        |
-| :-------: | :------: | :----: |
-|   tilte   | Optional | String |
-|  description   | Optional | String |
+|    Name     |  Status  |        |
+| :---------: | :------: | :----: |
+|    tilte    | Optional | String |
+| description | Optional | String |
 | file_update | Optional |  File  |
 
 Headers
@@ -242,12 +239,11 @@ Headers
 
 Params
 
-| Name  |  Status  |                     |                 |
-| :---: | :------: | :-----------------: | :-------------: |
-| page  | Optional |       Integer       |                 |
-| pageSize | Optional |       Integer       |                 |
-|  keyword  | Optional |       String        | Search by judul |
-| sort  | Optional | "terbaru","terlama" | Search by judul |
+|   Name   |  Status  |         |                 |
+| :------: | :------: | :-----: | :-------------: |
+|   page   | Optional | Integer |                 |
+| pageSize | Optional | Integer |                 |
+| keyword  | Optional | String  | Search by judul |
 
 #### Detail
 
@@ -257,9 +253,7 @@ Params
 
 **Method : GET**
 
-
 ## Doa
-
 
 ```markdown
 /doa/create
@@ -269,19 +263,19 @@ Params
 
 Body
 
-|   Name    |  Status  |        |
-| :-------: | :------: | :----: |
-|   name   | Required | String |
-|  arab   | Required | String |
-| latin | Required |  String  |
-| arti | Required |  String  |
-| katigori_id | Required |  Integer  |
+|    Name     |  Status  |         |
+| :---------: | :------: | :-----: |
+|    name     | Required | String  |
+|    arab     | Required | String  |
+|    latin    | Required | String  |
+|    arti     | Required | String  |
+| katigori_id | Required | Integer |
 
 Headers
 
-|     Name      |  Status  |                     |
-| :-----------: | :------: | :-----------------: |
-| Authorization | Required |       String        |
+|     Name      |  Status  |        |
+| :-----------: | :------: | :----: |
+| Authorization | Required | String |
 
 #### Edit (Admin only)
 
@@ -293,19 +287,19 @@ Headers
 
 Body
 
-|   Name    |  Status  |        |
-| :-------: | :------: | :----: |
-|   name   | Required | String |
-|  arab   | Required | String |
-| latin | Required |  String  |
-| arti | Required |  String  |
-| katigori_id | Required |  Integer  |
+|    Name     |  Status  |         |
+| :---------: | :------: | :-----: |
+|    name     | Required | String  |
+|    arab     | Required | String  |
+|    latin    | Required | String  |
+|    arti     | Required | String  |
+| katigori_id | Required | Integer |
 
 Headers
 
-|     Name      |  Status  |                     |
-| :-----------: | :------: | :-----------------: |
-| Authorization | Required |       String        |
+|     Name      |  Status  |        |
+| :-----------: | :------: | :----: |
+| Authorization | Required | String |
 
 #### Delete (Admin only)
 
@@ -330,11 +324,11 @@ Headers
 
 Params
 
-| Name  |  Status  |                     |                 |
-| :---: | :------: | :-----------------: | :-------------: |
-| page  | Optional |       Integer       |                 |
-| pageSize | Optional |       Integer       |                 |
-|  keyword  | Optional |       String        | Search by name |
+|   Name   |  Status  |         |                |
+| :------: | :------: | :-----: | :------------: |
+|   page   | Optional | Integer |                |
+| pageSize | Optional | Integer |                |
+| keyword  | Optional | String  | Search by name |
 
 #### Detail
 
@@ -346,7 +340,6 @@ Params
 
 ## Kategori Doa
 
-
 ```markdown
 /doa/kategori/create
 ```
@@ -355,15 +348,15 @@ Params
 
 Body
 
-|   Name    |  Status  |        |
-| :-------: | :------: | :----: |
-|   kategori_name   | Required | String |
+|     Name      |  Status  |        |
+| :-----------: | :------: | :----: |
+| kategori_name | Required | String |
 
 Headers
 
-|     Name      |  Status  |                     |
-| :-----------: | :------: | :-----------------: |
-| Authorization | Required |       String        |
+|     Name      |  Status  |        |
+| :-----------: | :------: | :----: |
+| Authorization | Required | String |
 
 #### Edit (Admin only)
 
@@ -375,15 +368,15 @@ Headers
 
 Body
 
-|   Name    |  Status  |        |
-| :-------: | :------: | :----: |
-|   kategori_name   | Required | String |
+|     Name      |  Status  |        |
+| :-----------: | :------: | :----: |
+| kategori_name | Required | String |
 
 Headers
 
-|     Name      |  Status  |                     |
-| :-----------: | :------: | :-----------------: |
-| Authorization | Required |       String        |
+|     Name      |  Status  |        |
+| :-----------: | :------: | :----: |
+| Authorization | Required | String |
 
 #### Delete (Admin only)
 
@@ -409,11 +402,11 @@ Headers
 
 Params
 
-| Name  |  Status  |                     |                 |
-| :---: | :------: | :-----------------: | :-------------: |
-| page  | Optional |       Integer       |                 |
-| pageSize | Optional |       Integer       |                 |
-|  keyword  | Optional |       String        | Search by kategori_name |
+|   Name   |  Status  |         |                         |
+| :------: | :------: | :-----: | :---------------------: |
+|   page   | Optional | Integer |                         |
+| pageSize | Optional | Integer |                         |
+| keyword  | Optional | String  | Search by kategori_name |
 
 #### Detail
 
@@ -435,11 +428,10 @@ Params
 
 Params
 
-| Name  |  Status  |                     |                 |
-| :---: | :------: | :-----------------: | :-------------: |
-| page  | Optional |       Integer       |                 |
-| pageSize | Optional |       Integer       |                 |
-
+|   Name   |  Status  |         |     |
+| :------: | :------: | :-----: | :-: |
+|   page   | Optional | Integer |     |
+| pageSize | Optional | Integer |     |
 
 ## Dzikir Petang
 
@@ -453,7 +445,7 @@ Params
 
 Params
 
-| Name  |  Status  |                     |                 |
-| :---: | :------: | :-----------------: | :-------------: |
-| page  | Optional |       Integer       |                 |
-| pageSize | Optional |       Integer       |                 |
+|   Name   |  Status  |         |     |
+| :------: | :------: | :-----: | :-: |
+|   page   | Optional | Integer |     |
+| pageSize | Optional | Integer |     |

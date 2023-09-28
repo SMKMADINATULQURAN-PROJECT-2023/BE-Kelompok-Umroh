@@ -9,7 +9,7 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   avatar: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, unique: true })
   username: string;
 
   @Column({ unique: true, nullable: false })

@@ -13,15 +13,12 @@ import { jwt_config } from 'src/config/jwt.config';
 import { MailService } from '../mail/mail.service';
 import { ResetPassword } from './entity/reset_password.entity';
 import { randomBytes } from 'crypto';
-import { Admin } from '../admin/entities/admin.entity';
 import { NotFoundException } from '@nestjs/common/exceptions';
 
 @Injectable()
 export class AuthService extends BaseResponse {
   constructor(
     @InjectRepository(User) private readonly authRepository: Repository<User>,
-    @InjectRepository(Admin)
-    private readonly adminRepository: Repository<Admin>,
     @InjectRepository(ResetPassword)
     private readonly resetPasswordRepository: Repository<ResetPassword>,
 
