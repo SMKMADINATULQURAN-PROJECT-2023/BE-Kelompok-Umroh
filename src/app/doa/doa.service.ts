@@ -50,16 +50,32 @@ export class DoaService extends BaseResponse {
     }
   }
 
-  async get(query: PageRequestDto): Promise<ResponsePagination> {
+  async getKategori(query: PageRequestDto): Promise<ResponsePagination> {
     const { page, pageSize, limit } = query;
     const result = await this.kategoriRepo.find({
       skip: limit,
       take: pageSize,
-      relations: ['doa'],
+      relations: ['doa_id'],
     });
     const total = await this.kategoriRepo.count();
     return this._pagination(
-      'Berhasil Menemukan Doa dan Kategori Doa',
+      'Berhasil Menemukan Kategori Doa',
+      result,
+      total,
+      page,
+      pageSize,
+    );
+  }
+  async getDoa(query: PageRequestDto): Promise<ResponsePagination> {
+    const { page, pageSize, limit } = query;
+    const result = await this.doaRepo.find({
+      skip: limit,
+      take: pageSize,
+      relations: ['kategori_id'],
+    });
+    const total = await this.doaRepo.count();
+    return this._pagination(
+      'Berhasil Menemukan Doa',
       result,
       total,
       page,

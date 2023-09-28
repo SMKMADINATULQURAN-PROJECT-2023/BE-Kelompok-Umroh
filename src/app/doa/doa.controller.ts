@@ -20,9 +20,15 @@ export class DoaController {
   async createKategori(@Body() createKategoriDto: CreateKategoriDto) {
     return this.doaService.createKategoriDoa(createKategoriDto);
   }
+
   @Get()
-  async get(@Pagination() query) {
-    return this.doaService.get(query);
+  async getDoa(@Pagination() query) {
+    return this.doaService.getDoa(query);
+  }
+
+  @Get('kategori')
+  async getKategori(@Pagination() query) {
+    return this.doaService.getKategori(query);
   }
 
   @Put('update/:id')

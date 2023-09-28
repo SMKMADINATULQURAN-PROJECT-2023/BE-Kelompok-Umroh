@@ -65,7 +65,7 @@ Params
 | Name  |  Status  |   tyoe      |             description           |
 | :---: | :------: | :-----: | :--------------------: |
 | page  | Optional | Integer |                        |
-| limit | Optional | Integer |                        |
+| pageSize | Optional | Integer |                        |
 |  keyword  | Optional | String  | Search by username, telephone and jenis_kelamin |
 
 #### Detail
@@ -163,7 +163,7 @@ Params
 | Name  |  Status  |         |                 |
 | :---: | :------: | :-----: | :-------------: |
 | page  | Optional | Integer |                 |
-| limit | Optional | Integer |                 |
+| pageSize | Optional | Integer |                 |
 |  keyword  | Optional | String  | Search by email |
 
 Headers
@@ -245,7 +245,7 @@ Params
 | Name  |  Status  |                     |                 |
 | :---: | :------: | :-----------------: | :-------------: |
 | page  | Optional |       Integer       |                 |
-| limit | Optional |       Integer       |                 |
+| pageSize | Optional |       Integer       |                 |
 |  keyword  | Optional |       String        | Search by judul |
 | sort  | Optional | "terbaru","terlama" | Search by judul |
 
@@ -333,7 +333,7 @@ Params
 | Name  |  Status  |                     |                 |
 | :---: | :------: | :-----------------: | :-------------: |
 | page  | Optional |       Integer       |                 |
-| limit | Optional |       Integer       |                 |
+| pageSize | Optional |       Integer       |                 |
 |  keyword  | Optional |       String        | Search by name |
 
 #### Detail
@@ -392,6 +392,7 @@ Headers
 ```
 
 **Method : DELETE**
+
 Headers
 
 |     Name      |  Status  |        |
@@ -411,7 +412,7 @@ Params
 | Name  |  Status  |                     |                 |
 | :---: | :------: | :-----------------: | :-------------: |
 | page  | Optional |       Integer       |                 |
-| limit | Optional |       Integer       |                 |
+| pageSize | Optional |       Integer       |                 |
 |  keyword  | Optional |       String        | Search by kategori_name |
 
 #### Detail
@@ -422,3 +423,37 @@ Params
 
 **Method : GET**
 
+## Dzikir Pagi
+
+#### List
+
+```markdown
+/dzikir/pagi
+```
+
+**Method : GET**
+
+Params
+
+| Name  |  Status  |                     |                 |
+| :---: | :------: | :-----------------: | :-------------: |
+| page  | Optional |       Integer       |                 |
+| pageSize | Optional |       Integer       |                 |
+
+
+## Dzikir Petang
+
+#### List
+
+```markdown
+/dzikir/petang
+```
+
+**Method : GET**
+
+Params
+
+| Name  |  Status  |                     |                 |
+| :---: | :------: | :-----------------: | :-------------: |
+| page  | Optional |       Integer       |                 |
+| pageSize | Optional |       Integer       |                 |
