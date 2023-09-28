@@ -66,7 +66,7 @@ Params
 | :---: | :------: | :-----: | :--------------------: |
 | page  | Optional | Integer |                        |
 | limit | Optional | Integer |                        |
-|  key  | Optional | String  | Search by username, telephone and jenis_kelamin |
+|  keyword  | Optional | String  | Search by username, telephone and jenis_kelamin |
 
 #### Detail
 
@@ -164,7 +164,7 @@ Params
 | :---: | :------: | :-----: | :-------------: |
 | page  | Optional | Integer |                 |
 | limit | Optional | Integer |                 |
-|  key  | Optional | String  | Search by email |
+|  keyword  | Optional | String  | Search by email |
 
 Headers
 
@@ -246,7 +246,7 @@ Params
 | :---: | :------: | :-----------------: | :-------------: |
 | page  | Optional |       Integer       |                 |
 | limit | Optional |       Integer       |                 |
-|  key  | Optional |       String        | Search by judul |
+|  keyword  | Optional |       String        | Search by judul |
 | sort  | Optional | "terbaru","terlama" | Search by judul |
 
 #### Detail
@@ -334,12 +334,90 @@ Params
 | :---: | :------: | :-----------------: | :-------------: |
 | page  | Optional |       Integer       |                 |
 | limit | Optional |       Integer       |                 |
-|  key  | Optional |       String        | Search by name |
+|  keyword  | Optional |       String        | Search by name |
 
 #### Detail
 
 ```markdown
 /doa/[slug]
+```
+
+**Method : GET**
+
+## Kategori Doa
+
+
+```markdown
+/doa/kategori/create
+```
+
+**Method : POST**
+
+Body
+
+|   Name    |  Status  |        |
+| :-------: | :------: | :----: |
+|   kategori_name   | Required | String |
+
+Headers
+
+|     Name      |  Status  |                     |
+| :-----------: | :------: | :-----------------: |
+| Authorization | Required |       String        |
+
+#### Edit (Admin only)
+
+```markdown
+/doa/kategori/edit/[slug]
+```
+
+**Method : PUT**
+
+Body
+
+|   Name    |  Status  |        |
+| :-------: | :------: | :----: |
+|   kategori_name   | Required | String |
+
+Headers
+
+|     Name      |  Status  |                     |
+| :-----------: | :------: | :-----------------: |
+| Authorization | Required |       String        |
+
+#### Delete (Admin only)
+
+```markdown
+/doa/kategori/delete/[slug]
+```
+
+**Method : DELETE**
+Headers
+
+|     Name      |  Status  |        |
+| :-----------: | :------: | :----: |
+| Authorization | Required | String |
+
+#### List
+
+```markdown
+/doa/kategori
+```
+
+**Method : GET**
+
+Params
+
+| Name  |  Status  |                     |                 |
+| :---: | :------: | :-----------------: | :-------------: |
+| page  | Optional |       Integer       |                 |
+| limit | Optional |       Integer       |                 |
+|  keyword  | Optional |       String        | Search by kategori_name |
+
+#### Detail
+
+```markdown
+/doa/kategori/[slug]
 ```
 
 **Method : GET**
