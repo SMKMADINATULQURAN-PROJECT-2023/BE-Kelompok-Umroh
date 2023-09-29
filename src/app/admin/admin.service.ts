@@ -88,7 +88,7 @@ export class AdminService extends BaseResponse {
         slug: checkUserExists.slug,
       };
 
-      const access_token = await this.generateJWT(jwtPayload, '1d');
+      const access_token = await this.generateJWT(jwtPayload, '9d');
       const refresh_token = await this.generateJWT(jwtPayload, '7d');
       await this.adminRepository.save({
         refresh_token: refresh_token,
@@ -271,18 +271,6 @@ export class AdminService extends BaseResponse {
     }
     await this.adminRepository.delete(slug);
     return this._success('Berhasil Menghapus Akun Admin');
-  }
-
-  async profileAdmin(slug: string): Promise<ResponseSuccess> {
-    console.log(slug);
-    const user = await this.adminRepository.findOne({
-      where: { slug: slug },
-      relations: ['role_id'],
-    });
-
-    if (!user) throw new NotFoundException('User Tidak Ditemukan');
-
-    return this._success('Berhasil Menemukan Profile', user);
   }
 
   async editProfile(

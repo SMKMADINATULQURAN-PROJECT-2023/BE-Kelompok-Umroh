@@ -69,12 +69,6 @@ export class AdminController {
   }
 
   @UseGuards(JwtGuard)
-  @Get('profile/:slug')
-  async profile(@Param('slug') slug: string) {
-    return this.adminService.profileAdmin(slug);
-  }
-
-  @UseGuards(JwtGuard)
   @FileInterceptorCustom('file_update', 'admin')
   @Put('edit-profile')
   async editProfile(

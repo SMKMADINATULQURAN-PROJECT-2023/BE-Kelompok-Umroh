@@ -83,7 +83,7 @@ export class AuthService extends BaseResponse {
         tanggal_lahir: checkUserExists.tanggal_lahir,
       };
 
-      const access_token = await this.generateJWT(jwtPayload, '1d');
+      const access_token = await this.generateJWT(jwtPayload, '9d');
       const refresh_token = await this.generateJWT(jwtPayload, '7d');
       await this.authRepository.save({
         refresh_token: refresh_token,

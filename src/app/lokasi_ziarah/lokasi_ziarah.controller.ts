@@ -7,6 +7,7 @@ import {
   Put,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 
 import { LokasiZiarahService } from './lokasi_ziarah.service';
@@ -17,7 +18,9 @@ import {
 } from './lokasi_ziarah.dto';
 import { Pagination } from 'src/utils/decorator/pagination.decorator';
 import { FileInterceptorCustom } from 'src/utils/decorator/fileInterceptor.decorator';
+import { JwtGuard } from '../auth/auth.guard';
 
+@UseGuards(JwtGuard)
 @Controller('lokasi_ziarah')
 export class LokasiZiarahController {
   constructor(private ziarahService: LokasiZiarahService) {}

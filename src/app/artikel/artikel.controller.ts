@@ -29,9 +29,9 @@ export class ArtikelController {
   @FileInterceptorCustom('file_create', 'artikel')
   create(
     @UploadedFile() file: Express.Multer.File,
-    @InjectCreatedBy() createArtikelDto: CreateArtikelDto,
+    @InjectCreatedBy() payload: CreateArtikelDto,
   ) {
-    return this.artikelService.create(createArtikelDto, file);
+    return this.artikelService.create(payload, file);
   }
 
   @Get()

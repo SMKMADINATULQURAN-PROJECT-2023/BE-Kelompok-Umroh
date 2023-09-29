@@ -6,27 +6,6 @@
 
 ## Auth
 
-#### Refresh Token
-
-```markdown
-/admin/refresh-token
-```
-
-**Method : Post**
-
-Body
-
-|     Name      |  Status  |  Type   |
-| :-----------: | :------: | :-----: |
-|      id       | Required | integer |
-| refresh_token | Required | String  |
-
-Headers
-
-|     Name      |  Status  |        |
-| :-----------: | :------: | :----: |
-| Authorization | Required | String |
-
 #### Login
 
 ```markdown
@@ -41,6 +20,20 @@ Body
 | :-------: | :------: | :----: |
 | telephone | Required | String |
 | password  | Required | String |
+
+#### Google Login
+
+```markdown
+/auth/google-login
+```
+
+**Method : POST**
+
+Body
+
+| Name  |  Status  |  Type  |
+| :---: | :------: | :----: |
+| email | Required | String |
 
 #### Register
 
@@ -58,6 +51,36 @@ Body
 |   telephone   | Required |          String          |
 |   password    | Required |          String          |
 | jenis_kelamin | Required | "Laki-Laki", "Perempuan" |
+
+#### Admin Profile
+
+```markdown
+/auth/admin-profile
+```
+
+**Method : Get**
+
+Headers
+
+|     Name      |  Status  |        |
+| :-----------: | :------: | :----: |
+| Authorization | Required | String |
+
+#### User Profile
+
+```markdown
+/auth/profile
+```
+
+**Method : Get**
+
+Headers
+
+|     Name      |  Status  |        |
+| :-----------: | :------: | :----: |
+| Authorization | Required | String |
+
+## User
 
 #### List (Admin only)
 
@@ -178,7 +201,30 @@ Headers
 | :-----------: | :------: | :----: |
 | Authorization | Required | String |
 
+#### Refresh Token
+
+```markdown
+/admin/refresh-token
+```
+
+**Method : Post**
+
+Body
+
+|     Name      |  Status  |  Type   |
+| :-----------: | :------: | :-----: |
+|      id       | Required | integer |
+| refresh_token | Required | String  |
+
+Headers
+
+|     Name      |  Status  |        |
+| :-----------: | :------: | :----: |
+| Authorization | Required | String |
+
 ## Artikel
+
+#### Create
 
 ```markdown
 /artikel/create
@@ -263,6 +309,8 @@ Params
 
 ## Doa
 
+#### Create (Admin only)
+
 ```markdown
 /doa/create
 ```
@@ -312,7 +360,7 @@ Headers
 #### Delete (Admin only)
 
 ```markdown
-/doa/delete/[id]
+/doa/delete/[slug]
 ```
 
 **Method : DELETE**
@@ -347,6 +395,8 @@ Params
 **Method : GET**
 
 ## Kategori Doa
+
+#### Create (Admin only)
 
 ```markdown
 /doa/kategori/create
@@ -457,3 +507,93 @@ Params
 | :------: | :------: | :-----: | :-: |
 |   page   | Optional | Integer |     |
 | pageSize | Optional | Integer |     |
+
+## Lokasi Ziarah
+
+#### Create (Admin only)
+
+```markdown
+/lokasi_ziarah/create
+```
+
+**Method : POST**
+
+Body
+
+|    Name     |  Status  |        |
+| :---------: | :------: | :----: |
+| file_create | Required |  File  |
+|    name     | Required |  File  |
+|  lacation   | Required | String |
+| description | Required | String |
+|  latitude   | Required | String |
+|  longitude  | Required | String |
+
+Headers
+
+|     Name      |  Status  |        |
+| :-----------: | :------: | :----: |
+| Authorization | Required | String |
+
+#### Edit (Admin only)
+
+```markdown
+/lokasi_ziarah/edit/[slug]
+```
+
+**Method : PUT**
+
+Body
+
+|    Name     |  Status  |        |
+| :---------: | :------: | :----: |
+| file_create | Required |  File  |
+|    name     | Required |  File  |
+|  lacation   | Required | String |
+| description | Required | String |
+|  latitude   | Required | String |
+|  longitude  | Required | String |
+
+Headers
+
+|     Name      |  Status  |        |
+| :-----------: | :------: | :----: |
+| Authorization | Required | String |
+
+#### Delete (Admin only)
+
+```markdown
+/lokasi_ziarah/delete/[slug]
+```
+
+**Method : DELETE**
+
+Headers
+
+|     Name      |  Status  |        |
+| :-----------: | :------: | :----: |
+| Authorization | Required | String |
+
+#### List
+
+```markdown
+/lokasi_ziarah
+```
+
+**Method : GET**
+
+Params
+
+|   Name   |  Status  |         |                         |
+| :------: | :------: | :-----: | :---------------------: |
+|   page   | Optional | Integer |                         |
+| pageSize | Optional | Integer |                         |
+| keyword  | Optional | String  | Search by kategori_name |
+
+#### Detail
+
+```markdown
+/lokasi_ziarah/[slug]
+```
+
+**Method : GET**

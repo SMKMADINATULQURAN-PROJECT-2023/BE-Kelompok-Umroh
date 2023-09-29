@@ -56,7 +56,7 @@ export class ArtikelService extends BaseResponse {
   async findAll(query: PageRequestDto): Promise<ResponsePagination> {
     const { page, pageSize, limit } = query;
     const result = await this.artikelRepo.find({
-      relations: ['author'],
+      relations: ['created_by'],
       take: pageSize,
       skip: limit,
     });
