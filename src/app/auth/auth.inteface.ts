@@ -6,4 +6,5 @@ export interface jwtPayload {
   tempat_lahir?: string;
   tanggal_lahir?: Date;
   role_id?: any;
+  slug?: string;
 }

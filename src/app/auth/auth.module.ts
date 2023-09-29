@@ -10,6 +10,7 @@ import { JwtStrategy } from './jwt.strategy';
 import { MailModule } from '../mail/mail.module';
 import { ResetPassword } from './entity/reset_password.entity';
 import { Admin } from '../admin/entities/admin.entity';
+import { ConvertSlugService } from 'src/utils/service/convert_slug/convert_slug.service';
 
 @Module({
   imports: [
@@ -28,6 +29,6 @@ import { Admin } from '../admin/entities/admin.entity';
     MailModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy, ConvertSlugService],
 })
 export class AuthModule {}

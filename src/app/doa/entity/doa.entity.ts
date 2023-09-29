@@ -7,7 +7,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { KategoriDoa } from './category_doa.entity';
-
+import { Admin } from 'src/app/admin/entities/admin.entity';
 @Entity()
 export class Doa extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -28,6 +28,17 @@ export class Doa extends BaseEntity {
   @ManyToOne(() => KategoriDoa)
   @JoinColumn({ name: 'kategori_id' })
   kategori_id: KategoriDoa;
+
+  @Column({ type: 'text' })
+  slug: string;
+
+  @ManyToOne(() => Admin)
+  @JoinColumn({ name: 'created_by' })
+  created_by: Admin;
+
+  @ManyToOne(() => Admin)
+  @JoinColumn({ name: 'updated_by' })
+  updated_by: Admin;
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;

@@ -35,6 +35,9 @@ export class Admin extends BaseEntity {
   @JoinColumn({ name: 'role_id' })
   role_id: Role;
 
+  @Column({ nullable: true, type: 'text' })
+  slug: string;
+
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 

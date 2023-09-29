@@ -8,6 +8,8 @@ import { Repository } from 'typeorm';
 import { HttpException } from '@nestjs/common/exceptions';
 import { HttpStatus } from '@nestjs/common/enums';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { PageRequestDto } from 'src/utils/dto/page.dto';
+import { ConvertSlugService } from 'src/utils/service/convert_slug/convert_slug.service';
 
 @Injectable()
 export class ArtikelService extends BaseResponse {
@@ -15,13 +17,13 @@ export class ArtikelService extends BaseResponse {
     @InjectRepository(Artikel)
     private readonly artikelRepo: Repository<Artikel>,
     private cluodinary: CloudinaryService,
+    private slug: ConvertSlugService,
   ) {
     super();
   }
   async create(
     payload: CreateArtikelDto,
     file: Express.Multer.File,
-    id: number,
   ): Promise<ResponseSuccess> {
     if (!file?.path) {
       throw new HttpException(
@@ -46,15 +48,12 @@ export class ArtikelService extends BaseResponse {
         HttpStatus.BAD_REQUEST,
       );
     }
-    console.log('payload', { ...payload });
-    await this.artikelRepo.save({
-      ...payload,
-      author: { id: id },
-    });
+    payload.slug = this.slug.slugify(payload.title);
+    await this.artikelRepo.save(payload);
     return this._success('Berhasil Menyimpan Artikel');
   }
 
-  async findAll(query): Promise<ResponsePagination> {
+  async findAll(query: PageRequestDto): Promise<ResponsePagination> {
     const { page, pageSize, limit } = query;
     const result = await this.artikelRepo.find({
       relations: ['author'],
@@ -70,25 +69,22 @@ export class ArtikelService extends BaseResponse {
       pageSize,
     );
   }
-  async findOne(id: number): Promise<ResponseSuccess> {
+  async findOne(slug: string): Promise<ResponseSuccess> {
     const result = await this.artikelRepo.findOne({
-      where: { id: id },
+      where: { slug: slug },
     });
     if (!result)
-      throw new HttpException(
-        `Aritkel Dengan Id ${id} Tidak Ditemukan`,
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException(`Aritkel Tidak Ditemukan`, HttpStatus.NOT_FOUND);
     return this._success('Berhasil Menemukan Artikel', result);
   }
 
   async update(
-    id: number,
+    slug: string,
     payload: UpdateArtikelDto,
     file: Express.Multer.File,
   ): Promise<ResponseSuccess> {
     const check = await this.artikelRepo.findOne({
-      where: { id: id },
+      where: { slug: slug },
     });
     if (file?.path === undefined) {
       payload.thumbnail = check.thumbnail;
@@ -114,30 +110,24 @@ export class ArtikelService extends BaseResponse {
     }
 
     if (!check) {
-      throw new HttpException(
-        `Artikel Dengan id ${id} Tidak Ditemukan`,
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException(`Artikel Tidak Ditemukan`, HttpStatus.NOT_FOUND);
     }
     await this.artikelRepo.save({
       ...payload,
-      id: id,
+      slug: slug,
     });
     return this._success('Berhasil Mengupdate Artikel');
   }
 
-  async remove(id: number): Promise<ResponseSuccess> {
+  async remove(slug: string): Promise<ResponseSuccess> {
     const check = await this.artikelRepo.findOne({
-      where: { id },
+      where: { slug },
     });
     if (!check) {
-      throw new HttpException(
-        `Artikel Dengan id ${id} Tidak Ditemukan`,
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException(`Artikel Tidak Ditemukan`, HttpStatus.NOT_FOUND);
     }
     await this.cluodinary.deleteImage(check.id_thumbnail);
-    await this.artikelRepo.delete(id);
+    await this.artikelRepo.delete(slug);
     return this._success('Berhasil Menghapus Artikel');
   }
 }

@@ -134,10 +134,20 @@ export class AuthService extends BaseResponse {
   }
 
   async profile(id: number): Promise<ResponseSuccess> {
-    const user = await this.adminRepository.findOne({
+    const user = await this.authRepository.findOne({
       where: {
         id: id,
       },
+    });
+    if (!user) throw new NotFoundException('User Tidak Ditemukan');
+    return this._success('Berhasil Menemukan Profile', user);
+  }
+  async adminProfile(slug: string): Promise<ResponseSuccess> {
+    const user = await this.adminRepository.findOne({
+      where: {
+        slug: slug,
+      },
+      relations: ['role_id', 'role_id.action_id'],
     });
     if (!user) throw new NotFoundException('User Tidak Ditemukan');
     return this._success('Berhasil Menemukan Profile', user);

@@ -37,19 +37,19 @@ export class LokasiZiarahController {
     return this.ziarahService.get(payload);
   }
 
-  @Delete('delete/:id')
-  async remove(@Param('id') id: string) {
-    return this.ziarahService.remove(+id);
+  @Delete('delete/:slug')
+  async remove(@Param('slug') slug: string) {
+    return this.ziarahService.remove(slug);
   }
 
-  @Put('update/:id')
+  @Put('update/:slug')
   @FileInterceptorCustom('file_update', 'lokasi_ziarah')
   async update(
-    @Param('id') id: string,
+    @Param('slug') slug: string,
     @Body() payload: UpdateZiarahDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
     console.log(file);
-    return this.ziarahService.update(+id, payload, file);
+    return this.ziarahService.update(slug, payload, file);
   }
 }

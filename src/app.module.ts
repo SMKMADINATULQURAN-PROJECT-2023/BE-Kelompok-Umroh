@@ -48,6 +48,7 @@ import { DzikirPetang } from './app/dzikir_pagi_petang/entity/dzikir_petang.enti
 import { DzikirPetangSeeder } from './seeds/dzikirPetang.seed';
 import { UserModule } from './app/user/user.module';
 import { PanduanController } from './app/panduan/panduan.controller';
+import { ConvertSlugService } from './utils/service/convert_slug/convert_slug.service';
 
 @Module({
   imports: [
@@ -92,6 +93,7 @@ import { PanduanController } from './app/panduan/panduan.controller';
     DzikirPagiSeeder,
     DzikirPetangSeeder,
     JwtService,
+    ConvertSlugService,
   ],
 })
 export class AppModule implements NestModule {
@@ -105,6 +107,6 @@ export class AppModule implements NestModule {
         LokasiZiarahController,
         PanduanController,
       ); // Sesuaikan dengan rute yang ingin Anda proteksi.
-    consumer.apply(ArtikelMiddleware).forRoutes(ArtikelController); // Sesuaikan dengan rute yang ingin Anda proteksi.
+    // consumer.apply(ArtikelMiddleware).forRoutes(ArtikelController); // Sesuaikan dengan rute yang ingin Anda proteksi.
   }
 }

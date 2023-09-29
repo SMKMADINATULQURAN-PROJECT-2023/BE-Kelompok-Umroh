@@ -32,6 +32,8 @@ export class LokasiZiarahDto {
   @IsString()
   @IsNotEmpty()
   longitude: string;
+
+  slug: string;
 }
 
 export class CreateZiarahDto extends OmitType(LokasiZiarahDto, ['id']) {}

@@ -12,20 +12,18 @@ import { DzikirPetangSeeder } from './seeds/dzikirPetang.seed';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   // Inisialisasi dan jalankan seeder di sini
-  try {
-    const roleActionSeeder = app.get(RoleActionSeeder);
-    await roleActionSeeder.create();
-    const adminSeeder = app.get(AdminSeeder);
-    await adminSeeder.create();
-    const doaSeeder = app.get(DoaSeeder);
-    await doaSeeder.create();
-    const dzikirPagi = app.get(DzikirPagiSeeder);
-    await dzikirPagi.create();
-    const dzikirPetang = app.get(DzikirPetangSeeder);
-    await dzikirPetang.create();
-  } catch (error) {
-    console.error('Seeder error:', error);
-  }
+
+  const roleActionSeeder = app.get(RoleActionSeeder);
+  await roleActionSeeder.create();
+  const adminSeeder = app.get(AdminSeeder);
+  await adminSeeder.create();
+  const doaSeeder = app.get(DoaSeeder);
+  await doaSeeder.create();
+  const dzikirPagi = app.get(DzikirPagiSeeder);
+  await dzikirPagi.create();
+  const dzikirPetang = app.get(DzikirPetangSeeder);
+  await dzikirPetang.create();
+
   app.enableCors();
   app.useGlobalPipes(
     new ValidationPipe({

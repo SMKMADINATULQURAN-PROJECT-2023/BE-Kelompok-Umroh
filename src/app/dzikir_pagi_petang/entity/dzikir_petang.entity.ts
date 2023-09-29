@@ -12,9 +12,6 @@ export class DzikirPetang extends BaseEntity {
   arab: string;
 
   @Column({ type: 'text' })
-  latin: string;
-
-  @Column({ type: 'text' })
   arti: string;
 
   @Column()

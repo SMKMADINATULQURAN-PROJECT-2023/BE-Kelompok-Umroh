@@ -1,4 +1,12 @@
-import { BaseEntity, Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Admin } from 'src/app/admin/entities/admin.entity';
+import {
+  BaseEntity,
+  ManyToOne,
+  JoinColumn,
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class LokasiZiarah extends BaseEntity {
@@ -25,6 +33,17 @@ export class LokasiZiarah extends BaseEntity {
 
   @Column()
   longitude: string;
+
+  @Column()
+  slug: string;
+
+  @ManyToOne(() => Admin)
+  @JoinColumn({ name: 'created_by' })
+  created_by: Admin;
+
+  @ManyToOne(() => Admin)
+  @JoinColumn({ name: 'updated_by' })
+  updated_by: Admin;
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;

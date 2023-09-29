@@ -5,6 +5,8 @@ import {
   ValidateNested,
   IsNotEmpty,
   IsNumber,
+  IsObject,
+  IsOptional,
 } from 'class-validator';
 import { Injectable } from '@nestjs/common';
 import { OmitType, PartialType, PickType } from '@nestjs/mapped-types';
@@ -37,11 +39,30 @@ export class DoaDto {
   @IsNumber()
   @IsNotEmpty()
   kategori_id: number;
+
+  slug: string;
+
+  @IsObject()
+  @IsOptional()
+  created_by: { id: number };
+
+  @IsObject()
+  @IsOptional()
+  updated_by: { id: number };
 }
 
-export class CreateKategoriDto extends PickType(DoaDto, ['kategori_name']) {}
-export class CreateDoaDto extends OmitType(DoaDto, ['id']) {}
-export class UpdateKategoriDoaDto extends PartialType(DoaDto) {}
+export class CreateKategoriDto extends PickType(DoaDto, [
+  'slug',
+  'kategori_name',
+  'created_by',
+]) {}
+export class UpdateKategoriDto extends PickType(DoaDto, [
+  'id',
+  'kategori_name',
+  'updated_by',
+]) {}
+export class CreateDoaDto extends OmitType(DoaDto, ['id', 'updated_by']) {}
+export class UpdateKategoriDoaDto extends OmitType(DoaDto, ['created_by']) {}
 
 export class CreateDoaArrayDto {
   @IsArray()

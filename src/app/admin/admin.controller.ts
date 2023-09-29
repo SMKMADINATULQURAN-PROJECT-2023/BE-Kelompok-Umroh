@@ -45,33 +45,33 @@ export class AdminController {
   @UseGuards(JwtGuard)
   @Get()
   async findAll(@Pagination() query: FindAdminDto, @Req() req) {
-    const { id } = req.user;
-    console.log('userid =>', id);
-    return this.adminService.findAll(query, id);
+    const { slug } = req.user;
+    console.log('userslug =>', slug);
+    return this.adminService.findAll(query, slug);
   }
 
   @UseGuards(JwtGuard)
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.adminService.findOne(+id);
+  @Get(':slug')
+  findOne(@Param('slug') slug: string) {
+    return this.adminService.findOne(slug);
   }
 
   @UseGuards(JwtGuard)
-  @Put('update/:id')
-  update(@Param('id') id: string, @Body() payload: UpdateAdminDto) {
-    return this.adminService.update(+id, payload);
+  @Put('update/:slug')
+  update(@Param('slug') slug: string, @Body() payload: UpdateAdminDto) {
+    return this.adminService.update(slug, payload);
   }
 
   @UseGuards(JwtGuard)
-  @Delete('delete/:id')
-  remove(@Param('id') id: string) {
-    return this.adminService.remove(+id);
+  @Delete('delete/:slug')
+  remove(@Param('slug') slug: string) {
+    return this.adminService.remove(slug);
   }
 
   @UseGuards(JwtGuard)
-  @Get('profile/:id')
-  async profile(@Param('id') id: string) {
-    return this.adminService.profileAdmin(+id);
+  @Get('profile/:slug')
+  async profile(@Param('slug') slug: string) {
+    return this.adminService.profileAdmin(slug);
   }
 
   @UseGuards(JwtGuard)
@@ -82,7 +82,7 @@ export class AdminController {
     @Body() payload: UpdateAdminDto,
     @Req() req,
   ) {
-    const { id } = req.user;
-    return this.adminService.editProfile(file, payload, +id);
+    const { slug } = req.user;
+    return this.adminService.editProfile(file, payload, slug);
   }
 }

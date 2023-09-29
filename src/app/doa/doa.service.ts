@@ -11,6 +11,7 @@ import {
 } from './doa.dto';
 import { Doa } from './entity/doa.entity';
 import { KategoriDoa } from './entity/category_doa.entity';
+import { ConvertSlugService } from 'src/utils/service/convert_slug/convert_slug.service';
 
 @Injectable()
 export class DoaService extends BaseResponse {
@@ -18,6 +19,7 @@ export class DoaService extends BaseResponse {
     @InjectRepository(Doa) private readonly doaRepo: Repository<Doa>,
     @InjectRepository(KategoriDoa)
     private readonly kategoriRepo: Repository<KategoriDoa>,
+    private slug: ConvertSlugService,
   ) {
     super();
   }
@@ -32,6 +34,7 @@ export class DoaService extends BaseResponse {
             ...data,
             kategori_id: { id: data.kategori_id },
           };
+          data.slug = this.slug.slugify(data.name);
           try {
             await this.doaRepo.save(dataSave);
             berhasil += 1;
@@ -84,76 +87,68 @@ export class DoaService extends BaseResponse {
   }
 
   async createKategoriDoa(payload: CreateKategoriDto) {
+    payload.slug = this.slug.slugify(payload.kategori_name);
     await this.kategoriRepo.save(payload);
     return this._success('Berhasil Menyimpan Kategori Doa');
   }
 
   async updateDoa(
-    id: number,
+    slug: string,
     payload: UpdateKategoriDoaDto,
   ): Promise<ResponseSuccess> {
     const check = await this.doaRepo.findOne({
-      where: { id: id },
+      where: { slug: slug },
     });
     if (!check) {
-      throw new HttpException(
-        `Doa Dengan Id ${id} Tidak Ditemukan`,
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException(`Doa Tidak Ditemukan`, HttpStatus.NOT_FOUND);
     }
     await this.doaRepo.save({
       ...payload,
       kategori_id: { id: payload.kategori_id },
-      id,
+      slug,
     });
     return this._success('Berhasil Mengupdate Doa');
   }
 
   async updateKategori(
-    id: number,
+    slug: string,
     payload: UpdateKategoriDoaDto,
   ): Promise<ResponseSuccess> {
     const check = await this.kategoriRepo.findOne({
-      where: { id: id },
+      where: { slug: slug },
     });
     if (!check) {
-      throw new HttpException(
-        `Kategori Dengan Id ${id} Tidak Ditemukan`,
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException(`Kategori Tidak Ditemukan`, HttpStatus.NOT_FOUND);
     }
     await this.kategoriRepo.save({
       ...payload,
-      id,
+      slug,
     });
     return this._success('Berhasil Mengupdate Kategori');
   }
 
-  async removeDoa(id: number): Promise<ResponseSuccess> {
+  async removeDoa(slug: string): Promise<ResponseSuccess> {
     const check = await this.doaRepo.findOne({
-      where: { id: id },
+      where: { slug: slug },
     });
     if (!check) {
-      throw new HttpException(
-        `Doa Dengan Id ${id} Tidak Ditemukan`,
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException(`Doa Tidak Ditemukan`, HttpStatus.NOT_FOUND);
     }
-    await this.doaRepo.delete(id);
+    await this.doaRepo.delete(slug);
     return this._success('Berhasil Menghapus Doa');
   }
 
-  async removeKategori(id: number): Promise<ResponseSuccess> {
+  async removeKategori(slug: string): Promise<ResponseSuccess> {
     const check = await this.kategoriRepo.findOne({
-      where: { id: id },
+      where: { slug: slug },
     });
     if (!check) {
       throw new HttpException(
-        `KategoriDoa Dengan Id ${id} Tidak Ditemukan`,
+        `KategoriDoa Tidak Ditemukan`,
         HttpStatus.NOT_FOUND,
       );
     }
-    await this.kategoriRepo.delete(id);
+    await this.kategoriRepo.delete(slug);
     return this._success('Berhasil Menghapus KategoriDoa');
   }
 }

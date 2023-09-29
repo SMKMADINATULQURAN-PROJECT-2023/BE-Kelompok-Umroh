@@ -43,6 +43,14 @@ export class AuthController {
     return this.authService.profile(id);
   }
 
+  @UseGuards(JwtGuard) // impelementasi guard pada route , hal ini berarti endpoint profile hanya bisa diakses jika client membawa token
+  @Get('profile-admin')
+  async adminProfile(@Req() req) {
+    // hasil validate dari jwt strategy akan ditambakan pada req.user. isi object req.user akan sama dengan payload dari jwt token. Silahkan coba console.log(req.user)
+    const { slug } = req.user;
+    return this.authService.adminProfile(slug);
+  }
+
   @Post('lupa-password')
   async forgotPassowrd(@Body('email') email: string) {
     console.log('email', email);

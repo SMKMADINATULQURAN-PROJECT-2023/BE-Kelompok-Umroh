@@ -7,17 +7,21 @@ import {
   CreateKategoriDto,
   UpdateKategoriDoaDto,
 } from './doa.dto';
+import { InjectCreatedBy } from 'src/utils/decorator/inject-created_by.decorator';
+import { InjectUpdatedBy } from 'src/utils/decorator/inject-updated_by.decorator';
 
 @Controller('doa')
 export class DoaController {
   constructor(private doaService: DoaService) {}
 
   @Post('create')
-  async createDoa(@Body() createDoaDto: CreateDoaArrayDto) {
+  async createDoa(@InjectCreatedBy() createDoaDto: CreateDoaArrayDto) {
     return this.doaService.createDoa(createDoaDto);
   }
   @Post('kategori/create')
-  async createKategori(@Body() createKategoriDto: CreateKategoriDto) {
+  async createKategori(
+    @InjectCreatedBy() createKategoriDto: CreateKategoriDto,
+  ) {
     return this.doaService.createKategoriDoa(createKategoriDto);
   }
 
@@ -31,23 +35,29 @@ export class DoaController {
     return this.doaService.getKategori(query);
   }
 
-  @Put('update/:id')
-  async updateDoa(id: string, @Body() payload: UpdateKategoriDoaDto) {
-    return this.doaService.updateDoa(+id, payload);
+  @Put('update/:slug')
+  async updateDoa(
+    slug: string,
+    @InjectUpdatedBy() payload: UpdateKategoriDoaDto,
+  ) {
+    return this.doaService.updateDoa(slug, payload);
   }
 
-  @Put('kategori/update/:id')
-  async updateKategoriDoa(id: string, @Body() payload: UpdateKategoriDoaDto) {
-    return this.doaService.updateKategori(+id, payload);
+  @Put('kategori/update/:slug')
+  async updateKategoriDoa(
+    slug: string,
+    @InjectUpdatedBy() payload: UpdateKategoriDoaDto,
+  ) {
+    return this.doaService.updateKategori(slug, payload);
   }
 
-  @Delete('delete/:id')
-  async removeDoa(id: string) {
-    return this.doaService.removeDoa(+id);
+  @Delete('delete/:slug')
+  async removeDoa(slug: string) {
+    return this.doaService.removeDoa(slug);
   }
 
-  @Delete('kategori/delete/:id')
-  async removeKategoriDoa(id: string) {
-    return this.doaService.removeKategori(+id);
+  @Delete('kategori/delete/:slug')
+  async removeKategoriDoa(slug: string) {
+    return this.doaService.removeKategori(slug);
   }
 }

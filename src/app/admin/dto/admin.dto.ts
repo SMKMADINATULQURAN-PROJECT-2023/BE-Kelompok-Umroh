@@ -38,6 +38,8 @@ export class AdminDto {
   @IsString()
   refresh_token: string;
 
+  slug: string;
+
   @IsNumber()
   @IsNotEmpty()
   role_id: number;

@@ -15,12 +15,11 @@ export class DzikirPagiSeeder {
     const dzikirData = dataPagi.data;
 
     for (const data of dzikirData) {
-      const { title, arab, latin, arti, diBaca } = data;
+      const { title, arab, arti, diBaca } = data;
       const check = await this.dzikirPagiRepository.findOne({
         where: {
           title,
           arab,
-          latin,
           arti,
           diBaca,
         },
