@@ -135,7 +135,7 @@ Body
 #### Register (Only administrator)
 
 ```markdown
-/admin/register
+/admin/create
 ```
 
 Note : **Admin is added by administrator** <br/>
@@ -148,7 +148,7 @@ Body
 | username | Required | String  |
 |  email   | Required | String  |
 | password | Required | String  |
-| id_role  | Required | Integer |
+| id_role  | Required | integer |
 
 Headers
 
