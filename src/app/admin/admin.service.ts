@@ -21,6 +21,7 @@ import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { JwtService } from '@nestjs/jwt';
 import { jwt_config } from 'src/config/jwt.config';
 import { LoginAdminDto } from '../auth/auth.dto';
+import { jwtPayload } from '../auth/auth.inteface';
 @Injectable()
 export class AdminService extends BaseResponse {
   constructor(
@@ -74,6 +75,7 @@ export class AdminService extends BaseResponse {
       checkUserExists.password,
     );
 
+    console.log(checkUserExists.id);
     if (checkPassword) {
       const jwtPayload: jwtPayload = {
         id: checkUserExists.id,
@@ -264,27 +266,14 @@ export class AdminService extends BaseResponse {
     return this._success('Berhasil Menghapus Akun Admin');
   }
 
-  async myProfile(id: number): Promise<ResponseSuccess> {
+  async profileAdmin(userId: number): Promise<ResponseSuccess> {
+    console.log(userId);
     const user = await this.adminRepository.findOne({
-      where: {
-        id: id,
-      },
-      select: {
-        id: true,
-        avatar: true,
-        username: true,
-        email: true,
-        role_id: {
-          id: true,
-          role_name: true,
-          action_id: {
-            id: true,
-            action_name: true,
-          },
-        },
-      },
-      relations: ['role', 'role.action_id'],
+      where: { id: userId },
+      relations: ['role_id'],
     });
+
+    if (!user) throw new NotFoundException('User Tidak Ditemukan');
 
     return this._success('Berhasil Menemukan Profile', user);
   }

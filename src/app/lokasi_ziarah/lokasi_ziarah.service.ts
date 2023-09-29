@@ -70,7 +70,7 @@ export class LokasiZiarahService extends BaseResponse {
     }
 
     const result = await this.ziarahRepository.find({
-      where: filterKeyword,
+      where: keyword ? filterKeyword : {},
       skip: limit,
       take: pageSize,
     });

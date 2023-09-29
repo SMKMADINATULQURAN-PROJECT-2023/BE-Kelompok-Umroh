@@ -4,7 +4,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import BaseResponse from 'src/utils/response/base.response';
 import { User } from './entity/auth.entity';
-import { Repository } from 'typeorm';
+import { Repository, Not } from 'typeorm';
 import { ResponseSuccess } from 'src/interface';
 import { LoginDto, RegisterDto, ResetPasswordDto } from './auth.dto';
 import { hash, compare } from 'bcrypt';
@@ -14,11 +14,15 @@ import { MailService } from '../mail/mail.service';
 import { ResetPassword } from './entity/reset_password.entity';
 import { randomBytes } from 'crypto';
 import { NotFoundException } from '@nestjs/common/exceptions';
+import { jwtPayload } from './auth.inteface';
+import { Admin } from '../admin/entities/admin.entity';
 
 @Injectable()
 export class AuthService extends BaseResponse {
   constructor(
     @InjectRepository(User) private readonly authRepository: Repository<User>,
+    @InjectRepository(Admin)
+    private readonly adminRepository: Repository<Admin>,
     @InjectRepository(ResetPassword)
     private readonly resetPasswordRepository: Repository<ResetPassword>,
 
@@ -36,6 +40,16 @@ export class AuthService extends BaseResponse {
   } //membuat method untuk generate jwt
 
   async register(payload: RegisterDto): Promise<ResponseSuccess> {
+    const check = await this.authRepository.findOne({
+      where: {
+        telephone: payload.telephone,
+      },
+    });
+    if (check)
+      throw new HttpException(
+        'Nomor Handphone Anda Sudah Terdaftar',
+        HttpStatus.FOUND,
+      );
     payload.password = await hash(payload.password, 12);
 
     await this.authRepository.save(payload);
@@ -48,18 +62,11 @@ export class AuthService extends BaseResponse {
       where: {
         telephone: payload.telephone,
       },
-      select: {
-        id: true,
-        avatar: true,
-        username: true,
-        email: true,
-        password: true,
-        telephone: true,
-        tempat_lahir: true,
-        tanggal_lahir: true,
-      },
     });
-    if (!checkUserExists) throw new NotFoundException('User Tidak Ditemkan');
+    if (!checkUserExists)
+      throw new NotFoundException(
+        'Nomor Handphone Tidak Ditemkan Silahkan Register',
+      );
 
     const checkPassword = await compare(
       payload.password,
@@ -127,12 +134,12 @@ export class AuthService extends BaseResponse {
   }
 
   async profile(id: number): Promise<ResponseSuccess> {
-    const user = await this.authRepository.findOne({
+    const user = await this.adminRepository.findOne({
       where: {
         id: id,
       },
     });
-
+    if (!user) throw new NotFoundException('User Tidak Ditemukan');
     return this._success('Berhasil Menemukan Profile', user);
   }
 

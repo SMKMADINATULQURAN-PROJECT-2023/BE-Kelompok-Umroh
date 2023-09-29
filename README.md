@@ -9,10 +9,18 @@
 #### Refresh Token
 
 ```markdown
-/auth/refresh_token
+/admin/refresh-token
 ```
 
-**Method : GET**
+**Method : Post**
+
+Body
+
+|     Name      |  Status  |  Type   |
+| :-----------: | :------: | :-----: |
+|      id       | Required | integer |
+| refresh_token | Required | String  |
+
 Headers
 
 |     Name      |  Status  |        |

@@ -33,6 +33,7 @@
     "@nestjs/serve-static": "^4.0.0",
     "@nestjs/typeorm": "^10.0.0",
     "@types/jsonwebtoken": "^9.0.3",
+    "@types/slug": "^5.0.5",
     "bcrypt": "^5.1.0",
     "buffer-to-stream": "^1.0.0",
     "class-transformer": "^0.5.1",

@@ -47,6 +47,7 @@ import { DzikirPagi } from './app/dzikir_pagi_petang/entity/dzikir_pagi.entity';
 import { DzikirPetang } from './app/dzikir_pagi_petang/entity/dzikir_petang.entity';
 import { DzikirPetangSeeder } from './seeds/dzikirPetang.seed';
 import { UserModule } from './app/user/user.module';
+import { PanduanController } from './app/panduan/panduan.controller';
 
 @Module({
   imports: [
@@ -100,10 +101,9 @@ export class AppModule implements NestModule {
       .exclude({ path: 'admin/login', method: RequestMethod.POST })
       .forRoutes(
         AdminController,
-        ActionController,
-        RoleController,
         DoaController,
         LokasiZiarahController,
+        PanduanController,
       ); // Sesuaikan dengan rute yang ingin Anda proteksi.
     consumer.apply(ArtikelMiddleware).forRoutes(ArtikelController); // Sesuaikan dengan rute yang ingin Anda proteksi.
   }

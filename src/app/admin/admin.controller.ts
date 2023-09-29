@@ -21,7 +21,6 @@ import { Pagination } from 'src/utils/decorator/pagination.decorator';
 import { JwtGuard } from '../auth/auth.guard';
 import { FileInterceptorCustom } from 'src/utils/decorator/fileInterceptor.decorator';
 import { LoginAdminDto } from '../auth/auth.dto';
-
 @Controller('admin')
 export class AdminController {
   constructor(private adminService: AdminService) {}
@@ -70,11 +69,9 @@ export class AdminController {
   }
 
   @UseGuards(JwtGuard)
-  @Get('profile')
-  async profile(@Req() req) {
-    // hasil validate dari jwt strategy akan ditambakan pada req.user. isi object req.user akan sama dengan payload dari jwt token. Silahkan coba console.log(req.user)
-    const { id } = req.user;
-    return this.adminService.myProfile(id);
+  @Get('profile/:id')
+  async profile(@Param('id') id: string) {
+    return this.adminService.profileAdmin(+id);
   }
 
   @UseGuards(JwtGuard)

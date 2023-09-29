@@ -49,6 +49,9 @@ export class RoleActionSeeder {
         role_name: UserRole.ADMIN,
         action_id: action_id,
       },
+      {
+        role_name: UserRole.CONTENTCREATOR,
+      },
     ];
     for (const data of rolesData) {
       const { role_name, action_id } = data;
