@@ -78,7 +78,7 @@ Params
 #### Detail
 
 ```markdown
-/user/[slug]
+/user/[id]
 ```
 
 **Method : GET**
@@ -92,7 +92,7 @@ Headers
 #### Edit
 
 ```markdown
-/user/edit-profile/[slug]
+/user/edit-profile/[id]
 ```
 
 **Method : PUT**
@@ -204,7 +204,7 @@ Headers
 #### Edit (Admin only)
 
 ```markdown
-/artikel/edit/[slug]
+/artikel/edit/[id]
 ```
 
 **Method : PUT**
@@ -227,7 +227,7 @@ Headers
 #### Delete (Admin only)
 
 ```markdown
-/artikel/delete/[slug]
+/artikel/delete/[id]
 ```
 
 **Method : DELETE**
@@ -256,7 +256,7 @@ Params
 #### Detail
 
 ```markdown
-/artikel/[slug]
+/artikel/[id]
 ```
 
 **Method : GET**
@@ -288,7 +288,7 @@ Headers
 #### Edit (Admin only)
 
 ```markdown
-/doa/edit/[slug]
+/doa/edit/[id]
 ```
 
 **Method : PUT**
@@ -312,7 +312,7 @@ Headers
 #### Delete (Admin only)
 
 ```markdown
-/doa/delete/[slug]
+/doa/delete/[id]
 ```
 
 **Method : DELETE**
@@ -341,7 +341,7 @@ Params
 #### Detail
 
 ```markdown
-/doa/[slug]
+/doa/[id]
 ```
 
 **Method : GET**
@@ -369,7 +369,7 @@ Headers
 #### Edit (Admin only)
 
 ```markdown
-/doa/kategori/edit/[slug]
+/doa/kategori/edit/[id]
 ```
 
 **Method : PUT**
@@ -389,7 +389,7 @@ Headers
 #### Delete (Admin only)
 
 ```markdown
-/doa/kategori/delete/[slug]
+/doa/kategori/delete/[id]
 ```
 
 **Method : DELETE**
@@ -419,7 +419,7 @@ Params
 #### Detail
 
 ```markdown
-/doa/kategori/[slug]
+/doa/kategori/[id]
 ```
 
 **Method : GET**
