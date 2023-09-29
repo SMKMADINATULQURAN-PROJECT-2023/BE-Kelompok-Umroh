@@ -148,7 +148,7 @@ Body
 | username | Required | String  |
 |  email   | Required | String  |
 | password | Required | String  |
-| id_role  | Required | integer |
+| role_id  | Required | integer |
 
 Headers
 
