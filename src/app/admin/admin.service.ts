@@ -146,7 +146,33 @@ export class AdminService extends BaseResponse {
     });
   }
 
-  async create(payload: CreateAdminDto): Promise<ResponseSuccess> {
+  async create(
+    payload: CreateAdminDto,
+    file: Express.Multer.File,
+  ): Promise<ResponseSuccess> {
+    if (!file.path) {
+      throw new HttpException(
+        'thumbnail should not be empty',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    if (
+      file?.mimetype === 'image/png' ||
+      file?.mimetype === 'image/jpg' ||
+      file?.mimetype === 'image/jpeg'
+    ) {
+      const { public_id, url } = await this.cloudinary.uploadImage(
+        file,
+        'admin',
+      );
+      payload.id_avatar = public_id;
+      payload.avatar = url;
+    } else {
+      throw new HttpException(
+        ' file harus berekstensi .jpg, .jpeg, .png',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     const checkRole = await this.roleRepository.findOne({
       where: { id: payload.role_id },
     });

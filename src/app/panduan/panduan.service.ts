@@ -1,3 +1,4 @@
+import { ConvertSlugService } from './../../utils/service/convert_slug/convert_slug.service';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreatePanduanDto, FindPanduanDto } from './dto/panduan.dto';
 import { UpdatePanduanDto } from './dto/panduan.dto';
@@ -6,17 +7,18 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Panduan } from './entities/panduan.entity';
 import { Repository } from 'typeorm';
 import { ResponsePagination, ResponseSuccess } from 'src/interface';
-import { PageRequestDto } from 'src/utils/dto/page.dto';
 
 @Injectable()
 export class PanduanService extends BaseResponse {
   constructor(
     @InjectRepository(Panduan)
     private readonly panduanRepo: Repository<Panduan>,
+    private slug: ConvertSlugService,
   ) {
     super();
   }
   async create(payload: CreatePanduanDto): Promise<ResponseSuccess> {
+    payload.slug = this.slug.slugify(payload.title);
     await this.panduanRepo.save(payload);
     return this._success('Berhasil Membuat Panduan');
   }

@@ -59,10 +59,11 @@ export class CreateKategoriDto extends PickType(DoaDto, [
 export class UpdateKategoriDto extends PickType(DoaDto, [
   'id',
   'kategori_name',
+  'slug',
   'updated_by',
 ]) {}
 export class CreateDoaDto extends OmitType(DoaDto, ['id', 'updated_by']) {}
-export class UpdateKategoriDoaDto extends OmitType(DoaDto, ['created_by']) {}
+export class UpdateDoaDto extends OmitType(DoaDto, ['created_by']) {}
 
 export class CreateDoaArrayDto {
   @IsArray()

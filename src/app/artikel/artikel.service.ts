@@ -112,6 +112,9 @@ export class ArtikelService extends BaseResponse {
     if (!check) {
       throw new HttpException(`Artikel Tidak Ditemukan`, HttpStatus.NOT_FOUND);
     }
+    if (payload.title !== undefined) {
+      payload.slug = this.slug.slugify(payload.title);
+    }
     await this.artikelRepo.save({
       ...payload,
       slug: slug,

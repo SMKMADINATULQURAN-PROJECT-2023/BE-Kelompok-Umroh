@@ -1,5 +1,13 @@
 import { JenisKelamin } from 'src/interface';
-import { PrimaryGeneratedColumn, Entity, Column, BaseEntity } from 'typeorm';
+import {
+  PrimaryGeneratedColumn,
+  Entity,
+  Column,
+  BaseEntity,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
+import { Admin } from 'src/app/admin/entities/admin.entity';
 
 @Entity()
 export class Panduan extends BaseEntity {
@@ -20,6 +28,17 @@ export class Panduan extends BaseEntity {
 
   @Column({ type: 'enum', enum: JenisKelamin })
   kategori: JenisKelamin;
+
+  @Column()
+  slug: string;
+
+  @ManyToOne(() => Admin)
+  @JoinColumn({ name: 'created_by' })
+  created_by: Admin;
+
+  @ManyToOne(() => Admin)
+  @JoinColumn({ name: 'updated_by' })
+  updated_by: Admin;
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;

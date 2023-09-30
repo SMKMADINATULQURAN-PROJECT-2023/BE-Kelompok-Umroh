@@ -37,9 +37,13 @@ export class AdminController {
   }
 
   @UseGuards(JwtGuard)
+  @FileInterceptorCustom('file_create', 'admin')
   @Post('create')
-  create(@Body() payload: CreateAdminDto) {
-    return this.adminService.create(payload);
+  create(
+    @Body() payload: CreateAdminDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.adminService.create(payload, file);
   }
 
   @UseGuards(JwtGuard)
@@ -69,7 +73,7 @@ export class AdminController {
   }
 
   @UseGuards(JwtGuard)
-  @FileInterceptorCustom('file_update', 'admin')
+  @FileInterceptorCustom('file_edit_profile', 'admin')
   @Put('edit-profile')
   async editProfile(
     @UploadedFile() file: Express.Multer.File,

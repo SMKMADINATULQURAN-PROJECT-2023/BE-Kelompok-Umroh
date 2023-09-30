@@ -7,7 +7,8 @@ import { PageRequestDto } from 'src/utils/dto/page.dto';
 import {
   CreateDoaArrayDto,
   CreateKategoriDto,
-  UpdateKategoriDoaDto,
+  UpdateDoaDto,
+  UpdateKategoriDto,
 } from './doa.dto';
 import { Doa } from './entity/doa.entity';
 import { KategoriDoa } from './entity/category_doa.entity';
@@ -94,13 +95,16 @@ export class DoaService extends BaseResponse {
 
   async updateDoa(
     slug: string,
-    payload: UpdateKategoriDoaDto,
+    payload: UpdateDoaDto,
   ): Promise<ResponseSuccess> {
     const check = await this.doaRepo.findOne({
       where: { slug: slug },
     });
     if (!check) {
       throw new HttpException(`Doa Tidak Ditemukan`, HttpStatus.NOT_FOUND);
+    }
+    if (payload.name !== undefined) {
+      payload.slug = this.slug.slugify(payload.name);
     }
     await this.doaRepo.save({
       ...payload,
@@ -112,13 +116,16 @@ export class DoaService extends BaseResponse {
 
   async updateKategori(
     slug: string,
-    payload: UpdateKategoriDoaDto,
+    payload: UpdateKategoriDto,
   ): Promise<ResponseSuccess> {
     const check = await this.kategoriRepo.findOne({
       where: { slug: slug },
     });
     if (!check) {
       throw new HttpException(`Kategori Tidak Ditemukan`, HttpStatus.NOT_FOUND);
+    }
+    if (payload.kategori_name !== undefined) {
+      payload.slug = this.slug.slugify(payload.kategori_name);
     }
     await this.kategoriRepo.save({
       ...payload,
