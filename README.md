@@ -12,33 +12,14 @@ https://github.com/Al-Ghozy03/kecamatan-jonggol.git
 3. Create `.env` file, and then copy this code below
 
 ```dotenv
-NODE_ENV = development
 PORT = 3306
 BASE_CLIENT_URL = http://localhost:5002
-
-DB_USERNAME_DEV = 'umroh48'
-DB_PASSWORD_DEV = '1234'
-DB_NAME_DEV = 'smkm1712_umroh_DB'
-DB_HOST_DEV = '202.83.120.91'
-DB_DIALECT_DEV = mysql
 
 DB_USERNAME = root
 DB_PASSWORD =
 DB_NAME = umrah
 DB_HOST = 127.0.0.1
 DB_DIALECT = mysql
-
-DB_USERNAME_TEST = 'smkm1712_umroh'
-DB_PASSWORD_TEST = 't*KIMTdOc8d5'
-DB_NAME_TEST = 'smkm1712_umroh_DB'
-DB_HOST_TEST = 'srv90.niagahoster.com'
-DB_DIALECT_TEST = mysql
-
-DB_USERNAME_PROD = 'smkm1712_umroh'
-DB_PASSWORD_PROD = 't*KIMTdOc8d5'
-DB_NAME_PROD = 'smkm1712_umroh_DB_prod'
-DB_HOST_PROD = 'srv90.niagahoster.com'
-DB_DIALECT_PROD = mysql
 
 MAIL_HOST = mail.smkmadinatulquran.sch.id
 MAIL_PORT = 465
