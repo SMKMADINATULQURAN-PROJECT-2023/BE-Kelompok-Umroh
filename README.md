@@ -9,33 +9,8 @@ https://github.com/Al-Ghozy03/kecamatan-jonggol.git
 ```
 
 2. run `npm install`
-3. Create `.env` file, and then copy this code below
 
-```dotenv
-PORT = 3306
-BASE_CLIENT_URL = http://localhost:5002
-
-DB_USERNAME = root
-DB_PASSWORD =
-DB_NAME = umrah
-DB_HOST = 127.0.0.1
-DB_DIALECT = mysql
-
-MAIL_HOST = mail.smkmadinatulquran.sch.id
-MAIL_PORT = 465
-MAIL_USERNAME = latihan-email@smkmadinatulquran.sch.id
-MAIL_PASSWORD = IHSAN$%09
-MAIL_CLIENT_URL = http://localhost:1214/
-
-JWT_SECRET = ghfjdkjnojsighijknlzsofjihgudhkggnsghsjmjfshogdfgn
-JWT_EXPIRED = 4000
-
-CLOUD_NAME = "dllw0z7bh"
-API_KEY = "576412332728459"
-API_SECRET = "IAuPjdvPxCFUcjmDjOZ4yd29leU"
-```
-
-4. run `npm run dev:start`
+3. run `npm run dev:start`
 
 # Documentation
 

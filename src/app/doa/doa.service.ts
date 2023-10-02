@@ -1,11 +1,16 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  Injectable,
+  HttpException,
+  HttpStatus,
+  NotFoundException,
+} from '@nestjs/common';
 import { Repository } from 'typeorm';
 import BaseResponse from 'src/utils/response/base.response';
 import { ResponsePagination, ResponseSuccess } from 'src/interface';
 import { PageRequestDto } from 'src/utils/dto/page.dto';
 import {
-  CreateDoaArrayDto,
+  CreateDoaDto,
   CreateKategoriDto,
   UpdateDoaDto,
   UpdateKategoriDto,
@@ -25,33 +30,22 @@ export class DoaService extends BaseResponse {
     super();
   }
 
-  async createDoa(createDoaDto: CreateDoaArrayDto): Promise<ResponseSuccess> {
-    try {
-      let berhasil = 0;
-      let gagal = 0;
-      await Promise.all(
-        createDoaDto.data.map(async (data) => {
-          const dataSave = {
-            ...data,
-            kategori_id: { id: data.kategori_id },
-          };
-          data.slug = this.slug.slugify(data.name);
-          try {
-            await this.doaRepo.save(dataSave);
-            berhasil += 1;
-          } catch (error) {
-            gagal += 1;
-            console.log('Gagal =>', gagal);
-          }
-        }),
-      );
-      return this._success(
-        `Berhasil Membuat Doa ${berhasil} dan gagal ${gagal}  `,
-      );
-    } catch (error) {
-      console.error(error);
-      throw new HttpException('Ada Kesalahan', HttpStatus.BAD_REQUEST);
-    }
+  async createDoa(payload: CreateDoaDto): Promise<ResponseSuccess> {
+    const checkKategori = await this.kategoriRepo.findOne({
+      where: {
+        id: payload.kategori_id,
+      },
+    });
+    if (!checkKategori)
+      throw new NotFoundException('Kategori Doa Tidak Ditemukan');
+
+    payload.slug = this.slug.slugify(payload.name);
+    await this.doaRepo.save({
+      ...payload,
+      kategori_id: { id: payload.kategori_id },
+    });
+
+    return this._success('Berhasil Membuat Doa');
   }
 
   async getKategori(query: PageRequestDto): Promise<ResponsePagination> {

@@ -1,22 +1,24 @@
 import { Controller } from '@nestjs/common';
 import { DoaService } from './doa.service';
-import { Post, Get, Delete, Put } from '@nestjs/common/decorators';
+import { Post, Get, Delete, Put, UseGuards } from '@nestjs/common/decorators';
 import { Pagination } from 'src/utils/decorator/pagination.decorator';
 import {
-  CreateDoaArrayDto,
+  CreateDoaDto,
   CreateKategoriDto,
   UpdateDoaDto,
   UpdateKategoriDto,
 } from './doa.dto';
 import { InjectCreatedBy } from 'src/utils/decorator/inject-created_by.decorator';
 import { InjectUpdatedBy } from 'src/utils/decorator/inject-updated_by.decorator';
+import { JwtGuard } from '../auth/auth.guard';
 
+@UseGuards(JwtGuard)
 @Controller('doa')
 export class DoaController {
   constructor(private doaService: DoaService) {}
 
   @Post('create')
-  async createDoa(@InjectCreatedBy() createDoaDto: CreateDoaArrayDto) {
+  async createDoa(@InjectCreatedBy() createDoaDto: CreateDoaDto) {
     return this.doaService.createDoa(createDoaDto);
   }
   @Post('kategori/create')

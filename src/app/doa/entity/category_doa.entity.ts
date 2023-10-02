@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Doa } from './doa.entity';
 import { Admin } from 'src/app/admin/entities/admin.entity';
+import { IsUnique } from 'src/utils/validator/unique.validator';
 
 @Entity()
 export class KategoriDoa extends BaseEntity {
@@ -16,6 +17,7 @@ export class KategoriDoa extends BaseEntity {
   id: number;
 
   @Column()
+  @IsUnique([KategoriDoa, 'kategori_name'])
   kategori_name: string;
 
   @OneToMany(() => Doa, (doa) => doa.kategori_id, { cascade: true })
