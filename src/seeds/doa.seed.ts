@@ -6,11 +6,13 @@ import { dataDoa } from 'src/utils/json/harian';
 import { Repository } from 'typeorm';
 import { ResponseSuccess } from 'src/interface';
 import BaseResponse from 'src/utils/response/base.response';
+import { ConvertSlugService } from 'src/utils/service/convert_slug/convert_slug.service';
 
 @Injectable()
 export class DoaSeeder extends BaseResponse {
   constructor(
     @InjectRepository(Doa) private readonly doaRepo: Repository<Doa>,
+    private slug: ConvertSlugService,
   ) {
     super();
   }
@@ -19,7 +21,7 @@ export class DoaSeeder extends BaseResponse {
     try {
       const doaData = dataDoa.data;
       for (const data of doaData) {
-        const { name, arab, arti, kategori_id } = data;
+        const { name, arab, arti, kategori_id, slug } = data;
 
         const check = await this.doaRepo.findOne({
           where: {
@@ -34,6 +36,7 @@ export class DoaSeeder extends BaseResponse {
             ...data,
             kategori_id: { id: kategori_id },
           });
+          data.slug = this.slug.slugify(data.name);
           await this.doaRepo.save(doa);
         }
       }
