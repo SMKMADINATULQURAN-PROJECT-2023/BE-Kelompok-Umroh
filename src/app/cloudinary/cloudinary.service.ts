@@ -22,4 +22,13 @@ export class CloudinaryService {
         .catch((er) => reject(er));
     });
   }
+
+  async uploadVideo(file: Express.Multer.File, folder: string) {
+    const { secure_url, public_id } = await v2.uploader.upload(file.path, {
+      folder: `/umrah/${folder}`,
+      use_filename: true,
+      resource_type: 'video',
+    });
+    return { url: secure_url, public_id };
+  }
 }

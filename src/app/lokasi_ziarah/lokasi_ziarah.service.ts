@@ -123,7 +123,9 @@ export class LokasiZiarahService extends BaseResponse {
         HttpStatus.BAD_REQUEST,
       );
     }
-
+    if (updateZiarahDto.name !== undefined) {
+      updateZiarahDto.slug = this.slug.slugify(updateZiarahDto.name);
+    }
     const updatedZiarah = await this.ziarahRepository.save({
       ...updateZiarahDto,
       slug,

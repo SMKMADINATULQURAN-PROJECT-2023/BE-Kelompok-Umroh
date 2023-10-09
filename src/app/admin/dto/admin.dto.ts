@@ -52,8 +52,6 @@ export class FindAdminDto extends PageRequestDto {
 }
 export class CreateAdminDto extends OmitType(AdminDto, [
   'id',
-  'avatar',
-  'id_avatar',
   'refresh_token',
 ]) {}
 export class UpdateAdminDto extends PartialType(AdminDto) {}

@@ -34,10 +34,6 @@ import { JwtService } from '@nestjs/jwt';
 import { AdminController } from './app/admin/admin.controller';
 import { DoaController } from './app/doa/doa.controller';
 import { LokasiZiarahController } from './app/lokasi_ziarah/lokasi_ziarah.controller';
-import { ActionController } from './app/action/action.controller';
-import { RoleController } from './app/role/role.controller';
-import { ArtikelMiddleware } from './utils/middleware/artikel.middleware';
-import { ArtikelController } from './app/artikel/artikel.controller';
 import { DoaSeeder } from './seeds/doa.seed';
 import { Doa } from './app/doa/entity/doa.entity';
 import { PanduanModule } from './app/panduan/panduan.module';
@@ -49,6 +45,7 @@ import { DzikirPetangSeeder } from './seeds/dzikirPetang.seed';
 import { UserModule } from './app/user/user.module';
 import { PanduanController } from './app/panduan/panduan.controller';
 import { ConvertSlugService } from './utils/service/convert_slug/convert_slug.service';
+import { KategoriDoa } from './app/doa/entity/category_doa.entity';
 
 @Module({
   imports: [
@@ -65,6 +62,7 @@ import { ConvertSlugService } from './utils/service/convert_slug/convert_slug.se
       Role,
       Action,
       Doa,
+      KategoriDoa,
       DzikirPagi,
       DzikirPetang,
     ]),

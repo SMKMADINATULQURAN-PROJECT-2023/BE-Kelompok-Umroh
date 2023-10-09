@@ -1,7 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { OmitType, PartialType } from '@nestjs/mapped-types';
 
-import { IsInt, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  IsInt,
+  IsNotEmpty,
+  IsObject,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { PageRequestDto } from 'src/utils/dto/page.dto';
 
 @Injectable()
@@ -34,13 +40,26 @@ export class LokasiZiarahDto {
   longitude: string;
 
   slug: string;
+
+  @IsObject()
+  @IsOptional()
+  created_by: { id: number };
+
+  @IsObject()
+  @IsOptional()
+  updated_by: { id: number };
 }
 
-export class CreateZiarahDto extends OmitType(LokasiZiarahDto, ['id']) {}
+export class CreateZiarahDto extends OmitType(LokasiZiarahDto, [
+  'id',
+  'updated_by',
+]) {}
 
 export class FindZiarahDto extends PageRequestDto {
   @IsString()
   @IsOptional()
   keyword: string;
 }
-export class UpdateZiarahDto extends PartialType(LokasiZiarahDto) {}
+export class UpdateZiarahDto extends OmitType(LokasiZiarahDto, [
+  'created_by',
+]) {}

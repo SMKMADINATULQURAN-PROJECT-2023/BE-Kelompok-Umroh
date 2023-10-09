@@ -88,7 +88,7 @@ export class AdminService extends BaseResponse {
         slug: checkUserExists.slug,
       };
 
-      const access_token = await this.generateJWT(jwtPayload, '1d');
+      const access_token = await this.generateJWT(jwtPayload, '9d');
       const refresh_token = await this.generateJWT(jwtPayload, '7d');
       await this.adminRepository.save({
         refresh_token: refresh_token,
@@ -146,7 +146,33 @@ export class AdminService extends BaseResponse {
     });
   }
 
-  async create(payload: CreateAdminDto): Promise<ResponseSuccess> {
+  async create(
+    payload: CreateAdminDto,
+    file: Express.Multer.File,
+  ): Promise<ResponseSuccess> {
+    if (!file.path) {
+      throw new HttpException(
+        'thumbnail should not be empty',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    if (
+      file?.mimetype === 'image/png' ||
+      file?.mimetype === 'image/jpg' ||
+      file?.mimetype === 'image/jpeg'
+    ) {
+      const { public_id, url } = await this.cloudinary.uploadImage(
+        file,
+        'admin',
+      );
+      payload.id_avatar = public_id;
+      payload.avatar = url;
+    } else {
+      throw new HttpException(
+        ' file harus berekstensi .jpg, .jpeg, .png',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     const checkRole = await this.roleRepository.findOne({
       where: { id: payload.role_id },
     });
@@ -271,18 +297,6 @@ export class AdminService extends BaseResponse {
     }
     await this.adminRepository.delete(slug);
     return this._success('Berhasil Menghapus Akun Admin');
-  }
-
-  async profileAdmin(slug: string): Promise<ResponseSuccess> {
-    console.log(slug);
-    const user = await this.adminRepository.findOne({
-      where: { slug: slug },
-      relations: ['role_id'],
-    });
-
-    if (!user) throw new NotFoundException('User Tidak Ditemukan');
-
-    return this._success('Berhasil Menemukan Profile', user);
   }
 
   async editProfile(

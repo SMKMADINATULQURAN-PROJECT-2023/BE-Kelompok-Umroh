@@ -56,7 +56,7 @@ export class ArtikelService extends BaseResponse {
   async findAll(query: PageRequestDto): Promise<ResponsePagination> {
     const { page, pageSize, limit } = query;
     const result = await this.artikelRepo.find({
-      relations: ['author'],
+      relations: ['created_by'],
       take: pageSize,
       skip: limit,
     });
@@ -112,6 +112,9 @@ export class ArtikelService extends BaseResponse {
     if (!check) {
       throw new HttpException(`Artikel Tidak Ditemukan`, HttpStatus.NOT_FOUND);
     }
+    if (payload.title !== undefined) {
+      payload.slug = this.slug.slugify(payload.title);
+    }
     await this.artikelRepo.save({
       ...payload,
       slug: slug,
@@ -127,7 +130,7 @@ export class ArtikelService extends BaseResponse {
       throw new HttpException(`Artikel Tidak Ditemukan`, HttpStatus.NOT_FOUND);
     }
     await this.cluodinary.deleteImage(check.id_thumbnail);
-    await this.artikelRepo.delete(slug);
+    await this.artikelRepo.delete({ slug });
     return this._success('Berhasil Menghapus Artikel');
   }
 }

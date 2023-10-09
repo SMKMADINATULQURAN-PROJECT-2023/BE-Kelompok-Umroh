@@ -7,6 +7,7 @@ import {
   Put,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 
 import { LokasiZiarahService } from './lokasi_ziarah.service';
@@ -17,7 +18,11 @@ import {
 } from './lokasi_ziarah.dto';
 import { Pagination } from 'src/utils/decorator/pagination.decorator';
 import { FileInterceptorCustom } from 'src/utils/decorator/fileInterceptor.decorator';
+import { JwtGuard } from '../auth/auth.guard';
+import { InjectCreatedBy } from 'src/utils/decorator/inject-created_by.decorator';
+import { InjectUpdatedBy } from 'src/utils/decorator/inject-updated_by.decorator';
 
+@UseGuards(JwtGuard)
 @Controller('lokasi_ziarah')
 export class LokasiZiarahController {
   constructor(private ziarahService: LokasiZiarahService) {}
@@ -26,7 +31,7 @@ export class LokasiZiarahController {
   @FileInterceptorCustom('file_create', 'lokasi_ziarah')
   async create(
     @UploadedFile() file: Express.Multer.File, // Sekarang mengimpor UploadedFile dari @nestjs/common
-    @Body() payload: CreateZiarahDto,
+    @InjectCreatedBy() payload: CreateZiarahDto,
   ) {
     console.log(file);
     return this.ziarahService.create(payload, file);
@@ -46,7 +51,7 @@ export class LokasiZiarahController {
   @FileInterceptorCustom('file_update', 'lokasi_ziarah')
   async update(
     @Param('slug') slug: string,
-    @Body() payload: UpdateZiarahDto,
+    @InjectUpdatedBy() payload: UpdateZiarahDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
     console.log(file);

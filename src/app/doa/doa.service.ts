@@ -1,13 +1,19 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  Injectable,
+  HttpException,
+  HttpStatus,
+  NotFoundException,
+} from '@nestjs/common';
 import { Repository } from 'typeorm';
 import BaseResponse from 'src/utils/response/base.response';
 import { ResponsePagination, ResponseSuccess } from 'src/interface';
 import { PageRequestDto } from 'src/utils/dto/page.dto';
 import {
-  CreateDoaArrayDto,
+  CreateDoaDto,
   CreateKategoriDto,
-  UpdateKategoriDoaDto,
+  UpdateDoaDto,
+  UpdateKategoriDto,
 } from './doa.dto';
 import { Doa } from './entity/doa.entity';
 import { KategoriDoa } from './entity/category_doa.entity';
@@ -24,33 +30,22 @@ export class DoaService extends BaseResponse {
     super();
   }
 
-  async createDoa(createDoaDto: CreateDoaArrayDto): Promise<ResponseSuccess> {
-    try {
-      let berhasil = 0;
-      let gagal = 0;
-      await Promise.all(
-        createDoaDto.data.map(async (data) => {
-          const dataSave = {
-            ...data,
-            kategori_id: { id: data.kategori_id },
-          };
-          data.slug = this.slug.slugify(data.name);
-          try {
-            await this.doaRepo.save(dataSave);
-            berhasil += 1;
-          } catch (error) {
-            gagal += 1;
-            console.log('Gagal =>', gagal);
-          }
-        }),
-      );
-      return this._success(
-        `Berhasil Membuat Doa ${berhasil} dan gagal ${gagal}  `,
-      );
-    } catch (error) {
-      console.error(error);
-      throw new HttpException('Ada Kesalahan', HttpStatus.BAD_REQUEST);
-    }
+  async createDoa(payload: CreateDoaDto): Promise<ResponseSuccess> {
+    const checkKategori = await this.kategoriRepo.findOne({
+      where: {
+        id: payload.kategori_id,
+      },
+    });
+    if (!checkKategori)
+      throw new NotFoundException('Kategori Doa Tidak Ditemukan');
+
+    payload.slug = this.slug.slugify(payload.name);
+    await this.doaRepo.save({
+      ...payload,
+      kategori_id: { id: payload.kategori_id },
+    });
+
+    return this._success('Berhasil Membuat Doa');
   }
 
   async getKategori(query: PageRequestDto): Promise<ResponsePagination> {
@@ -94,13 +89,16 @@ export class DoaService extends BaseResponse {
 
   async updateDoa(
     slug: string,
-    payload: UpdateKategoriDoaDto,
+    payload: UpdateDoaDto,
   ): Promise<ResponseSuccess> {
     const check = await this.doaRepo.findOne({
       where: { slug: slug },
     });
     if (!check) {
       throw new HttpException(`Doa Tidak Ditemukan`, HttpStatus.NOT_FOUND);
+    }
+    if (payload.name !== undefined) {
+      payload.slug = this.slug.slugify(payload.name);
     }
     await this.doaRepo.save({
       ...payload,
@@ -112,13 +110,16 @@ export class DoaService extends BaseResponse {
 
   async updateKategori(
     slug: string,
-    payload: UpdateKategoriDoaDto,
+    payload: UpdateKategoriDto,
   ): Promise<ResponseSuccess> {
     const check = await this.kategoriRepo.findOne({
       where: { slug: slug },
     });
     if (!check) {
       throw new HttpException(`Kategori Tidak Ditemukan`, HttpStatus.NOT_FOUND);
+    }
+    if (payload.kategori_name !== undefined) {
+      payload.slug = this.slug.slugify(payload.kategori_name);
     }
     await this.kategoriRepo.save({
       ...payload,
@@ -134,7 +135,7 @@ export class DoaService extends BaseResponse {
     if (!check) {
       throw new HttpException(`Doa Tidak Ditemukan`, HttpStatus.NOT_FOUND);
     }
-    await this.doaRepo.delete(slug);
+    await this.doaRepo.delete({ slug });
     return this._success('Berhasil Menghapus Doa');
   }
 
@@ -148,7 +149,7 @@ export class DoaService extends BaseResponse {
         HttpStatus.NOT_FOUND,
       );
     }
-    await this.kategoriRepo.delete(slug);
+    await this.kategoriRepo.delete({ slug });
     return this._success('Berhasil Menghapus KategoriDoa');
   }
 }

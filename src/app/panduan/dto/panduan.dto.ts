@@ -1,5 +1,5 @@
 import { OmitType, PartialType } from '@nestjs/mapped-types';
-import { IsEnum, IsInt, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsInt, IsObject, IsOptional, IsString } from 'class-validator';
 import { JenisKelamin } from 'src/interface';
 import { PageRequestDto } from 'src/utils/dto/page.dto';
 export class PanduanDto {
@@ -19,10 +19,23 @@ export class PanduanDto {
   @IsString()
   @IsEnum(JenisKelamin)
   kategori: JenisKelamin;
+
+  slug: string;
+
+  @IsObject()
+  @IsOptional()
+  created_by: { id: number };
+
+  @IsObject()
+  @IsOptional()
+  updated_by: { id: number };
 }
 
-export class CreatePanduanDto extends OmitType(PanduanDto, ['id']) {}
-export class UpdatePanduanDto extends PartialType(PanduanDto) {}
+export class CreatePanduanDto extends OmitType(PanduanDto, [
+  'id',
+  'updated_by',
+]) {}
+export class UpdatePanduanDto extends OmitType(PanduanDto, ['created_by']) {}
 export class FindPanduanDto extends PageRequestDto {
   @IsOptional()
   @IsEnum(JenisKelamin)
