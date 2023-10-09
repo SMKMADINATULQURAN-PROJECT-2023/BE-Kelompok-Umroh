@@ -12,6 +12,18 @@ https://github.com/Al-Ghozy03/kecamatan-jonggol.git
 
 3. run `npm run dev:start`
 
+# Usage
+
+1. Clone this repository
+
+```markdown
+https://github.com/Al-Ghozy03/kecamatan-jonggol.git
+```
+
+2. run `npm install`
+
+3. run `npm run dev:start`
+
 # Documentation
 
 **BASE URL = http://localhost:5002**
