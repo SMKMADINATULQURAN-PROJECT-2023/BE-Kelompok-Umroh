@@ -4,7 +4,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import BaseResponse from 'src/utils/response/base.response';
 import { User } from './entity/auth.entity';
-import { Repository, Not } from 'typeorm';
+import { Repository } from 'typeorm';
 import { ResponseSuccess } from 'src/interface';
 import { LoginDto, RegisterDto, ResetPasswordDto } from './auth.dto';
 import { hash, compare } from 'bcrypt';
@@ -12,7 +12,7 @@ import { JwtService } from '@nestjs/jwt';
 import { jwt_config } from 'src/config/jwt.config';
 import { MailService } from '../mail/mail.service';
 import { ResetPassword } from './entity/reset_password.entity';
-import { randomBytes } from 'crypto';
+import * as admin from 'firebase-admin';
 import { NotFoundException } from '@nestjs/common/exceptions';
 import { jwtPayload } from './auth.inteface';
 import { Admin } from '../admin/entities/admin.entity';
@@ -50,11 +50,12 @@ export class AuthService extends BaseResponse {
         'Nomor Handphone Anda Sudah Terdaftar',
         HttpStatus.FOUND,
       );
+
     payload.password = await hash(payload.password, 12);
 
     await this.authRepository.save(payload);
 
-    return this._success('Register Berhasil');
+    return this._success('Berhasil Daftar');
   }
 
   async login(payload: LoginDto): Promise<ResponseSuccess> {
@@ -65,7 +66,7 @@ export class AuthService extends BaseResponse {
     });
     if (!checkUserExists)
       throw new NotFoundException(
-        'Nomor Handphone Tidak Ditemukan Silahkan Register',
+        'Nomor Handphone Tidak Ditemukan Silahkan Daftar',
       );
 
     const checkPassword = await compare(
@@ -79,7 +80,7 @@ export class AuthService extends BaseResponse {
         username: checkUserExists.username,
         email: checkUserExists.email,
         telephone: checkUserExists.telephone,
-        tempat_lahir: checkUserExists.tempat_lahir,
+        alamat: checkUserExists.alamat,
         tanggal_lahir: checkUserExists.tanggal_lahir,
       };
 
@@ -89,14 +90,14 @@ export class AuthService extends BaseResponse {
         refresh_token: refresh_token,
         id: checkUserExists.id,
       }); // simpan refresh token ke dalam tabel
-      return this._success('Login Success', {
+      return this._success('Berhasil Login', {
         ...checkUserExists,
         access_token: access_token,
         refresh_token: refresh_token,
       });
     } else {
       throw new HttpException(
-        'email dan password tidak sama',
+        'Nomor Handphone Dan Password Tidak Cocok',
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
     }
@@ -109,13 +110,13 @@ export class AuthService extends BaseResponse {
       },
     });
     if (!checkUserExists)
-      throw new NotFoundException('Email Tidak ditemukan, Silahkan Register');
+      throw new NotFoundException('Email Tidak ditemukan, Silahkan Daftar');
     const jwtPayload: jwtPayload = {
       id: checkUserExists.id,
       username: checkUserExists.username,
       email: checkUserExists.email,
       telephone: checkUserExists.telephone,
-      tempat_lahir: checkUserExists.tempat_lahir,
+      alamat: checkUserExists.alamat,
       tanggal_lahir: checkUserExists.tanggal_lahir,
     };
     const access_token = await this.generateJWT(jwtPayload, '1d');
@@ -126,7 +127,7 @@ export class AuthService extends BaseResponse {
       id: checkUserExists.id,
     });
 
-    return this._success('Login Success', {
+    return this._success('Berhasil Login', {
       ...checkUserExists,
       access_token: access_token,
       refresh_token: refresh_token,
@@ -142,10 +143,10 @@ export class AuthService extends BaseResponse {
     if (!user) throw new NotFoundException('User Tidak Ditemukan');
     return this._success('Berhasil Menemukan Profile', user);
   }
-  async adminProfile(slug: string): Promise<ResponseSuccess> {
+  async adminProfile(id: number): Promise<ResponseSuccess> {
     const user = await this.adminRepository.findOne({
       where: {
-        slug: slug,
+        id: id,
       },
       relations: ['role_id', 'role_id.action_id'],
     });
@@ -153,45 +154,46 @@ export class AuthService extends BaseResponse {
     return this._success('Berhasil Menemukan Profile', user);
   }
 
-  async forgotPassword(email: string): Promise<ResponseSuccess> {
+  async forgotPassword(telephone: string): Promise<ResponseSuccess> {
     const user = await this.authRepository.findOne({
       where: {
-        email: email,
+        telephone,
       },
     });
 
-    if (!user) throw new NotFoundException('Email Tidak ditemukan');
-    const token = randomBytes(32).toString('hex');
-    const link = `${process.env.MAIL_CLIENT_URL}auth/reset-password/${user.id}/${token}`;
-    await this.mailService.sendForgotPassword({
-      email: email,
-      username: user.username,
-      link: link,
-    });
+    if (!user)
+      throw new NotFoundException(
+        'Nomor Handphone Belum Terdaftar, Silahkan Daftar',
+      );
+    const otp = Math.floor(100000 + Math.random() * 900000);
 
     const payload = {
       user: {
-        id: user.id,
+        telephone: user.telephone,
       },
-      token: token,
+      otp: otp,
     };
-
+    // await admin.messaging().send({
+    //   data: {
+    //     otp: otp.toString(),
+    //   },
+    // phoneNumber: telephone,
+    // });
     await this.resetPasswordRepository.save(payload);
-    console.log(token);
-    return this._success('Silahkan Cek Email');
+    return this._success('SMS OTP telah dikirim');
   }
 
   async resetPassword(
-    user_id: number,
-    token: string,
+    telephone: string,
+    otp: number,
     payload: ResetPasswordDto,
   ): Promise<ResponseSuccess> {
     const userToken = await this.resetPasswordRepository.findOne({
       where: {
-        token: token,
         user: {
-          id: user_id,
+          telephone: telephone,
         },
+        otp: otp,
       },
     });
 
@@ -205,14 +207,14 @@ export class AuthService extends BaseResponse {
     payload.new_password = await hash(payload.new_password, 12);
     await this.authRepository.save({
       password: payload.new_password,
-      id: user_id,
+      telephone: telephone,
     });
     await this.resetPasswordRepository.delete({
       user: {
-        id: user_id,
+        telephone: telephone,
       },
     });
 
-    return this._success('Reset Passwod Berhasil, Silahkan login ulang');
+    return this._success('Reset Password Berhasil, Silahkan Login Ulang');
   }
 }

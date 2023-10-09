@@ -34,9 +34,6 @@ export class LokasiZiarah extends BaseEntity {
   @Column()
   longitude: string;
 
-  @Column()
-  slug: string;
-
   @ManyToOne(() => Admin)
   @JoinColumn({ name: 'created_by' })
   created_by: Admin;

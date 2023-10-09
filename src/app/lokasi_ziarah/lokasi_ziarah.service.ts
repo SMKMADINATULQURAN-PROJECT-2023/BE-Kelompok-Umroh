@@ -16,7 +16,6 @@ import {
   UpdateZiarahDto,
 } from './lokasi_ziarah.dto';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
-import { ConvertSlugService } from 'src/utils/service/convert_slug/convert_slug.service';
 
 @Injectable()
 export class LokasiZiarahService extends BaseResponse {
@@ -24,7 +23,6 @@ export class LokasiZiarahService extends BaseResponse {
     @InjectRepository(LokasiZiarah)
     private readonly ziarahRepository: Repository<LokasiZiarah>,
     private cloudinary: CloudinaryService,
-    private slug: ConvertSlugService,
   ) {
     super();
   }
@@ -55,7 +53,6 @@ export class LokasiZiarahService extends BaseResponse {
         HttpStatus.BAD_REQUEST,
       );
     }
-    payload.slug = this.slug.slugify(payload.name);
     await this.ziarahRepository.save(payload);
     return this._success('Berhasil Menambah Lokasi Ziarah');
   }
@@ -88,13 +85,13 @@ export class LokasiZiarahService extends BaseResponse {
   }
 
   async update(
-    slug: string,
+    id: number,
     updateZiarahDto: UpdateZiarahDto,
     file: Express.Multer.File,
   ): Promise<ResponseSuccess> {
     const check = await this.ziarahRepository.findOne({
       where: {
-        slug: slug,
+        id: id,
       },
     });
 
@@ -123,20 +120,18 @@ export class LokasiZiarahService extends BaseResponse {
         HttpStatus.BAD_REQUEST,
       );
     }
-    if (updateZiarahDto.name !== undefined) {
-      updateZiarahDto.slug = this.slug.slugify(updateZiarahDto.name);
-    }
+
     const updatedZiarah = await this.ziarahRepository.save({
       ...updateZiarahDto,
-      slug,
+      id: id,
     });
 
     return this._success('Berhasil Mengupdate Lokasi Ziarah', updatedZiarah);
   }
 
-  async remove(slug: string): Promise<ResponseSuccess> {
+  async remove(id: number): Promise<ResponseSuccess> {
     const check = await this.ziarahRepository.findOne({
-      where: { slug },
+      where: { id },
     });
     if (!check) {
       throw new HttpException(
@@ -145,7 +140,7 @@ export class LokasiZiarahService extends BaseResponse {
       );
     }
     await this.cloudinary.deleteImage(check.id_thumbnail);
-    await this.ziarahRepository.delete(slug);
+    await this.ziarahRepository.delete(id);
     return this._success('Berhasil Menghapus Lokasi Ziarah');
   }
 }

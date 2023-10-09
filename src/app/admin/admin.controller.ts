@@ -49,38 +49,38 @@ export class AdminController {
   @UseGuards(JwtGuard)
   @Get()
   async findAll(@Pagination() query: FindAdminDto, @Req() req) {
-    const { slug } = req.user;
-    console.log('userslug =>', slug);
-    return this.adminService.findAll(query, slug);
+    const { id } = req.user;
+
+    return this.adminService.findAll(query, id);
   }
 
   @UseGuards(JwtGuard)
-  @Get(':slug')
-  findOne(@Param('slug') slug: string) {
-    return this.adminService.findOne(slug);
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.adminService.findOne(+id);
   }
 
   @UseGuards(JwtGuard)
-  @Put('update/:slug')
-  update(@Param('slug') slug: string, @Body() payload: UpdateAdminDto) {
-    return this.adminService.update(slug, payload);
+  @Put('update/:id')
+  update(@Param('id') id: string, @Body() payload: UpdateAdminDto) {
+    return this.adminService.update(+id, payload);
   }
 
   @UseGuards(JwtGuard)
-  @Delete('delete/:slug')
-  remove(@Param('slug') slug: string) {
-    return this.adminService.remove(slug);
+  @Delete('delete/:id')
+  remove(@Param('id') id: string) {
+    return this.adminService.remove(+id);
   }
 
   @UseGuards(JwtGuard)
   @FileInterceptorCustom('file_edit_profile', 'admin')
-  @Put('edit-profile')
+  @Put('update-profile')
   async editProfile(
     @UploadedFile() file: Express.Multer.File,
     @Body() payload: UpdateAdminDto,
     @Req() req,
   ) {
-    const { slug } = req.user;
-    return this.adminService.editProfile(file, payload, slug);
+    const { id } = req.user;
+    return this.adminService.editProfile(file, payload, id);
   }
 }

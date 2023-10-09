@@ -39,8 +39,6 @@ export class LokasiZiarahDto {
   @IsNotEmpty()
   longitude: string;
 
-  slug: string;
-
   @IsObject()
   @IsOptional()
   created_by: { id: number };

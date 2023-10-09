@@ -1,4 +1,3 @@
-import { ConvertSlugService } from './../../utils/service/convert_slug/convert_slug.service';
 import {
   Injectable,
   HttpException,
@@ -19,7 +18,6 @@ export class PanduanService extends BaseResponse {
   constructor(
     @InjectRepository(Panduan)
     private readonly panduanRepo: Repository<Panduan>,
-    private slug: ConvertSlugService,
     private cloudinary: CloudinaryService,
   ) {
     super();
@@ -49,7 +47,6 @@ export class PanduanService extends BaseResponse {
       );
     }
 
-    payload.slug = this.slug.slugify(payload.title);
     await this.panduanRepo.save(payload);
     return this._success('Berhasil Membuat Panduan');
   }
@@ -71,8 +68,8 @@ export class PanduanService extends BaseResponse {
     );
   }
 
-  async findOne(slug: string): Promise<ResponseSuccess> {
-    const result = await this.panduanRepo.findOne({ where: { slug } });
+  async findOne(id: number): Promise<ResponseSuccess> {
+    const result = await this.panduanRepo.findOne({ where: { id } });
     if (!result) {
       throw new HttpException(`Panduan Tidak Ditemukan`, HttpStatus.NOT_FOUND);
     }
@@ -80,20 +77,20 @@ export class PanduanService extends BaseResponse {
   }
 
   async update(
-    slug: string,
+    id: number,
     payload: UpdatePanduanDto,
   ): Promise<ResponseSuccess> {
-    const check = await this.panduanRepo.findOne({ where: { slug } });
+    const check = await this.panduanRepo.findOne({ where: { id } });
     if (!check) throw new NotFoundException('Panduan Tidak Ditemukan');
 
     return this._success('Berhasil Mengupdate Panduan');
   }
 
-  async remove(slug: string): Promise<ResponseSuccess> {
-    const check = await this.panduanRepo.findOne({ where: { slug } });
+  async remove(id: number): Promise<ResponseSuccess> {
+    const check = await this.panduanRepo.findOne({ where: { id } });
     if (!check) throw new NotFoundException('Panduan Tidak Ditemukan');
     await this.cloudinary.deleteImage(check.id_video);
-    await this.panduanRepo.delete({ slug });
+    await this.panduanRepo.delete({ id });
     return this._success('Berhasil Menghapus Panduan');
   }
 }

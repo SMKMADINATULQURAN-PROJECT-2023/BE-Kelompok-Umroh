@@ -14,11 +14,11 @@ export class ResetPassword extends BaseEntity {
   id: number;
 
   @ManyToOne(() => User)
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn({ name: 'user_telephone', referencedColumnName: 'telephone' })
   user: User;
 
   @Column({ nullable: true })
-  token: string;
+  otp: number;
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;

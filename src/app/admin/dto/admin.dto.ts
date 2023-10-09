@@ -18,6 +18,7 @@ export class AdminDto {
 
   @IsNotEmpty()
   @IsString()
+  @MinLength(4)
   username: string;
 
   avatar: any;
@@ -37,8 +38,6 @@ export class AdminDto {
 
   @IsString()
   refresh_token: string;
-
-  slug: string;
 
   @IsNumber()
   @IsNotEmpty()

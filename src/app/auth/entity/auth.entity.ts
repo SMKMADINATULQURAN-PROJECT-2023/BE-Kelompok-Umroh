@@ -25,7 +25,7 @@ export class User extends BaseEntity {
   telephone: string;
 
   @Column({ nullable: true })
-  tempat_lahir: string;
+  alamat: string;
 
   @Column({ nullable: true })
   tanggal_lahir: Date;
@@ -35,9 +35,6 @@ export class User extends BaseEntity {
     enum: JenisKelamin,
   })
   jenis_kelamin: JenisKelamin;
-
-  @Column({ type: 'text' })
-  slug: string;
 
   @Column({ nullable: true, type: 'text' })
   refresh_token: string;

@@ -2,15 +2,11 @@ import {
   Controller,
   Get,
   Post,
-  Body,
   Param,
   Delete,
   UploadedFile,
   UseGuards,
   Put,
-  Req,
-  HttpException,
-  HttpStatus,
 } from '@nestjs/common';
 import { ArtikelService } from './artikel.service';
 import { CreateArtikelDto, UpdateArtikelDto } from './dto/artikel.dto';
@@ -39,23 +35,23 @@ export class ArtikelController {
     return this.artikelService.findAll(query);
   }
 
-  @Get(':slug')
-  findOne(@Param('slug') slug: string) {
-    return this.artikelService.findOne(slug);
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.artikelService.findOne(+id);
   }
 
   @FileInterceptorCustom('file_update', 'artikel')
-  @Put('update/:slug')
+  @Put('update/:id')
   update(
-    @Param('slug') slug: string,
-    @InjectUpdatedBy() updateArtikelDto: UpdateArtikelDto,
+    @Param('id') id: string,
+    @InjectUpdatedBy() payload: UpdateArtikelDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.artikelService.update(slug, updateArtikelDto, file);
+    return this.artikelService.update(+id, payload, file);
   }
 
-  @Delete('delete/:slug')
-  remove(@Param('slug') slug: string) {
-    return this.artikelService.remove(slug);
+  @Delete('delete/:id')
+  remove(@Param('id') id: string) {
+    return this.artikelService.remove(+id);
   }
 }

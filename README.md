@@ -136,10 +136,10 @@ Headers
 | :-----------: | :------: | :----: |
 | Authorization | Required | String |
 
-#### Edit
+#### update
 
 ```markdown
-/user/edit-profile/[id]
+/user/update-profile/[id]
 ```
 
 **Method : PUT**
@@ -271,10 +271,10 @@ Headers
 | Content-Type  | Required | multipart/form-data |
 | Authorization | Required |       String        |
 
-#### Edit (Admin only)
+#### update (Admin only)
 
 ```markdown
-/artikel/edit/[slug]
+/artikel/update/[id]
 ```
 
 **Method : PUT**
@@ -297,7 +297,7 @@ Headers
 #### Delete (Admin only)
 
 ```markdown
-/artikel/delete/[slug]
+/artikel/delete/[id]
 ```
 
 **Method : DELETE**
@@ -326,7 +326,7 @@ Params
 #### Detail
 
 ```markdown
-/artikel/[slug]
+/artikel/[id]
 ```
 
 **Method : GET**
@@ -357,10 +357,10 @@ Headers
 | :-----------: | :------: | :----: |
 | Authorization | Required | String |
 
-#### Edit (Admin only)
+#### update (Admin only)
 
 ```markdown
-/doa/edit/[slug]
+/doa/update/[id]
 ```
 
 **Method : PUT**
@@ -384,7 +384,7 @@ Headers
 #### Delete (Admin only)
 
 ```markdown
-/doa/delete/[slug]
+/doa/delete/[id]
 ```
 
 **Method : DELETE**
@@ -413,7 +413,7 @@ Params
 #### Detail
 
 ```markdown
-/doa/[slug]
+/doa/[id]
 ```
 
 **Method : GET**
@@ -440,10 +440,10 @@ Headers
 | :-----------: | :------: | :----: |
 | Authorization | Required | String |
 
-#### Edit (Admin only)
+#### update (Admin only)
 
 ```markdown
-/doa/kategori/edit/[slug]
+/doa/kategori/update/[id]
 ```
 
 **Method : PUT**
@@ -463,7 +463,7 @@ Headers
 #### Delete (Admin only)
 
 ```markdown
-/doa/kategori/delete/[slug]
+/doa/kategori/delete/[id]
 ```
 
 **Method : DELETE**
@@ -493,7 +493,7 @@ Params
 #### Detail
 
 ```markdown
-/doa/kategori/[slug]
+/doa/kategori/[id]
 ```
 
 **Method : GET**
@@ -559,10 +559,10 @@ Headers
 | :-----------: | :------: | :----: |
 | Authorization | Required | String |
 
-#### Edit (Admin only)
+#### update (Admin only)
 
 ```markdown
-/lokasi_ziarah/edit/[slug]
+/lokasi_ziarah/update/[id]
 ```
 
 **Method : PUT**
@@ -587,7 +587,7 @@ Headers
 #### Delete (Admin only)
 
 ```markdown
-/lokasi_ziarah/delete/[slug]
+/lokasi_ziarah/delete/[id]
 ```
 
 **Method : DELETE**
@@ -617,7 +617,7 @@ Params
 #### Detail
 
 ```markdown
-/lokasi_ziarah/[slug]
+/lokasi_ziarah/[id]
 ```
 
 **Method : GET**
@@ -646,10 +646,10 @@ Headers
 | :-----------: | :------: | :----: |
 | Authorization | Required | String |
 
-#### Edit (Admin only)
+#### update (Admin only)
 
 ```markdown
-/panduan/edit/[slug]
+/panduan/update/[id]
 ```
 
 **Method : PUT**
@@ -671,7 +671,7 @@ Headers
 #### Delete (Admin only)
 
 ```markdown
-/panduan/delete/[slug]
+/panduan/delete/[id]
 ```
 
 **Method : DELETE**
@@ -701,7 +701,7 @@ Params
 #### Detail
 
 ```markdown
-/panduan/[slug]
+/panduan/[id]
 ```
 
 **Method : GET**

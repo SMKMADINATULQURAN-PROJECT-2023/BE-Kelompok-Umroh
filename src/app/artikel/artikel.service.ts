@@ -9,7 +9,6 @@ import { HttpException } from '@nestjs/common/exceptions';
 import { HttpStatus } from '@nestjs/common/enums';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { PageRequestDto } from 'src/utils/dto/page.dto';
-import { ConvertSlugService } from 'src/utils/service/convert_slug/convert_slug.service';
 
 @Injectable()
 export class ArtikelService extends BaseResponse {
@@ -17,7 +16,6 @@ export class ArtikelService extends BaseResponse {
     @InjectRepository(Artikel)
     private readonly artikelRepo: Repository<Artikel>,
     private cluodinary: CloudinaryService,
-    private slug: ConvertSlugService,
   ) {
     super();
   }
@@ -48,7 +46,7 @@ export class ArtikelService extends BaseResponse {
         HttpStatus.BAD_REQUEST,
       );
     }
-    payload.slug = this.slug.slugify(payload.title);
+
     await this.artikelRepo.save(payload);
     return this._success('Berhasil Menyimpan Artikel');
   }
@@ -69,9 +67,9 @@ export class ArtikelService extends BaseResponse {
       pageSize,
     );
   }
-  async findOne(slug: string): Promise<ResponseSuccess> {
+  async findOne(id: number): Promise<ResponseSuccess> {
     const result = await this.artikelRepo.findOne({
-      where: { slug: slug },
+      where: { id: id },
     });
     if (!result)
       throw new HttpException(`Aritkel Tidak Ditemukan`, HttpStatus.NOT_FOUND);
@@ -79,14 +77,17 @@ export class ArtikelService extends BaseResponse {
   }
 
   async update(
-    slug: string,
+    id: number,
     payload: UpdateArtikelDto,
     file: Express.Multer.File,
   ): Promise<ResponseSuccess> {
     const check = await this.artikelRepo.findOne({
-      where: { slug: slug },
+      where: { id: id },
     });
-    if (file?.path === undefined) {
+    if (!check) {
+      throw new HttpException(`Artikel Tidak Ditemukan`, HttpStatus.NOT_FOUND);
+    }
+    if (!file?.path) {
       payload.thumbnail = check.thumbnail;
       payload.id_thumbnail = check.id_thumbnail;
     }
@@ -109,28 +110,22 @@ export class ArtikelService extends BaseResponse {
       );
     }
 
-    if (!check) {
-      throw new HttpException(`Artikel Tidak Ditemukan`, HttpStatus.NOT_FOUND);
-    }
-    if (payload.title !== undefined) {
-      payload.slug = this.slug.slugify(payload.title);
-    }
     await this.artikelRepo.save({
       ...payload,
-      slug: slug,
+      id: id,
     });
     return this._success('Berhasil Mengupdate Artikel');
   }
 
-  async remove(slug: string): Promise<ResponseSuccess> {
+  async remove(id: number): Promise<ResponseSuccess> {
     const check = await this.artikelRepo.findOne({
-      where: { slug },
+      where: { id },
     });
     if (!check) {
       throw new HttpException(`Artikel Tidak Ditemukan`, HttpStatus.NOT_FOUND);
     }
     await this.cluodinary.deleteImage(check.id_thumbnail);
-    await this.artikelRepo.delete({ slug });
+    await this.artikelRepo.delete(id);
     return this._success('Berhasil Menghapus Artikel');
   }
 }

@@ -47,22 +47,22 @@ export class AuthController {
   @Get('profile-admin')
   async adminProfile(@Req() req) {
     // hasil validate dari jwt strategy akan ditambakan pada req.user. isi object req.user akan sama dengan payload dari jwt token. Silahkan coba console.log(req.user)
-    const { slug } = req.user;
-    return this.authService.adminProfile(slug);
+    const { id } = req.user;
+    return this.authService.adminProfile(id);
   }
 
   @Post('lupa-password')
-  async forgotPassowrd(@Body('email') email: string) {
-    console.log('email', email);
-    return this.authService.forgotPassword(email);
+  async forgotPassowrd(@Body('telephone') telephone: string) {
+    console.log('telephone', telephone);
+    return this.authService.forgotPassword(telephone);
   }
 
-  @Post('reset-password/:user_id/:token')
+  @Post('reset-password/:telephone/:otp')
   async resetPassword(
-    @Param('user_id') user_id: string,
-    @Param('token') token: string,
+    @Param('telephone') telephone: string,
+    @Param('otp') otp: string,
     @Body() payload: ResetPasswordDto,
   ) {
-    return this.authService.resetPassword(+user_id, token, payload);
+    return this.authService.resetPassword(telephone, +otp, payload);
   }
 }

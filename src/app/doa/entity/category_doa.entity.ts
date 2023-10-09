@@ -23,9 +23,6 @@ export class KategoriDoa extends BaseEntity {
   @OneToMany(() => Doa, (doa) => doa.kategori_id, { cascade: true })
   doa_id: Doa[];
 
-  @Column({ type: 'text' })
-  slug: string;
-
   @ManyToOne(() => Admin)
   @JoinColumn({ name: 'created_by' })
   created_by: Admin;

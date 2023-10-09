@@ -29,9 +29,6 @@ export class Doa extends BaseEntity {
   @JoinColumn({ name: 'kategori_id' })
   kategori_id: KategoriDoa;
 
-  @Column({ type: 'text' })
-  slug: string;
-
   @ManyToOne(() => Admin)
   @JoinColumn({ name: 'created_by' })
   created_by: Admin;

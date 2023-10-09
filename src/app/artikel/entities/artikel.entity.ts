@@ -25,9 +25,6 @@ export class Artikel extends BaseEntity {
   @Column({ type: 'text' })
   description: string;
 
-  @Column({ type: 'text' })
-  slug: string;
-
   @ManyToOne(() => Admin)
   @JoinColumn({ name: 'created_by' })
   created_by: Admin;

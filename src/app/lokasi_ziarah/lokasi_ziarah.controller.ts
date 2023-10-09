@@ -1,7 +1,6 @@
 import {
   Controller,
   Post,
-  Body,
   Get,
   UploadedFile,
   Put,
@@ -42,19 +41,19 @@ export class LokasiZiarahController {
     return this.ziarahService.get(payload);
   }
 
-  @Delete('delete/:slug')
-  async remove(@Param('slug') slug: string) {
-    return this.ziarahService.remove(slug);
+  @Delete('delete/:id')
+  async remove(@Param('id') id: string) {
+    return this.ziarahService.remove(+id);
   }
 
-  @Put('update/:slug')
+  @Put('update/:id')
   @FileInterceptorCustom('file_update', 'lokasi_ziarah')
   async update(
-    @Param('slug') slug: string,
+    @Param('id') id: string,
     @InjectUpdatedBy() payload: UpdateZiarahDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
     console.log(file);
-    return this.ziarahService.update(slug, payload, file);
+    return this.ziarahService.update(+id, payload, file);
   }
 }

@@ -22,7 +22,7 @@ import { JwtService } from '@nestjs/jwt';
 import { jwt_config } from 'src/config/jwt.config';
 import { LoginAdminDto } from '../auth/auth.dto';
 import { jwtPayload } from '../auth/auth.inteface';
-import { ConvertSlugService } from 'src/utils/service/convert_slug/convert_slug.service';
+
 @Injectable()
 export class AdminService extends BaseResponse {
   constructor(
@@ -32,7 +32,6 @@ export class AdminService extends BaseResponse {
     private readonly roleRepository: Repository<Role>,
     private cloudinary: CloudinaryService,
     private jwtService: JwtService,
-    private convertSlug: ConvertSlugService,
   ) {
     super();
   }
@@ -53,7 +52,7 @@ export class AdminService extends BaseResponse {
         username: true,
         email: true,
         password: true,
-        slug: true,
+
         role_id: {
           id: true,
           role_name: true,
@@ -85,7 +84,6 @@ export class AdminService extends BaseResponse {
         username: checkUserExists.username,
         email: checkUserExists.email,
         role_id: checkUserExists.role_id,
-        slug: checkUserExists.slug,
       };
 
       const access_token = await this.generateJWT(jwtPayload, '9d');
@@ -128,7 +126,6 @@ export class AdminService extends BaseResponse {
       username: check.username,
       email: check.email,
       role_id: check.role_id,
-      slug: check.slug,
     };
 
     const access_token = await this.generateJWT(jwtPayload, '1d');
@@ -179,7 +176,6 @@ export class AdminService extends BaseResponse {
     if (!checkRole) throw new NotFoundException('Role Tidak Ditemukan');
 
     payload.password = await hash(payload.password, 10);
-    payload.slug = this.convertSlug.slugify(payload.username);
 
     await this.adminRepository.save({
       ...payload,
@@ -191,14 +187,11 @@ export class AdminService extends BaseResponse {
     return this._success('Berhasil Membuat Akun Admin');
   }
 
-  async findAll(
-    query: FindAdminDto,
-    slug: string,
-  ): Promise<ResponsePagination> {
+  async findAll(query: FindAdminDto, id: number): Promise<ResponsePagination> {
     const { page, pageSize, limit, keyword } = query;
 
     const filter: any = {
-      slug: Not(slug),
+      id: Not(id),
     };
     if (keyword) {
       filter['username'] = Like(`%${keyword}%`);
@@ -214,7 +207,7 @@ export class AdminService extends BaseResponse {
         avatar: true,
         username: true,
         email: true,
-        slug: true,
+
         role_id: {
           id: true,
           role_name: true,
@@ -237,14 +230,13 @@ export class AdminService extends BaseResponse {
     );
   }
 
-  async findOne(slug: string): Promise<ResponseSuccess> {
+  async findOne(id: number): Promise<ResponseSuccess> {
     const result = await this.adminRepository.findOne({
       select: {
         id: true,
         avatar: true,
         username: true,
         email: true,
-        slug: true,
         role_id: {
           id: true,
           role_name: true,
@@ -255,7 +247,7 @@ export class AdminService extends BaseResponse {
         },
       },
       relations: ['role_id', 'role_id.action_id'],
-      where: { slug: slug },
+      where: { id: id },
     });
     if (!result) {
       throw new NotFoundException('Detail Admin Tidak Ditemukan');
@@ -263,12 +255,9 @@ export class AdminService extends BaseResponse {
     return this._success('Berhasil Menemukan Detail Admin', result);
   }
 
-  async update(
-    slug: string,
-    payload: UpdateAdminDto,
-  ): Promise<ResponseSuccess> {
+  async update(id: number, payload: UpdateAdminDto): Promise<ResponseSuccess> {
     const check = await this.adminRepository.findOne({
-      where: { slug: slug },
+      where: { id: id },
     });
     if (!check) {
       throw new NotFoundException(`Detail Admin Tidak Ditemukan`);
@@ -283,29 +272,29 @@ export class AdminService extends BaseResponse {
     await this.adminRepository.save({
       ...payload,
       role_id: { id: payload.role_id },
-      slug,
+      id: id,
     });
     return this._success('Berhasil Mengupdate Akun Admin');
   }
 
-  async remove(slug: string): Promise<ResponseSuccess> {
+  async remove(id: number): Promise<ResponseSuccess> {
     const check = await this.adminRepository.findOne({
-      where: { slug: slug },
+      where: { id: id },
     });
     if (!check) {
       throw new NotFoundException(`Detail Admin Tidak Ditemukan`);
     }
-    await this.adminRepository.delete(slug);
+    await this.adminRepository.delete(id);
     return this._success('Berhasil Menghapus Akun Admin');
   }
 
   async editProfile(
     file: Express.Multer.File,
     payload: UpdateAdminDto,
-    slug: string,
+    id: number,
   ): Promise<ResponseSuccess> {
     const check = await this.adminRepository.findOne({
-      where: { slug: slug },
+      where: { id: id },
     });
     if (!check) {
       throw new HttpException(`Profile Tidak Ditemukan`, HttpStatus.NOT_FOUND);
@@ -335,7 +324,7 @@ export class AdminService extends BaseResponse {
       await this.adminRepository.save({
         ...payload,
         role_id: { id: payload.role_id },
-        slug: slug,
+        id: id,
       });
     }
 

@@ -38,26 +38,26 @@ export class DoaController {
     return this.doaService.getKategori(query);
   }
 
-  @Put('update/:slug')
-  async updateDoa(slug: string, @InjectUpdatedBy() payload: UpdateDoaDto) {
-    return this.doaService.updateDoa(slug, payload);
+  @Put('update/:id')
+  async updateDoa(id: string, @InjectUpdatedBy() payload: UpdateDoaDto) {
+    return this.doaService.updateDoa(+id, payload);
   }
 
-  @Put('kategori/update/:slug')
+  @Put('kategori/update/:id')
   async updateKategoriDoa(
-    slug: string,
+    id: string,
     @InjectUpdatedBy() payload: UpdateKategoriDto,
   ) {
-    return this.doaService.updateKategori(slug, payload);
+    return this.doaService.updateKategori(+id, payload);
   }
 
-  @Delete('delete/:slug')
-  async removeDoa(slug: string) {
-    return this.doaService.removeDoa(slug);
+  @Delete('delete/:id')
+  async removeDoa(id: string) {
+    return this.doaService.removeDoa(+id);
   }
 
-  @Delete('kategori/delete/:slug')
-  async removeKategoriDoa(slug: string) {
-    return this.doaService.removeKategori(slug);
+  @Delete('kategori/delete/:id')
+  async removeKategoriDoa(id: string) {
+    return this.doaService.removeKategori(+id);
   }
 }

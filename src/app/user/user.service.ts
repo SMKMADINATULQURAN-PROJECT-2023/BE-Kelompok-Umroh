@@ -31,9 +31,9 @@ export class UserService extends BaseResponse {
     );
   }
 
-  async findOne(slug: string): Promise<ResponseSuccess> {
+  async findOne(id: number): Promise<ResponseSuccess> {
     const check = await this.userRepo.find({
-      where: { slug },
+      where: { id },
     });
 
     if (!check) throw new NotFoundException('User Tidak Ditemukan');
@@ -41,16 +41,16 @@ export class UserService extends BaseResponse {
     return this._success('Berhasil Menemukan Detail User', check);
   }
 
-  async editProfile(payload, slug: string): Promise<ResponseSuccess> {
+  async editProfile(payload, id: number): Promise<ResponseSuccess> {
     const check = await this.userRepo.findOne({
       where: {
-        slug,
+        id,
       },
     });
     if (!check) throw new NotFoundException('User Tidak Ditemkan');
     await this.userRepo.save({
       ...payload,
-      slug: payload.slug,
+      id: id,
     });
     return this._success('Berhasil Mengupdate User');
   }

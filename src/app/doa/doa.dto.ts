@@ -40,8 +40,6 @@ export class DoaDto {
   @IsNotEmpty()
   kategori_id: number;
 
-  slug: string;
-
   @IsObject()
   @IsOptional()
   created_by: { id: number };
@@ -52,14 +50,13 @@ export class DoaDto {
 }
 
 export class CreateKategoriDto extends PickType(DoaDto, [
-  'slug',
   'kategori_name',
   'created_by',
 ]) {}
 export class UpdateKategoriDto extends PickType(DoaDto, [
   'id',
   'kategori_name',
-  'slug',
+
   'updated_by',
 ]) {}
 export class CreateDoaDto extends OmitType(DoaDto, [

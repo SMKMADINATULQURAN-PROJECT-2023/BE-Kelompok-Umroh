@@ -29,9 +29,6 @@ export class Panduan extends BaseEntity {
   @Column({ type: 'enum', enum: JenisKelamin })
   kategori: JenisKelamin;
 
-  @Column()
-  slug: string;
-
   @ManyToOne(() => Admin)
   @JoinColumn({ name: 'created_by' })
   created_by: Admin;

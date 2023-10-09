@@ -1,20 +1,23 @@
-import { OmitType, PickType } from '@nestjs/mapped-types';
+import { PickType } from '@nestjs/mapped-types';
 import {
   IsDate,
   IsEmail,
   IsEnum,
   IsInt,
   IsString,
+  Matches,
   MinLength,
 } from 'class-validator';
 
 import { JenisKelamin } from 'src/interface';
+import { Match } from 'src/utils/decorator/match.decorator';
 
 export class UserDto {
   @IsInt()
   id: number;
 
   @IsString()
+  @MinLength(4)
   username: string;
 
   @IsString()
@@ -50,6 +53,12 @@ export class ResetPasswordDto {
   @IsString()
   @MinLength(8)
   new_password: string;
+
+  @IsString()
+  @MinLength(4)
+  @MinLength(8)
+  @Match('new_password')
+  passwordConfirm: string;
 }
 
 export class RegisterDto extends PickType(UserDto, [

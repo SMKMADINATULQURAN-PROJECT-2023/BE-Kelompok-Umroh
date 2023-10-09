@@ -20,8 +20,6 @@ export class PanduanDto {
   @IsEnum(JenisKelamin)
   kategori: JenisKelamin;
 
-  slug: string;
-
   @IsObject()
   @IsOptional()
   created_by: { id: number };

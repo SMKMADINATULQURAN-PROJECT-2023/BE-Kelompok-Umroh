@@ -9,7 +9,6 @@ import { CloudinaryModule } from '../cloudinary/cloudinary.module';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { jwt_config } from 'src/config/jwt.config';
-import { ConvertSlugService } from 'src/utils/service/convert_slug/convert_slug.service';
 
 @Module({
   imports: [
@@ -28,6 +27,6 @@ import { ConvertSlugService } from 'src/utils/service/convert_slug/convert_slug.
     CloudinaryModule,
   ],
   controllers: [AdminController],
-  providers: [AdminService, JwtService, ConvertSlugService],
+  providers: [AdminService, JwtService],
 })
 export class AdminModule {}

@@ -3,8 +3,7 @@ export interface jwtPayload {
   username: string;
   email: string;
   telephone?: string;
-  tempat_lahir?: string;
+  alamat?: string;
   tanggal_lahir?: Date;
   role_id?: any;
-  slug?: string;
 }

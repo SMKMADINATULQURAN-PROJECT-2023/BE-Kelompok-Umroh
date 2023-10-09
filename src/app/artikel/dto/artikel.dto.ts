@@ -2,7 +2,6 @@ import { OmitType, PartialType } from '@nestjs/mapped-types';
 import {
   IsInt,
   IsNotEmpty,
-  IsNumber,
   IsObject,
   IsOptional,
   IsString,
@@ -24,8 +23,6 @@ export class ArtikelDto {
   @IsString()
   description: string;
 
-  slug: string;
-
   @IsObject()
   @IsOptional()
   created_by: { id: number };
@@ -39,4 +36,4 @@ export class CreateArtikelDto extends OmitType(ArtikelDto, [
   'id',
   'updated_by',
 ]) {}
-export class UpdateArtikelDto extends OmitType(ArtikelDto, ['created_by']) {}
+export class UpdateArtikelDto extends PartialType(ArtikelDto) {}

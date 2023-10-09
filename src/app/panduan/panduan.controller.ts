@@ -2,7 +2,6 @@ import {
   Controller,
   Get,
   Post,
-  Body,
   UploadedFile,
   Param,
   Delete,
@@ -15,6 +14,8 @@ import { UpdatePanduanDto } from './dto/panduan.dto';
 import { JwtGuard } from '../auth/auth.guard';
 import { Pagination } from 'src/utils/decorator/pagination.decorator';
 import { FileInterceptorCustom } from 'src/utils/decorator/fileInterceptor.decorator';
+import { InjectCreatedBy } from 'src/utils/decorator/inject-created_by.decorator';
+import { InjectUpdatedBy } from 'src/utils/decorator/inject-updated_by.decorator';
 
 @UseGuards(JwtGuard)
 @Controller('panduan')
@@ -24,7 +25,7 @@ export class PanduanController {
   @Post('create')
   @FileInterceptorCustom('file_create', 'panduan')
   create(
-    @Body() payload: CreatePanduanDto,
+    @InjectCreatedBy() payload: CreatePanduanDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
     return this.panduanService.create(payload, file);
@@ -35,18 +36,21 @@ export class PanduanController {
     return this.panduanService.findAll(query);
   }
 
-  @Get(':slug')
-  findOne(@Param('slug') slug: string) {
-    return this.panduanService.findOne(slug);
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.panduanService.findOne(+id);
   }
 
-  @Put('update/:slug')
-  update(@Param('slug') slug: string, @Body() payload: UpdatePanduanDto) {
-    return this.panduanService.update(slug, payload);
+  @Put('update/:id')
+  update(
+    @Param('id') id: string,
+    @InjectUpdatedBy() payload: UpdatePanduanDto,
+  ) {
+    return this.panduanService.update(+id, payload);
   }
 
-  @Delete('delete/:slug')
-  remove(@Param('slug') slug: string) {
-    return this.panduanService.remove(slug);
+  @Delete('delete/:id')
+  remove(@Param('id') id: string) {
+    return this.panduanService.remove(+id);
   }
 }

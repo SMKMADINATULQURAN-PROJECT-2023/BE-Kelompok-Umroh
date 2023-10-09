@@ -13,13 +13,13 @@ export class UserController {
     return this.userService.findAll(query);
   }
 
-  @Get(':slug')
-  async findOne(@Param('slug') slug: string) {
-    return this.userService.findOne(slug);
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    return this.userService.findOne(+id);
   }
 
   @Put('/edit-profile')
-  async editProfile(@Param('slug') slug: string, @Body() payload) {
-    return this.userService.editProfile(payload, slug);
+  async editProfile(@Param('id') id: string, @Body() payload) {
+    return this.userService.editProfile(payload, +id);
   }
 }
