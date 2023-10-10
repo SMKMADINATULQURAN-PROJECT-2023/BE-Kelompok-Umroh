@@ -40,18 +40,4 @@ export class UserService extends BaseResponse {
 
     return this._success('Berhasil Menemukan Detail User', check);
   }
-
-  async editProfile(payload, id: number): Promise<ResponseSuccess> {
-    const check = await this.userRepo.findOne({
-      where: {
-        id,
-      },
-    });
-    if (!check) throw new NotFoundException('User Tidak Ditemkan');
-    await this.userRepo.save({
-      ...payload,
-      id: id,
-    });
-    return this._success('Berhasil Mengupdate User');
-  }
 }

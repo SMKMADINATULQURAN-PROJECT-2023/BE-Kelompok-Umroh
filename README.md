@@ -104,6 +104,33 @@ Headers
 | :-----------: | :------: | :----: |
 | Authorization | Required | String |
 
+
+#### User Update Profile
+
+```markdown
+/auth/update-profile
+```
+
+**Method : PUT**
+
+Headers
+
+|     Name      |  Status  |  type  |
+| :-----------: | :------: | :----: |
+| Authorization | Required | String |
+
+Body
+
+|     Name      |  Status  |                          |
+| :-----------: | :------: | :----------------------: |
+|     nama      | Optional |          String          |
+|   username    | required |          String          |
+|     email     | Optional |          String          |
+|   telephone   | Required |          String          |
+| tempat_lahir  | Required |          String          |
+| tanggal_lahir | Required |           Date           |
+| jenis_kelamin | Required | "Laki-Laki", "Perempuan" |
+
 ## User
 
 #### List (Admin only)
@@ -136,31 +163,6 @@ Headers
 | :-----------: | :------: | :----: |
 | Authorization | Required | String |
 
-#### update
-
-```markdown
-/user/update-profile/[id]
-```
-
-**Method : PUT**
-
-Headers
-
-|     Name      |  Status  |  type  |
-| :-----------: | :------: | :----: |
-| Authorization | Required | String |
-
-Body
-
-|     Name      |  Status  |                          |
-| :-----------: | :------: | :----------------------: |
-|     nama      | Optional |          String          |
-|   username    | required |          String          |
-|     email     | Optional |          String          |
-|   telephone   | Required |          String          |
-| tempat_lahir  | Required |          String          |
-| tanggal_lahir | Required |           Date           |
-| jenis_kelamin | Required | "Laki-Laki", "Perempuan" |
 
 ## Admin
 

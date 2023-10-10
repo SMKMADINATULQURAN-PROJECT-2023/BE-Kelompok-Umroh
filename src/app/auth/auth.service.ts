@@ -39,6 +39,7 @@ export class AuthService extends BaseResponse {
     });
   } //membuat method untuk generate jwt
 
+  // ** User =================================
   async register(payload: RegisterDto): Promise<ResponseSuccess> {
     const check = await this.authRepository.findOne({
       where: {
@@ -143,15 +144,19 @@ export class AuthService extends BaseResponse {
     if (!user) throw new NotFoundException('User Tidak Ditemukan');
     return this._success('Berhasil Menemukan Profile', user);
   }
-  async adminProfile(id: number): Promise<ResponseSuccess> {
-    const user = await this.adminRepository.findOne({
+
+  async editProfile(payload, id: number): Promise<ResponseSuccess> {
+    const check = await this.authRepository.findOne({
       where: {
-        id: id,
+        id,
       },
-      relations: ['role_id', 'role_id.action_id'],
     });
-    if (!user) throw new NotFoundException('User Tidak Ditemukan');
-    return this._success('Berhasil Menemukan Profile', user);
+    if (!check) throw new NotFoundException('User Tidak Ditemkan');
+    await this.authRepository.save({
+      ...payload,
+      id: id,
+    });
+    return this._success('Berhasil Mengupdate User');
   }
 
   async forgotPassword(telephone: string): Promise<ResponseSuccess> {
@@ -216,5 +221,17 @@ export class AuthService extends BaseResponse {
     });
 
     return this._success('Reset Password Berhasil, Silahkan Login Ulang');
+  }
+
+  // ** Admin =================================
+  async adminProfile(id: number): Promise<ResponseSuccess> {
+    const user = await this.adminRepository.findOne({
+      where: {
+        id: id,
+      },
+      relations: ['role_id', 'role_id.action_id'],
+    });
+    if (!user) throw new NotFoundException('User Tidak Ditemukan');
+    return this._success('Berhasil Menemukan Profile', user);
   }
 }

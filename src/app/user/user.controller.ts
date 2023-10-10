@@ -1,9 +1,11 @@
-import { Param, Put } from '@nestjs/common/decorators';
-import { Controller, Body, Get } from '@nestjs/common';
+import { Param, UseGuards } from '@nestjs/common/decorators';
+import { Controller, Get } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Pagination } from 'src/utils/decorator/pagination.decorator';
 import { PageRequestDto } from 'src/utils/dto/page.dto';
+import { JwtGuard } from '../auth/auth.guard';
 
+@UseGuards(JwtGuard)
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
@@ -16,10 +18,5 @@ export class UserController {
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.userService.findOne(+id);
-  }
-
-  @Put('/edit-profile')
-  async editProfile(@Param('id') id: string, @Body() payload) {
-    return this.userService.editProfile(payload, +id);
   }
 }
