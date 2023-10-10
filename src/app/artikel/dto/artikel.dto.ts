@@ -36,4 +36,7 @@ export class CreateArtikelDto extends OmitType(ArtikelDto, [
   'id',
   'updated_by',
 ]) {}
-export class UpdateArtikelDto extends PartialType(ArtikelDto) {}
+export class UpdateArtikelDto extends OmitType(ArtikelDto, [
+  'id',
+  'created_by',
+]) {}

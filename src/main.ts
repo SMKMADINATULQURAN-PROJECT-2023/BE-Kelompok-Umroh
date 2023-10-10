@@ -4,7 +4,6 @@ import { ValidationPipe } from '@nestjs/common';
 import { useContainer } from 'class-validator';
 import { AdminSeeder } from './seeds/admin.seed';
 import { RoleActionSeeder } from './seeds/role_action.seed';
-import { DoaSeeder } from './seeds/doa.seed';
 import { DzikirPagiSeeder } from './seeds/dzikirPagi.seed';
 import { DzikirPetangSeeder } from './seeds/dzikirPetang.seed';
 import * as admin from 'firebase-admin';
@@ -21,8 +20,6 @@ async function bootstrap() {
   await roleActionSeeder.create();
   const adminSeeder = app.get(AdminSeeder);
   await adminSeeder.create();
-  const doaSeeder = app.get(DoaSeeder);
-  await doaSeeder.create();
   const dzikirPagi = app.get(DzikirPagiSeeder);
   await dzikirPagi.create();
   const dzikirPetang = app.get(DzikirPetangSeeder);

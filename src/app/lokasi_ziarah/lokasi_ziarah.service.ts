@@ -3,7 +3,6 @@ import {
   HttpException,
   HttpStatus,
   NotFoundException,
-  BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ResponsePagination, ResponseSuccess } from 'src/interface';
@@ -32,7 +31,7 @@ export class LokasiZiarahService extends BaseResponse {
   ): Promise<ResponseSuccess> {
     if (!file?.path) {
       throw new HttpException(
-        'thumbnail should not be empty',
+        'thumbnail Tidak Boleh Kosong',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -101,8 +100,7 @@ export class LokasiZiarahService extends BaseResponse {
     if (file?.path === undefined) {
       updateZiarahDto.id_thumbnail = check.id_thumbnail;
       updateZiarahDto.thumbnail = check.thumbnail;
-    }
-    if (
+    } else if (
       file?.mimetype == 'image/png' ||
       file?.mimetype == 'image/jpeg' ||
       file?.mimetype == 'image/jpg'
@@ -142,5 +140,17 @@ export class LokasiZiarahService extends BaseResponse {
     await this.cloudinary.deleteImage(check.id_thumbnail);
     await this.ziarahRepository.delete(id);
     return this._success('Berhasil Menghapus Lokasi Ziarah');
+  }
+
+  async findOne(id: number): Promise<ResponseSuccess> {
+    const result = await this.ziarahRepository.findOne({
+      where: { id: id },
+    });
+    if (!result)
+      throw new HttpException(
+        `Lokasi Ziarah Tidak Ditemukan`,
+        HttpStatus.NOT_FOUND,
+      );
+    return this._success('Berhasil Menemukan Lokasi Ziarah', result);
   }
 }

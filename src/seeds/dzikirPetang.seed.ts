@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DzikirPetang } from 'src/app/dzikir_pagi_petang/entity/dzikir_petang.entity';
-import { dataPagi } from 'src/utils/json/dzikirPagi';
+import { dataPetang } from 'src/utils/json/dzikirPetang';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class DzikirPetangSeeder {
   ) {}
 
   async create() {
-    const dzikirData = dataPagi.data;
+    const dzikirData = dataPetang.data;
 
     for (const data of dzikirData) {
       const { title, arab, arti, diBaca } = data;

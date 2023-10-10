@@ -58,6 +58,4 @@ export class FindZiarahDto extends PageRequestDto {
   @IsOptional()
   keyword: string;
 }
-export class UpdateZiarahDto extends OmitType(LokasiZiarahDto, [
-  'created_by',
-]) {}
+export class UpdateZiarahDto extends PartialType(LokasiZiarahDto) {}

@@ -1,8 +1,9 @@
-import { Controller, Body, Post, Get } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { DzikirPagiPetangService } from './dzikir_pagi_petang.service';
-import { CreateDzikirPagiPetangArrayDto } from './dzikir_pagi_petang.dto';
 import { Pagination } from 'src/utils/decorator/pagination.decorator';
+import { JwtGuard } from '../auth/auth.guard';
 
+@UseGuards(JwtGuard)
 @Controller('dzikir')
 export class DzikirPagiPetangController {
   constructor(private dzikirPagiPetangService: DzikirPagiPetangService) {}

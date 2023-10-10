@@ -1,4 +1,12 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { KategoriDoa } from 'src/app/doa/entity/category_doa.entity';
+import {
+  Entity,
+  BaseEntity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 
 @Entity()
 export class DzikirPetang extends BaseEntity {
@@ -16,6 +24,10 @@ export class DzikirPetang extends BaseEntity {
 
   @Column()
   diBaca: string;
+
+  @ManyToOne(() => KategoriDoa)
+  @JoinColumn({ name: 'kategori_id' })
+  kategori_id: KategoriDoa;
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;

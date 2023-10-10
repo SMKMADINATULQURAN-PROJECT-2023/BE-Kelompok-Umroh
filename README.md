@@ -432,6 +432,7 @@ Body
 
 |     Name      |  Status  |        |
 | :-----------: | :------: | :----: |
+|  file_create  | Required |  File  |
 | kategori_name | Required | String |
 
 Headers
@@ -452,6 +453,7 @@ Body
 
 |     Name      |  Status  |        |
 | :-----------: | :------: | :----: |
+|  file_update  | Required |  File  |
 | kategori_name | Required | String |
 
 Headers

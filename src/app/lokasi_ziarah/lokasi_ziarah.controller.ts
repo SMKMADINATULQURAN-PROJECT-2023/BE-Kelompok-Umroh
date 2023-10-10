@@ -41,6 +41,11 @@ export class LokasiZiarahController {
     return this.ziarahService.get(payload);
   }
 
+  @Get(':id')
+  async detail(@Param('id') id: string) {
+    return this.ziarahService.findOne(+id);
+  }
+
   @Delete('delete/:id')
   async remove(@Param('id') id: string) {
     return this.ziarahService.remove(+id);

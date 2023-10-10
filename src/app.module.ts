@@ -34,7 +34,6 @@ import { JwtService } from '@nestjs/jwt';
 import { AdminController } from './app/admin/admin.controller';
 import { DoaController } from './app/doa/doa.controller';
 import { LokasiZiarahController } from './app/lokasi_ziarah/lokasi_ziarah.controller';
-import { DoaSeeder } from './seeds/doa.seed';
 import { Doa } from './app/doa/entity/doa.entity';
 import { PanduanModule } from './app/panduan/panduan.module';
 
@@ -87,7 +86,7 @@ import { KategoriDoa } from './app/doa/entity/category_doa.entity';
     UniqueValidator,
     AdminSeeder,
     RoleActionSeeder,
-    DoaSeeder,
+
     DzikirPagiSeeder,
     DzikirPetangSeeder,
     JwtService,

@@ -90,8 +90,7 @@ export class ArtikelService extends BaseResponse {
     if (!file?.path) {
       payload.thumbnail = check.thumbnail;
       payload.id_thumbnail = check.id_thumbnail;
-    }
-    if (
+    } else if (
       file?.mimetype === 'image/jpeg' ||
       file?.mimetype === 'image/jpg' ||
       file?.mimetype === 'image/png'

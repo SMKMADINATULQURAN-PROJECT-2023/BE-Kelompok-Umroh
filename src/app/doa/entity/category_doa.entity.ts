@@ -17,6 +17,12 @@ export class KategoriDoa extends BaseEntity {
   id: number;
 
   @Column()
+  thumbnail: string;
+
+  @Column()
+  id_thumbnail: string;
+
+  @Column()
   @IsUnique([KategoriDoa, 'kategori_name'])
   kategori_name: string;
 

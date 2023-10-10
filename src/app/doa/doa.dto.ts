@@ -9,15 +9,18 @@ import {
   IsOptional,
 } from 'class-validator';
 import { Injectable } from '@nestjs/common';
-import { OmitType, PartialType, PickType } from '@nestjs/mapped-types';
-import { Type } from 'class-transformer';
+import { OmitType, PickType } from '@nestjs/mapped-types';
+import { IsUnique } from 'src/utils/validator/unique.validator';
+import { KategoriDoa } from './entity/category_doa.entity';
 @Injectable()
 export class DoaDto {
-  @IsInt()
-  id: number;
+  thumbnail: any;
+
+  id_thumbnail: string;
 
   @IsString()
   @IsNotEmpty()
+  @IsUnique([KategoriDoa, 'kategori_name'])
   kategori_name: string;
 
   @IsString()
@@ -50,17 +53,18 @@ export class DoaDto {
 }
 
 export class CreateKategoriDto extends PickType(DoaDto, [
+  'thumbnail',
+  'id_thumbnail',
   'kategori_name',
   'created_by',
 ]) {}
 export class UpdateKategoriDto extends PickType(DoaDto, [
-  'id',
+  'thumbnail',
+  'id_thumbnail',
   'kategori_name',
-
   'updated_by',
 ]) {}
 export class CreateDoaDto extends OmitType(DoaDto, [
-  'id',
   'kategori_name',
   'updated_by',
 ]) {}
