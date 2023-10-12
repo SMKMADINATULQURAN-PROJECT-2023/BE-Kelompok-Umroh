@@ -6,10 +6,11 @@ import { User } from './entity/auth.entity';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { jwt_config } from 'src/config/jwt.config';
-import { JwtStrategy } from './jwt.strategy';
+import { JwtAccessTokenStrategy } from './jwtAccessToken.strategy';
 import { MailModule } from '../mail/mail.module';
 import { ResetPassword } from './entity/reset_password.entity';
 import { Admin } from '../admin/entities/admin.entity';
+import { JwtRefreshTokenStrategy } from './jwtRefreshToken.strategy';
 
 @Module({
   imports: [
@@ -28,6 +29,6 @@ import { Admin } from '../admin/entities/admin.entity';
     MailModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtAccessTokenStrategy, JwtRefreshTokenStrategy],
 })
 export class AuthModule {}

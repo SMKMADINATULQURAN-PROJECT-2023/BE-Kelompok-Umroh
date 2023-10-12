@@ -2,14 +2,13 @@ import {
   BaseEntity,
   Column,
   Entity,
-  OneToMany,
   ManyToOne,
   JoinColumn,
   PrimaryGeneratedColumn,
+  OneToMany,
 } from 'typeorm';
-import { Doa } from './doa.entity';
 import { Admin } from 'src/app/admin/entities/admin.entity';
-import { IsUnique } from 'src/utils/validator/unique.validator';
+import { Doa } from './doa.entity';
 
 @Entity()
 export class KategoriDoa extends BaseEntity {
@@ -23,10 +22,9 @@ export class KategoriDoa extends BaseEntity {
   id_thumbnail: string;
 
   @Column()
-  @IsUnique([KategoriDoa, 'kategori_name'])
   kategori_name: string;
 
-  @OneToMany(() => Doa, (doa) => doa.kategori_id, { cascade: true })
+  @OneToMany(() => Doa, (doa) => doa.kategori_id)
   doa_id: Doa[];
 
   @ManyToOne(() => Admin)

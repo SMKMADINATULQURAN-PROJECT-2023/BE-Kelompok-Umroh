@@ -54,9 +54,21 @@ export class ArtikelService extends BaseResponse {
   async findAll(query: PageRequestDto): Promise<ResponsePagination> {
     const { page, pageSize, limit } = query;
     const result = await this.artikelRepo.find({
-      relations: ['created_by'],
       take: pageSize,
       skip: limit,
+      select: {
+        created_by: {
+          id: true,
+          avatar: true,
+          username: true,
+        },
+        updated_by: {
+          id: true,
+          avatar: true,
+          username: true,
+        },
+      },
+      relations: ['created_by', 'updated_by'],
     });
     const total = await this.artikelRepo.count();
     return this._pagination(
@@ -70,6 +82,19 @@ export class ArtikelService extends BaseResponse {
   async findOne(id: number): Promise<ResponseSuccess> {
     const result = await this.artikelRepo.findOne({
       where: { id: id },
+      select: {
+        created_by: {
+          id: true,
+          avatar: true,
+          username: true,
+        },
+        updated_by: {
+          id: true,
+          avatar: true,
+          username: true,
+        },
+      },
+      relations: ['created_by', 'updated_by'],
     });
     if (!result)
       throw new HttpException(`Aritkel Tidak Ditemukan`, HttpStatus.NOT_FOUND);

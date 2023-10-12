@@ -25,7 +25,7 @@ export class Doa extends BaseEntity {
   @Column({ type: 'text' })
   arti: string;
 
-  @ManyToOne(() => KategoriDoa)
+  @ManyToOne(() => KategoriDoa, (kategori) => kategori.doa_id)
   @JoinColumn({ name: 'kategori_id' })
   kategori_id: KategoriDoa;
 

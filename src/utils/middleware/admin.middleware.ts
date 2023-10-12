@@ -14,7 +14,7 @@ export class AdminMiddleware implements NestMiddleware {
     const token = req.headers.authorization.split(' ')[1];
     const decode: any = this.jwtService.decode(token);
     console.log('decode =>', decode);
-    if (decode?.role_id && decode?.role_id?.role_name == 'Admin') {
+    if (!decode?.role_id || decode?.role_id?.role_name == 'Admin') {
       next();
     } else {
       throw new HttpException(

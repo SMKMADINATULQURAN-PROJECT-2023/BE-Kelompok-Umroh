@@ -68,4 +68,9 @@ export class CreateDoaDto extends OmitType(DoaDto, [
   'kategori_name',
   'updated_by',
 ]) {}
-export class UpdateDoaDto extends OmitType(DoaDto, ['created_by']) {}
+export class UpdateDoaDto extends OmitType(DoaDto, [
+  'created_by',
+  'kategori_name',
+  'thumbnail',
+  'id_thumbnail',
+]) {}

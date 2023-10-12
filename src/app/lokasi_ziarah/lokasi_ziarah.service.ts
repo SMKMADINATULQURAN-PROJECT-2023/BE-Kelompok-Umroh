@@ -72,6 +72,19 @@ export class LokasiZiarahService extends BaseResponse {
       where: keyword ? filterKeyword : {},
       skip: limit,
       take: pageSize,
+      select: {
+        created_by: {
+          id: true,
+          avatar: true,
+          username: true,
+        },
+        updated_by: {
+          id: true,
+          avatar: true,
+          username: true,
+        },
+      },
+      relations: ['created_by', 'updated_by'],
     });
     const total = await this.ziarahRepository.count();
     return this._pagination(
@@ -145,6 +158,19 @@ export class LokasiZiarahService extends BaseResponse {
   async findOne(id: number): Promise<ResponseSuccess> {
     const result = await this.ziarahRepository.findOne({
       where: { id: id },
+      select: {
+        created_by: {
+          id: true,
+          avatar: true,
+          username: true,
+        },
+        updated_by: {
+          id: true,
+          avatar: true,
+          username: true,
+        },
+      },
+      relations: ['created_by', 'updated_by'],
     });
     if (!result)
       throw new HttpException(

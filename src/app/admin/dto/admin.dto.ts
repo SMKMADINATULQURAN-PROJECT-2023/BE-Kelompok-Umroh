@@ -18,7 +18,7 @@ export class AdminDto {
 
   @IsNotEmpty()
   @IsString()
-  @MinLength(4)
+  @MinLength(2)
   username: string;
 
   avatar: any;

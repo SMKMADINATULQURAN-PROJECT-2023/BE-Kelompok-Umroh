@@ -5,19 +5,18 @@ import {
   IsEnum,
   IsInt,
   IsString,
-  Matches,
+  MaxLength,
   MinLength,
 } from 'class-validator';
 
 import { JenisKelamin } from 'src/interface';
-import { Match } from 'src/utils/decorator/match.decorator';
 
 export class UserDto {
   @IsInt()
   id: number;
 
   @IsString()
-  @MinLength(4)
+  @MinLength(2)
   username: string;
 
   @IsString()
@@ -32,7 +31,8 @@ export class UserDto {
   password: string;
 
   @IsString()
-  @MinLength(10)
+  @MaxLength(13)
+  @MinLength(9)
   telephone: string;
 
   @IsString()
@@ -53,12 +53,6 @@ export class ResetPasswordDto {
   @IsString()
   @MinLength(8)
   new_password: string;
-
-  @IsString()
-  @MinLength(4)
-  @MinLength(8)
-  @Match('new_password')
-  passwordConfirm: string;
 }
 
 export class RegisterDto extends PickType(UserDto, [

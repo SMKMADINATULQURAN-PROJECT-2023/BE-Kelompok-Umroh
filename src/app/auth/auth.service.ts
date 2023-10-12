@@ -32,9 +32,9 @@ export class AuthService extends BaseResponse {
     super();
   }
 
-  generateJWT(payload: jwtPayload, expiresIn: string | number) {
+  generateJWT(payload: jwtPayload, expiresIn: string | number, token: string) {
     return this.jwtService.sign(payload, {
-      secret: jwt_config.secret,
+      secret: token,
       expiresIn: expiresIn,
     });
   } //membuat method untuk generate jwt
@@ -85,8 +85,17 @@ export class AuthService extends BaseResponse {
         tanggal_lahir: checkUserExists.tanggal_lahir,
       };
 
-      const access_token = await this.generateJWT(jwtPayload, '9d');
-      const refresh_token = await this.generateJWT(jwtPayload, '7d');
+      const access_token = await this.generateJWT(
+        jwtPayload,
+        '1d',
+        jwt_config.access_token_secret,
+      );
+      const refresh_token = await this.generateJWT(
+        jwtPayload,
+        '7d',
+        jwt_config.refresh_token_secret,
+      );
+
       await this.authRepository.save({
         refresh_token: refresh_token,
         id: checkUserExists.id,
@@ -120,8 +129,16 @@ export class AuthService extends BaseResponse {
       alamat: checkUserExists.alamat,
       tanggal_lahir: checkUserExists.tanggal_lahir,
     };
-    const access_token = await this.generateJWT(jwtPayload, '1d');
-    const refresh_token = await this.generateJWT(jwtPayload, '7d');
+    const access_token = await this.generateJWT(
+      jwtPayload,
+      '1d',
+      jwt_config.access_token_secret,
+    );
+    const refresh_token = await this.generateJWT(
+      jwtPayload,
+      '7d',
+      jwt_config.refresh_token_secret,
+    );
 
     await this.authRepository.save({
       refresh_token: refresh_token,

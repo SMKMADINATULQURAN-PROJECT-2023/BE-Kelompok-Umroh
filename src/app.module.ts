@@ -45,6 +45,7 @@ import { UserModule } from './app/user/user.module';
 import { PanduanController } from './app/panduan/panduan.controller';
 
 import { KategoriDoa } from './app/doa/entity/category_doa.entity';
+import { UserController } from './app/user/user.controller';
 
 @Module({
   imports: [
@@ -86,7 +87,6 @@ import { KategoriDoa } from './app/doa/entity/category_doa.entity';
     UniqueValidator,
     AdminSeeder,
     RoleActionSeeder,
-
     DzikirPagiSeeder,
     DzikirPetangSeeder,
     JwtService,
@@ -102,6 +102,7 @@ export class AppModule implements NestModule {
         DoaController,
         LokasiZiarahController,
         PanduanController,
+        UserController,
       ); // Sesuaikan dengan rute yang ingin Anda proteksi.
     // consumer.apply(ArtikelMiddleware).forRoutes(ArtikelController); // Sesuaikan dengan rute yang ingin Anda proteksi.
   }

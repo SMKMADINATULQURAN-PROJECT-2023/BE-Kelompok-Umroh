@@ -18,9 +18,9 @@ import {
   UpdateAdminDto,
 } from './dto/admin.dto';
 import { Pagination } from 'src/utils/decorator/pagination.decorator';
-import { JwtGuard } from '../auth/auth.guard';
+import { JwtGuard, JwtGuardRefreshToken } from '../auth/auth.guard';
 import { FileInterceptorCustom } from 'src/utils/decorator/fileInterceptor.decorator';
-import { LoginAdminDto } from '../auth/auth.dto';
+import { LoginAdminDto, ResetPasswordDto } from '../auth/auth.dto';
 @Controller('admin')
 export class AdminController {
   constructor(private adminService: AdminService) {}
@@ -30,7 +30,7 @@ export class AdminController {
     return this.adminService.loginAdmin(payload);
   }
 
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuardRefreshToken)
   @Post('refresh-token')
   async refresh_token(@Body() payload: RefreshTokenDto) {
     return this.adminService.refreshToken(payload);
@@ -75,12 +75,17 @@ export class AdminController {
   @UseGuards(JwtGuard)
   @FileInterceptorCustom('file_edit_profile', 'admin')
   @Put('update-profile')
-  async editProfile(
+  async updateProfile(
     @UploadedFile() file: Express.Multer.File,
     @Body() payload: UpdateAdminDto,
     @Req() req,
   ) {
     const { id } = req.user;
-    return this.adminService.editProfile(file, payload, id);
+    return this.adminService.updateProfile(file, payload, id);
+  }
+
+  async resetPassword(@Body() payload: ResetPasswordDto, @Req() req) {
+    const { id, token } = req.user;
+    return this.adminService.resetPassword(payload, id, token);
   }
 }

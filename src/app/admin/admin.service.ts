@@ -20,7 +20,7 @@ import {
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { JwtService } from '@nestjs/jwt';
 import { jwt_config } from 'src/config/jwt.config';
-import { LoginAdminDto } from '../auth/auth.dto';
+import { LoginAdminDto, ResetPasswordDto } from '../auth/auth.dto';
 import { jwtPayload } from '../auth/auth.inteface';
 
 @Injectable()
@@ -35,9 +35,9 @@ export class AdminService extends BaseResponse {
   ) {
     super();
   }
-  generateJWT(payload: jwtPayload, expiresIn: string | number) {
+  generateJWT(payload: jwtPayload, expiresIn: string | number, token: string) {
     return this.jwtService.sign(payload, {
-      secret: jwt_config.secret,
+      secret: token,
       expiresIn: expiresIn,
     });
   } //membuat method untuk generate jwt
@@ -52,7 +52,6 @@ export class AdminService extends BaseResponse {
         username: true,
         email: true,
         password: true,
-
         role_id: {
           id: true,
           role_name: true,
@@ -86,8 +85,17 @@ export class AdminService extends BaseResponse {
         role_id: checkUserExists.role_id,
       };
 
-      const access_token = await this.generateJWT(jwtPayload, '9d');
-      const refresh_token = await this.generateJWT(jwtPayload, '7d');
+      const access_token = await this.generateJWT(
+        jwtPayload,
+        '1d',
+        jwt_config.access_token_secret,
+      );
+      const refresh_token = await this.generateJWT(
+        jwtPayload,
+        '7d',
+        jwt_config.refresh_token_secret,
+      );
+
       await this.adminRepository.save({
         refresh_token: refresh_token,
         id: checkUserExists.id,
@@ -111,15 +119,26 @@ export class AdminService extends BaseResponse {
         refresh_token: payload.refresh_token,
         id: payload.id,
       },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+
+        role_id: {
+          id: true,
+          role_name: true,
+          action_id: {
+            id: true,
+            action_name: true,
+          },
+        },
+      },
+      relations: ['role_id', 'role_id.action_id'], // Nama relasi dan relasi bersarang
     });
 
     if (!check) {
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
     }
-
-    await this.jwtService.verify(payload.refresh_token, {
-      secret: jwt_config.secret,
-    });
 
     const jwtPayload: jwtPayload = {
       id: check.id,
@@ -127,10 +146,16 @@ export class AdminService extends BaseResponse {
       email: check.email,
       role_id: check.role_id,
     };
-
-    const access_token = await this.generateJWT(jwtPayload, '1d');
-    const refresh_token = await this.generateJWT(jwtPayload, '7d');
-
+    const access_token = await this.generateJWT(
+      jwtPayload,
+      '1d',
+      jwt_config.access_token_secret,
+    );
+    const refresh_token = await this.generateJWT(
+      jwtPayload,
+      '7d',
+      jwt_config.refresh_token_secret,
+    );
     await this.adminRepository.save({
       refresh_token: refresh_token,
       id: check?.id,
@@ -190,13 +215,13 @@ export class AdminService extends BaseResponse {
   async findAll(query: FindAdminDto, id: number): Promise<ResponsePagination> {
     const { page, pageSize, limit, keyword } = query;
 
-    const filter: any = {
-      id: Not(id),
-    };
+    const filter: any = [];
     if (keyword) {
-      filter['username'] = Like(`%${keyword}%`);
-      filter['email'] = Like(`%${keyword}%`);
-      filter['role_id.role_name'] = Like(`%${keyword}%`);
+      filter.push(
+        { username: Like(`%${keyword}%`) },
+        { email: Like(`%${keyword}%`) },
+        { 'role_id.role_name': Like(`%${keyword}%`) },
+      );
     }
     console.log(filter);
     const total = await this.adminRepository.count({ where: filter });
@@ -288,7 +313,7 @@ export class AdminService extends BaseResponse {
     return this._success('Berhasil Menghapus Akun Admin');
   }
 
-  async editProfile(
+  async updateProfile(
     file: Express.Multer.File,
     payload: UpdateAdminDto,
     id: number,
@@ -329,5 +354,31 @@ export class AdminService extends BaseResponse {
     }
 
     return this._success('Berhasil Mengupdate Profile');
+  }
+
+  async resetPassword(
+    payload: ResetPasswordDto,
+    id: number,
+    token: string,
+  ): Promise<ResponseSuccess> {
+    const check = await this.adminRepository.findOne({
+      where: {
+        id: id,
+        refresh_token: token,
+      },
+    });
+    if (!check) {
+      throw new HttpException(
+        'Token tidak valid',
+        HttpStatus.UNPROCESSABLE_ENTITY, // jika tidak sah , berikan pesan token tidak valid
+      );
+    }
+    payload.new_password = await hash(payload.new_password, 12); //hash password
+    await this.adminRepository.save({
+      // ubah password lama dengan password baru
+      password: payload.new_password,
+      id: id,
+    });
+    return this._success('Reset Password Berhasil, Silahkan login ulang');
   }
 }

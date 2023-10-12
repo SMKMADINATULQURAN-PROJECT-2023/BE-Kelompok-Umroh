@@ -30,7 +30,6 @@ export class DoaService extends BaseResponse {
     super();
   }
 
-  // ** Doa =================================
   async createDoa(payload: CreateDoaDto): Promise<ResponseSuccess> {
     const checkKategori = await this.kategoriRepo.findOne({
       where: {
@@ -53,7 +52,19 @@ export class DoaService extends BaseResponse {
     const result = await this.doaRepo.find({
       skip: limit,
       take: pageSize,
-      relations: ['kategori_id'],
+      select: {
+        created_by: {
+          id: true,
+          avatar: true,
+          username: true,
+        },
+        updated_by: {
+          id: true,
+          avatar: true,
+          username: true,
+        },
+      },
+      relations: ['kategori_id', 'created_by', 'updated_by'],
     });
     const total = await this.doaRepo.count();
     return this._pagination(
@@ -72,10 +83,21 @@ export class DoaService extends BaseResponse {
     if (!check) {
       throw new HttpException(`Doa Tidak Ditemukan`, HttpStatus.NOT_FOUND);
     }
-
+    const kategoriCheck = await this.kategoriRepo.findOne({
+      where: {
+        id: payload.kategori_id,
+      },
+    });
+    if (!kategoriCheck) {
+      throw new HttpException(
+        `Kategori Doa Tidak Ditemukan`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
     await this.doaRepo.save({
       ...payload,
       kategori_id: { id: payload.kategori_id },
+      id: id,
     });
     return this._success('Berhasil Mengupdate Doa');
   }
@@ -94,13 +116,25 @@ export class DoaService extends BaseResponse {
   async detailDoa(id: number): Promise<ResponseSuccess> {
     const result = await this.doaRepo.findOne({
       where: { id: id },
+      select: {
+        created_by: {
+          id: true,
+          avatar: true,
+          username: true,
+        },
+        updated_by: {
+          id: true,
+          avatar: true,
+          username: true,
+        },
+      },
+      relations: ['kategori_id', 'created_by', 'updated_by'],
     });
     if (!result)
       throw new HttpException(`Doa Tidak Ditemukan`, HttpStatus.NOT_FOUND);
-    return this._success('Berhasil Menemukan Doa', result);
+    return this._success('Berhasil Menemukan Detail Doa', result);
   }
 
-  // ** Kategori =================================
   async createKategori(payload: CreateKategoriDto, file: Express.Multer.File) {
     if (!file?.path) {
       throw new HttpException(
@@ -134,7 +168,19 @@ export class DoaService extends BaseResponse {
     const result = await this.kategoriRepo.find({
       skip: limit,
       take: pageSize,
-      relations: ['doa_id'],
+      select: {
+        created_by: {
+          id: true,
+          avatar: true,
+          username: true,
+        },
+        updated_by: {
+          id: true,
+          avatar: true,
+          username: true,
+        },
+      },
+      relations: ['doa_id', 'created_by', 'updated_by'],
     });
     const total = await this.kategoriRepo.count();
     return this._pagination(
@@ -205,6 +251,19 @@ export class DoaService extends BaseResponse {
   async detailKategori(id: number): Promise<ResponseSuccess> {
     const result = await this.kategoriRepo.findOne({
       where: { id: id },
+      select: {
+        created_by: {
+          id: true,
+          avatar: true,
+          username: true,
+        },
+        updated_by: {
+          id: true,
+          avatar: true,
+          username: true,
+        },
+      },
+      relations: ['doa_id', 'created_by', 'updated_by'],
     });
     if (!result)
       throw new HttpException(

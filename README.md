@@ -104,7 +104,6 @@ Headers
 | :-----------: | :------: | :----: |
 | Authorization | Required | String |
 
-
 #### User Update Profile
 
 ```markdown
@@ -123,7 +122,6 @@ Body
 
 |     Name      |  Status  |                          |
 | :-----------: | :------: | :----------------------: |
-|     nama      | Optional |          String          |
 |   username    | required |          String          |
 |     email     | Optional |          String          |
 |   telephone   | Required |          String          |
@@ -162,7 +160,6 @@ Headers
 |     Name      |  Status  |  type  |
 | :-----------: | :------: | :----: |
 | Authorization | Required | String |
-
 
 ## Admin
 
