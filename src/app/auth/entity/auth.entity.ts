@@ -1,6 +1,6 @@
 import { JenisKelamin } from 'src/interface';
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from 'typeorm';
-
+import * as bcrypt from 'bcrypt';
 @Entity()
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -27,7 +27,7 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   alamat: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'date' })
   tanggal_lahir: Date;
 
   @Column({

@@ -11,6 +11,7 @@ import { MailModule } from '../mail/mail.module';
 import { ResetPassword } from './entity/reset_password.entity';
 import { Admin } from '../admin/entities/admin.entity';
 import { JwtRefreshTokenStrategy } from './jwtRefreshToken.strategy';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @Module({
   imports: [
@@ -29,6 +30,11 @@ import { JwtRefreshTokenStrategy } from './jwtRefreshToken.strategy';
     MailModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtAccessTokenStrategy, JwtRefreshTokenStrategy],
+  providers: [
+    AuthService,
+    JwtAccessTokenStrategy,
+    JwtRefreshTokenStrategy,
+    CloudinaryService,
+  ],
 })
 export class AuthModule {}

@@ -2,7 +2,6 @@ import {
   Controller,
   Get,
   Post,
-  UploadedFile,
   Param,
   Delete,
   Put,
@@ -13,7 +12,6 @@ import { CreatePanduanDto, FindPanduanDto } from './dto/panduan.dto';
 import { UpdatePanduanDto } from './dto/panduan.dto';
 import { JwtGuard } from '../auth/auth.guard';
 import { Pagination } from 'src/utils/decorator/pagination.decorator';
-import { FileInterceptorCustom } from 'src/utils/decorator/fileInterceptor.decorator';
 import { InjectCreatedBy } from 'src/utils/decorator/inject-created_by.decorator';
 import { InjectUpdatedBy } from 'src/utils/decorator/inject-updated_by.decorator';
 
@@ -23,12 +21,8 @@ export class PanduanController {
   constructor(private readonly panduanService: PanduanService) {}
 
   @Post('create')
-  @FileInterceptorCustom('file_create', 'panduan')
-  create(
-    @InjectCreatedBy() payload: CreatePanduanDto,
-    @UploadedFile() file: Express.Multer.File,
-  ) {
-    return this.panduanService.create(payload, file);
+  create(@InjectCreatedBy() payload: CreatePanduanDto) {
+    return this.panduanService.create(payload);
   }
 
   @Get()

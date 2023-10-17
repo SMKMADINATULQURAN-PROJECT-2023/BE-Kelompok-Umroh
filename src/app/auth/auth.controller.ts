@@ -1,4 +1,4 @@
-import { Put } from '@nestjs/common/decorators';
+import { Put, UploadedFile } from '@nestjs/common/decorators';
 import {
   Controller,
   Post,
@@ -8,9 +8,16 @@ import {
   Req,
   Param,
 } from '@nestjs/common';
-import { LoginDto, RegisterDto, ResetPasswordDto } from './auth.dto';
+import {
+  LoginDto,
+  RegisterDto,
+  ResetPasswordDto,
+  updateProfileDto,
+} from './auth.dto';
 import { AuthService } from './auth.service';
 import { JwtGuard } from './auth.guard';
+import { FileInterceptorCustom } from 'src/utils/decorator/fileInterceptor.decorator';
+import { UpdateAdminDto } from '../admin/dto/admin.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -52,14 +59,20 @@ export class AuthController {
   async profile(@Req() req) {
     // hasil validate dari jwt strategy akan ditambakan pada req.user. isi object req.user akan sama dengan payload dari jwt token. Silahkan coba console.log(req.user)
     const { id } = req.user;
+
     return this.authService.profile(id);
   }
 
   @UseGuards(JwtGuard)
-  @Put('edit-profile')
-  async editProfile(@Req() req, @Body() payload) {
+  @Put('update-profile')
+  @FileInterceptorCustom('file_update', 'user')
+  async editProfile(
+    @Req() req,
+    @Body() payload: updateProfileDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
     const { id } = req.user;
-    return this.authService.editProfile(payload, id);
+    return this.authService.updateProfile(payload, file, id);
   }
 
   // ** Admin =================================
@@ -69,5 +82,17 @@ export class AuthController {
     // hasil validate dari jwt strategy akan ditambakan pada req.user. isi object req.user akan sama dengan payload dari jwt token. Silahkan coba console.log(req.user)
     const { id } = req.user;
     return this.authService.adminProfile(id);
+  }
+
+  @UseGuards(JwtGuard)
+  @FileInterceptorCustom('file_edit_profile', 'admin')
+  @Put('update-profile-admin')
+  async updateProfile(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() payload: UpdateAdminDto,
+    @Req() req,
+  ) {
+    const { id } = req.user;
+    return this.authService.updateProfileAdmin(file, payload, id);
   }
 }

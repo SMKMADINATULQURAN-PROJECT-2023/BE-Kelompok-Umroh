@@ -8,9 +8,6 @@ import {
 } from 'class-validator';
 
 export class ArtikelDto {
-  @IsInt()
-  id: number;
-
   thumbnail: string;
 
   id_thumbnail: string;
@@ -23,6 +20,10 @@ export class ArtikelDto {
   @IsString()
   description: string;
 
+  @IsNotEmpty()
+  @IsString()
+  source: string;
+
   @IsObject()
   @IsOptional()
   created_by: { id: number };
@@ -32,11 +33,5 @@ export class ArtikelDto {
   updated_by: { id: number };
 }
 
-export class CreateArtikelDto extends OmitType(ArtikelDto, [
-  'id',
-  'updated_by',
-]) {}
-export class UpdateArtikelDto extends OmitType(ArtikelDto, [
-  'id',
-  'created_by',
-]) {}
+export class CreateArtikelDto extends OmitType(ArtikelDto, ['updated_by']) {}
+export class UpdateArtikelDto extends OmitType(ArtikelDto, ['created_by']) {}

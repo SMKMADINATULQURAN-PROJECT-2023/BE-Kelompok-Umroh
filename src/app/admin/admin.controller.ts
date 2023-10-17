@@ -21,6 +21,7 @@ import { Pagination } from 'src/utils/decorator/pagination.decorator';
 import { JwtGuard, JwtGuardRefreshToken } from '../auth/auth.guard';
 import { FileInterceptorCustom } from 'src/utils/decorator/fileInterceptor.decorator';
 import { LoginAdminDto, ResetPasswordDto } from '../auth/auth.dto';
+
 @Controller('admin')
 export class AdminController {
   constructor(private adminService: AdminService) {}
@@ -50,7 +51,6 @@ export class AdminController {
   @Get()
   async findAll(@Pagination() query: FindAdminDto, @Req() req) {
     const { id } = req.user;
-
     return this.adminService.findAll(query, id);
   }
 
@@ -72,18 +72,7 @@ export class AdminController {
     return this.adminService.remove(+id);
   }
 
-  @UseGuards(JwtGuard)
-  @FileInterceptorCustom('file_edit_profile', 'admin')
-  @Put('update-profile')
-  async updateProfile(
-    @UploadedFile() file: Express.Multer.File,
-    @Body() payload: UpdateAdminDto,
-    @Req() req,
-  ) {
-    const { id } = req.user;
-    return this.adminService.updateProfile(file, payload, id);
-  }
-
+  @Put('reset-password')
   async resetPassword(@Body() payload: ResetPasswordDto, @Req() req) {
     const { id, token } = req.user;
     return this.adminService.resetPassword(payload, id, token);

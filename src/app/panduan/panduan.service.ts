@@ -18,35 +18,10 @@ export class PanduanService extends BaseResponse {
   constructor(
     @InjectRepository(Panduan)
     private readonly panduanRepo: Repository<Panduan>,
-    private cloudinary: CloudinaryService,
   ) {
     super();
   }
-  async create(
-    payload: CreatePanduanDto,
-    file: Express.Multer.File,
-  ): Promise<ResponseSuccess> {
-    console.log('file video =>', file);
-    if (!file?.path) {
-      throw new HttpException(
-        'Video Tidak boleh kosong',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-    if (file?.mimetype === 'image/mp4' || file?.mimetype === 'image/mkv') {
-      const { url, public_id } = await this.cloudinary.uploadVideo(
-        file,
-        'panduan',
-      );
-      payload.video = url;
-      payload.id_video = public_id;
-    } else {
-      throw new HttpException(
-        ' file harus berekstensi .mp4, .mkv',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-
+  async create(payload: CreatePanduanDto): Promise<ResponseSuccess> {
     await this.panduanRepo.save(payload);
     return this._success('Berhasil Membuat Panduan');
   }
@@ -89,7 +64,6 @@ export class PanduanService extends BaseResponse {
   async remove(id: number): Promise<ResponseSuccess> {
     const check = await this.panduanRepo.findOne({ where: { id } });
     if (!check) throw new NotFoundException('Panduan Tidak Ditemukan');
-    await this.cloudinary.deleteImage(check.id_video);
     await this.panduanRepo.delete({ id });
     return this._success('Berhasil Menghapus Panduan');
   }

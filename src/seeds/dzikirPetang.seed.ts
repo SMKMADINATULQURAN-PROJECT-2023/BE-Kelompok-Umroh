@@ -15,12 +15,12 @@ export class DzikirPetangSeeder {
     const dzikirData = dataPetang.data;
 
     for (const data of dzikirData) {
-      const { title, arab, arti, diBaca } = data;
+      const { title, arab, arti, diBaca, narrator } = data;
       const check = await this.dzikirPetangRepository.findOne({
         where: {
           title,
           arab,
-
+          narrator,
           arti,
           diBaca,
         },

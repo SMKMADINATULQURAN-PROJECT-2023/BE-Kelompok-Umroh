@@ -1,19 +1,26 @@
-import { OmitType, PartialType } from '@nestjs/mapped-types';
-import { IsEnum, IsInt, IsObject, IsOptional, IsString } from 'class-validator';
+import { OmitType } from '@nestjs/mapped-types';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsObject,
+  IsOptional,
+  IsString,
+  IsUrl,
+} from 'class-validator';
 import { JenisKelamin } from 'src/interface';
 import { PageRequestDto } from 'src/utils/dto/page.dto';
 export class PanduanDto {
-  @IsInt()
-  id: number;
-
-  video: string;
-
-  id_video: string;
+  @IsString()
+  @IsNotEmpty()
+  @IsUrl({}, { message: 'URL harus berupa tautan YouTube yang valid' })
+  url: string;
 
   @IsString()
+  @IsNotEmpty()
   title: string;
 
   @IsString()
+  @IsNotEmpty()
   description: string;
 
   @IsString()
@@ -29,10 +36,7 @@ export class PanduanDto {
   updated_by: { id: number };
 }
 
-export class CreatePanduanDto extends OmitType(PanduanDto, [
-  'id',
-  'updated_by',
-]) {}
+export class CreatePanduanDto extends OmitType(PanduanDto, ['updated_by']) {}
 export class UpdatePanduanDto extends OmitType(PanduanDto, ['created_by']) {}
 export class FindPanduanDto extends PageRequestDto {
   @IsOptional()

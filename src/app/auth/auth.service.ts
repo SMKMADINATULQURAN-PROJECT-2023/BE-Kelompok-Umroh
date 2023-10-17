@@ -6,16 +6,21 @@ import BaseResponse from 'src/utils/response/base.response';
 import { User } from './entity/auth.entity';
 import { Repository } from 'typeorm';
 import { ResponseSuccess } from 'src/interface';
-import { LoginDto, RegisterDto, ResetPasswordDto } from './auth.dto';
+import {
+  LoginDto,
+  RegisterDto,
+  ResetPasswordDto,
+  updateProfileDto,
+} from './auth.dto';
 import { hash, compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { jwt_config } from 'src/config/jwt.config';
-import { MailService } from '../mail/mail.service';
 import { ResetPassword } from './entity/reset_password.entity';
-import * as admin from 'firebase-admin';
 import { NotFoundException } from '@nestjs/common/exceptions';
 import { jwtPayload } from './auth.inteface';
 import { Admin } from '../admin/entities/admin.entity';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { UpdateAdminDto } from '../admin/dto/admin.dto';
 
 @Injectable()
 export class AuthService extends BaseResponse {
@@ -25,9 +30,8 @@ export class AuthService extends BaseResponse {
     private readonly adminRepository: Repository<Admin>,
     @InjectRepository(ResetPassword)
     private readonly resetPasswordRepository: Repository<ResetPassword>,
-
     private jwtService: JwtService,
-    private mailService: MailService,
+    private cloudinary: CloudinaryService,
   ) {
     super();
   }
@@ -69,6 +73,24 @@ export class AuthService extends BaseResponse {
       throw new NotFoundException(
         'Nomor Handphone Tidak Ditemukan Silahkan Daftar',
       );
+    const data = await this.authRepository.findOne({
+      where: {
+        telephone: payload.telephone,
+      },
+      select: {
+        id: true,
+        avatar: true,
+        username: true,
+        email: true,
+        email_verified: true,
+        telephone: true,
+        alamat: true,
+        tanggal_lahir: true,
+        refresh_token: true,
+        created_at: true,
+        updated_at: true,
+      },
+    });
 
     const checkPassword = await compare(
       payload.password,
@@ -101,7 +123,7 @@ export class AuthService extends BaseResponse {
         id: checkUserExists.id,
       }); // simpan refresh token ke dalam tabel
       return this._success('Berhasil Login', {
-        ...checkUserExists,
+        ...data,
         access_token: access_token,
         refresh_token: refresh_token,
       });
@@ -162,13 +184,31 @@ export class AuthService extends BaseResponse {
     return this._success('Berhasil Menemukan Profile', user);
   }
 
-  async editProfile(payload, id: number): Promise<ResponseSuccess> {
+  async updateProfile(
+    payload: updateProfileDto,
+    file: Express.Multer.File,
+    id: number,
+  ): Promise<ResponseSuccess> {
     const check = await this.authRepository.findOne({
       where: {
         id,
       },
     });
     if (!check) throw new NotFoundException('User Tidak Ditemkan');
+    if (
+      file?.mimetype == 'image/png' ||
+      file?.mimetype == 'image/jpeg' ||
+      file?.mimetype == 'image/jpg'
+    ) {
+      const { url } = await this.cloudinary.uploadImage(file, 'user');
+      payload.avatar = url;
+    } else {
+      throw new HttpException(
+        ' file harus berekstensi .jpg, .jpeg, .png',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     await this.authRepository.save({
       ...payload,
       id: id,
@@ -246,9 +286,68 @@ export class AuthService extends BaseResponse {
       where: {
         id: id,
       },
+      select: {
+        id: true,
+        avatar: true,
+        username: true,
+        email: true,
+        created_at: true,
+        updated_at: true,
+        role_id: {
+          id: true,
+          role_name: true,
+          action_id: {
+            id: true,
+            action_name: true,
+          },
+        },
+      },
       relations: ['role_id', 'role_id.action_id'],
     });
     if (!user) throw new NotFoundException('User Tidak Ditemukan');
     return this._success('Berhasil Menemukan Profile', user);
+  }
+
+  async updateProfileAdmin(
+    file: Express.Multer.File,
+    payload: UpdateAdminDto,
+    id: number,
+  ): Promise<ResponseSuccess> {
+    const check = await this.adminRepository.findOne({
+      where: { id: id },
+    });
+    if (!check) {
+      throw new HttpException(`Profile Tidak Ditemukan`, HttpStatus.NOT_FOUND);
+    }
+    if (!file?.path) {
+      payload.avatar = check.avatar;
+      payload.id_avatar = check.id_avatar;
+    }
+    if (
+      file?.mimetype == 'image/png' ||
+      file?.mimetype == 'image/jpeg' ||
+      file?.mimetype == 'image/jpg'
+    ) {
+      const { public_id, url } = await this.cloudinary.uploadImage(
+        file,
+        'admin',
+      );
+      payload.avatar = url;
+      payload.id_avatar = public_id;
+    } else {
+      throw new HttpException(
+        ' file harus berekstensi .jpg, .jpeg, .png',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    if (!check.id_avatar) {
+      await this.adminRepository.save({
+        ...payload,
+        role_id: { id: payload.role_id },
+        id: id,
+      });
+    }
+
+    return this._success('Berhasil Mengupdate Profile');
   }
 }

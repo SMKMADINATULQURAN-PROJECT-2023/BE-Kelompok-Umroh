@@ -8,7 +8,6 @@ import { DzikirPagiSeeder } from './seeds/dzikirPagi.seed';
 import { DzikirPetangSeeder } from './seeds/dzikirPetang.seed';
 import * as admin from 'firebase-admin';
 import * as serviceAccount from './utils/json/serviceAccount.json';
-
 async function bootstrap() {
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),

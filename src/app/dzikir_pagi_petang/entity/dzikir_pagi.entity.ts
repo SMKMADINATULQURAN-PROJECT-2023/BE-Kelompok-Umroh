@@ -25,9 +25,8 @@ export class DzikirPagi extends BaseEntity {
   @Column()
   diBaca: string;
 
-  @ManyToOne(() => KategoriDoa)
-  @JoinColumn({ name: 'kategori_id' })
-  kategori_id: KategoriDoa;
+  @Column({ type: 'text' })
+  narrator: string;
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;

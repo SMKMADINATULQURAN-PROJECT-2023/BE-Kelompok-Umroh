@@ -4,6 +4,8 @@ import {
   IsEmail,
   IsEnum,
   IsInt,
+  IsNotEmpty,
+  IsOptional,
   IsString,
   MaxLength,
   MinLength,
@@ -15,13 +17,14 @@ export class UserDto {
   @IsInt()
   id: number;
 
+  @IsNotEmpty()
   @IsString()
   @MinLength(2)
   username: string;
 
-  @IsString()
   avatar: string;
 
+  @IsNotEmpty()
   @IsString()
   @IsEmail()
   email: string;
@@ -30,20 +33,24 @@ export class UserDto {
   @MinLength(8)
   password: string;
 
+  @IsNotEmpty()
   @IsString()
   @MaxLength(13)
   @MinLength(9)
   telephone: string;
 
   @IsString()
-  tempat_lahir: string;
+  @IsOptional()
+  alamat: string;
 
   @IsDate()
+  @IsOptional()
   tanggal_lahir: Date;
 
   @IsString()
   refresh_token: string;
 
+  @IsNotEmpty()
   @IsString()
   @IsEnum(JenisKelamin)
   jenis_kelamin: JenisKelamin;
@@ -64,3 +71,11 @@ export class RegisterDto extends PickType(UserDto, [
 
 export class LoginDto extends PickType(UserDto, ['telephone', 'password']) {}
 export class LoginAdminDto extends PickType(UserDto, ['email', 'password']) {}
+export class updateProfileDto extends PickType(UserDto, [
+  'username',
+  'avatar',
+  'telephone',
+  'alamat',
+  'tanggal_lahir',
+  'jenis_kelamin',
+]) {}

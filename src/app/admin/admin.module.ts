@@ -9,6 +9,7 @@ import { CloudinaryModule } from '../cloudinary/cloudinary.module';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { jwt_config } from 'src/config/jwt.config';
+import { AuthService } from '../auth/auth.service';
 
 @Module({
   imports: [

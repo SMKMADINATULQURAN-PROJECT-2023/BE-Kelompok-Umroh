@@ -36,7 +36,6 @@ import { DoaController } from './app/doa/doa.controller';
 import { LokasiZiarahController } from './app/lokasi_ziarah/lokasi_ziarah.controller';
 import { Doa } from './app/doa/entity/doa.entity';
 import { PanduanModule } from './app/panduan/panduan.module';
-
 import { DzikirPagiSeeder } from './seeds/dzikirPagi.seed';
 import { DzikirPagi } from './app/dzikir_pagi_petang/entity/dzikir_pagi.entity';
 import { DzikirPetang } from './app/dzikir_pagi_petang/entity/dzikir_petang.entity';
@@ -46,6 +45,9 @@ import { PanduanController } from './app/panduan/panduan.controller';
 
 import { KategoriDoa } from './app/doa/entity/category_doa.entity';
 import { UserController } from './app/user/user.controller';
+import { ContentCreatorMiddleware } from './utils/middleware/contentCreator.middleware';
+import { ArtikelController } from './app/artikel/artikel.controller';
+import { TrafficModule } from './app/traffic/traffic.module';
 
 @Module({
   imports: [
@@ -80,6 +82,7 @@ import { UserController } from './app/user/user.controller';
     ActionModule,
     PanduanModule,
     UserModule,
+    TrafficModule,
   ],
   controllers: [AppController],
   providers: [
@@ -104,6 +107,6 @@ export class AppModule implements NestModule {
         PanduanController,
         UserController,
       ); // Sesuaikan dengan rute yang ingin Anda proteksi.
-    // consumer.apply(ArtikelMiddleware).forRoutes(ArtikelController); // Sesuaikan dengan rute yang ingin Anda proteksi.
+    consumer.apply(ContentCreatorMiddleware).forRoutes(ArtikelController); // Sesuaikan dengan rute yang ingin Anda proteksi.
   }
 }

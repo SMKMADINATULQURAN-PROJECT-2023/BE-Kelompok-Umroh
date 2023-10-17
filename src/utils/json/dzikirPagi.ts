@@ -3,6 +3,8 @@ export const dataPagi = {
     {
       id: 1,
       arab: ' اللَّهُ لاَ إِلَهَ إِلاَّ هُوَ الْحَيُّ الْقَيُّومُ، لاَ تَأْخُذُهُ سِنَةٌ وَلاَ نَوْمٌ، لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ، مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلاَّ بِإِذْنِهِ، يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ، وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلاَّ بِمَا شَاءَ، وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ، وَلَا يَئُودُهُ حِفْظُهُمَا، وَهُوَ الْعَلِيُّ الْعَظِيمُ ',
+      narrator:
+        'HR. Al Hakim (1: 562). Syaikh Al Albani menshahihkan hadits tersebut dalam Shahih At Targhib wa At Tarhib no. 655.',
       diBaca: 'Dibaca 1x',
       title: 'QS. Al-Baqarah : 255',
       arti: 'Allah, tidak ada ilah (yang berhak disembah) melainkan Dia, yang hidup kekal lagi terus menerus mengurus (makhluk-Nya). Dia tidak mengantuk dan tidak tidur. Kepunyaan-Nya apa yang di langit dan di bumi. Tiada yang dapat memberi syafa’at di sisi-Nya tanpa seizin-Nya. Dia mengetahui apa-apa yang di hadapan mereka dan di belakang mereka. Mereka tidak mengetahui apa-apa dari ilmu Allah melainkan apa yang dikehendaki-Nya. Kursi Allah meliputi langit dan bumi. Dia tidak merasa berat memelihara keduanya. Dan Dia Maha Tinggi lagi Maha besar.',
@@ -10,6 +12,8 @@ export const dataPagi = {
     {
       id: 2,
       arab: '○ قُلْ هُوَ اللَّهُ أَحَدٌ ○ اللَّهُ الصَّمَدُ ○ لَمْ يَلِدْ وَلَمْ يُولَدْ ○ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ',
+      narrator:
+        'HR. Abu Daud no. 5082, Tirmidzi no. 3575. Al Hafizh Abu Thohir mengatakan bahwa sanad hadits ini hasan.',
       diBaca: 'Dibaca 3x',
       title: 'QS. Al Ikhlas: 1-4',
       arti: 'Katakanlah, Dia-lah Allah Yang Maha Esa. Allah adalah (Rabb) yang segala sesuatu bergantung kepada-Nya. Dia tidak beranak dan tidak pula diperanakkan. Dan tidak ada seorang pun yang setara dengan-Nya.',
@@ -17,6 +21,8 @@ export const dataPagi = {
     {
       id: 3,
       arab: '○ قُلۡ اَعُوۡذُ بِرَبِّ الۡفَلَقِ ○ مِنۡ شَرِّ مَا خَلَقَ ○ وَمِنۡ شَرِّ غَاسِقٍ اِذَا وَقَبَ ○ وَمِنۡ شَرِّ النَّفّٰثٰتِ فِى الۡعُقَدِۙ ○ وَمِنۡ شَرِّ حَاسِدٍ اِذَا حَسَدَ',
+      narrator:
+        'HR. Abu Daud no. 5082, Tirmidzi no. 3575. Al Hafizh Abu Thohir mengatakan bahwa sanad hadits ini hasan.',
       diBaca: 'Dibaca 3x',
       title: 'QS. Al Falaq: 1-5',
       arti: 'Katakanlah: ‘Aku berlindung kepada Rabb Yang menguasai (waktu) Shubuh dari kejahatan makhluk-Nya. Dan dari kejahatan malam apabila telah gelap gulita. Dan dari kejahatan wanita-wanita tukang sihir yang menghembus pada buhul-buhul. Serta dari kejahatan orang yang dengki apabila dia dengki.',
@@ -24,6 +30,8 @@ export const dataPagi = {
     {
       id: 4,
       arab: '○ قُلْ أَعُوذُ بِرَبِّ النَّاسِ ○ مَلِكِ النَّاسِ ○ إِلَهِ النَّاسِ ○ مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ○ الَّذِي يُوَسْوِسُ فِي صُدُورِ ○ النَّاسِ مِنَ الْجِنَّةِ وَ النَّاسِ',
+      narrator:
+        'HR. Abu Daud no. 5082, Tirmidzi no. 3575. Al Hafizh Abu Thohir mengatakan bahwa sanad hadits ini hasan.',
       diBaca: 'Dibaca 3x',
       title: 'QS. An Nas: 1-5',
       arti: 'Katakanlah, ‘Aku berlindung kepada Rabb (yang memelihara dan menguasai) manusia. Raja manusia. Sembahan (Ilah) manusia. Dari kejahatan (bisikan) syaitan yang biasa bersembunyi. Yang membisikkan (kejahatan) ke dalam dada-dada manusia. Dari golongan jin dan manusia.',
@@ -31,6 +39,8 @@ export const dataPagi = {
     {
       id: 5,
       arab: ' أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لاَ إِلَـهَ إِلاَّ اللهُ وَحْدَهُ لاَ شَرِيْكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيْرُ. رَبِّ أَسْأَلُكَ خَيْرَ مَا فِيْ هَذَا الْيَوْمِ وَخَيْرَ مَا بَعْدَهُ، وَأَعُوْذُ بِكَ مِنْ شَرِّ مَا فِيْ هَذَا الْيَوْمِ وَشَرِّ مَا بَعْدَهُ، رَبِّ أَعُوْذُ بِكَ مِنَ الْكَسَلِ وَسُوْءِ الْكِبَرِ، رَبِّ أَعُوْذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ ',
+      narrator:
+        'HR. Muslim no. 2723. Lihat keterangan Syarh Hisnul Muslim, hal. 161.',
       diBaca: 'Dibaca 1x',
       title: 'Meminta kebaikan untuk hari Ini',
       arti: 'Kami telah memasuki waktu pagi dan kerajaan hanya milik Allah, segala puji bagi Allah. Tidak ada ilah (yang berhak disembah) kecuali Allah semata, tiada sekutu bagi-Nya. Milik Allah kerajaan dan bagi-Nya pujian. Dia-lah Yang Mahakuasa atas segala sesuatu. Wahai Rabbku, aku mohon kepada-Mu kebaikan di hari ini dan kebaikan sesudahnya. Aku berlindung kepada-Mu dari kejahatan hari ini dan kejahatan sesudahnya. Wahai Rabbku, aku berlindung kepada-Mu dari kemalasan dan kejelekan di hari tua. Wahai Rabbku, aku berlindung kepada-Mu dari siksaan di neraka dan siksaan di alam kubur.',
@@ -39,6 +49,8 @@ export const dataPagi = {
     {
       id: 6,
       arab: 'اَللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوْتُ وَإِلَيْكَ النُّشُوْرُ',
+      narrator:
+        'HR. Tirmidzi no. 3391 dan Abu Daud no. 5068. Al Hafizh Abu Thohir mengatakan bahwa sanad hadits ini shahih.',
       diBaca: 'Dibaca 1x',
       title: 'Do’a ketika memasuki waktu pagi',
       arti: 'Ya Allah, dengan rahmat dan pertolongan-Mu kami memasuki waktu pagi, dan dengan rahmat dan pertolongan-Mu kami memasuki waktu petang. Dengan rahmat dan pertolongan-Mu kami hidup dan dengan kehendak-Mu kami mati. Dan kepada-Mu kebangkitan (bagi semua makhluk).',
@@ -46,6 +58,8 @@ export const dataPagi = {
     {
       id: 7,
       arab: ' أَصْبَحْنَا عَلَى فِطْرَةِ اْلإِسْلاَمِ وَعَلَى كَلِمَةِ اْلإِخْلاَصِ، وَعَلَى دِيْنِ نَبِيِّنَا مُحَمَّدٍ صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ، وَعَلَى مِلَّةِ أَبِيْنَا إِبْرَاهِيْمَ، حَنِيْفًا مُسْلِمًا وَمَا كَانَ مِنَ الْمُشْرِكِيْنَ ',
+      narrator:
+        'HR. Ahmad (3: 406). Syaikh Syu’aib Al Arnauth mengatakan bahwa sanad hadits ini shahih sesuai syarat Bukhari Muslim. Lihat pula As Silsilah Ash Shahihah no. 2989.',
       diBaca: 'Dibaca 1x',
       title: 'Bertauhid',
       arti: 'Di waktu pagi kami memegang agama Islam, kalimat ikhlas (kalimat syahadat), agama Nabi kami Muhammad shallallahu ‘alaihi wa sallam, dan agama bapak kami Ibrahim, yang berdiri di atas jalan yang lurus, muslim dan tidak tergolong orang-orang musyrik.',
@@ -53,6 +67,7 @@ export const dataPagi = {
     {
       id: 8,
       arab: ' اَللَّهُمَّ أَنْتَ رَبِّيْ لاَ إِلَـهَ إِلاَّ أَنْتَ، خَلَقْتَنِيْ وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوْذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوْءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوْءُ بِذَنْبِيْ فَاغْفِرْ لِيْ فَإِنَّهُ لاَ يَغْفِرُ الذُّنُوْبَ إِلاَّ أَنْتَ. ',
+      narrator: 'HR. Bukhari no. 6306.',
       diBaca: 'Dibaca 1x',
       title: 'Membaca Sayyidul Istighfar',
       arti: 'Ya Allah, Engkau adalah Rabbku, tidak ada ilah yang berhak disembah kecuali Engkau, Engkaulah yang menciptakanku. Aku adalah hamba-Mu. Aku akan setia pada perjanjianku pada-Mu (yaitu aku akan mentauhidkan-Mu) semampuku dan aku yakin akan janji-Mu (berupa surga untukku). Aku berlindung kepada-Mu dari kejelekan yang kuperbuat. Aku mengakui nikmat-Mu kepadaku dan aku mengakui dosaku. Oleh karena itu, ampunilah aku. Sesungguhnya tiada yang mengampuni dosa kecuali Engkau.',
@@ -60,7 +75,8 @@ export const dataPagi = {
     {
       id: 9,
       arab: ' اَللَّهُمَّ عَافِنِيْ فِيْ بَدَنِيْ، اَللَّهُمَّ عَافِنِيْ فِيْ سَمْعِيْ، اَللَّهُمَّ عَافِنِيْ فِيْ بَصَرِيْ، لاَ إِلَـهَ إِلاَّ أَنْتَ. اَللَّهُمَّ إِنِّي أَعُوْذُ بِكَ مِنَ الْكُفْرِ وَالْفَقْرِ، وَأَعُوْذُ بِكَ مِنْ عَذَابِ الْقَبْرِ، لاَ إِلَـهَ إِلاَّ أَنْتَ',
-      narrator: '',
+      narrator:
+        'HR. Al-Bukhari dalam Shahiib al-Adabil Mufrad no. 701, Abu Dawud no. 5090, Ahmad V/42, hasan. Lihat Shahiih Al-Adabil Mufrad no.539',
       diBaca: 'Dibaca 1x',
       title: 'Memohon keselamatan dunia dan akhirat',
       arti: 'Ya Allah, sesungguhnya aku memohon kebajikan dan keselamatan di dunia dan akhirat. Ya Allah, sesungguhnya aku memohon kebajikan dan keselamatan dalam agama, dunia, keluarga dan hartaku. Ya Allah, tutupilah auratku (aib dan sesuatu yang tidak layak dilihat orang) dan tenteramkanlah aku dari rasa takut. Ya Allah, peliharalah aku dari muka, belakang, kanan, kiri dan atasku. Aku berlindung dengan kebesaran-Mu, agar aku tidak disambar dari bawahku (oleh ular atau tenggelam dalam bumi dan lain-lain yang membuat aku jatuh).',
@@ -68,7 +84,8 @@ export const dataPagi = {
     {
       id: 10,
       arab: ' اَللَّهُمَّ إِنِّيْ أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَاْلآخِرَةِ، اَللَّهُمَّ إِنِّيْ أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِيْنِيْ وَدُنْيَايَ وَأَهْلِيْ وَمَالِيْ اللَّهُمَّ اسْتُرْ عَوْرَاتِى وَآمِنْ رَوْعَاتِى. اَللَّهُمَّ احْفَظْنِيْ مِنْ بَيْنِ يَدَيَّ، وَمِنْ خَلْفِيْ، وَعَنْ يَمِيْنِيْ وَعَنْ شِمَالِيْ، وَمِنْ فَوْقِيْ، وَأَعُوْذُ بِعَظَمَتِكَ أَنْ أُغْتَالَ مِنْ تَحْتِيْ ',
-      narrator: '',
+      narrator:
+        'HR. Abu Daud no. 5074 dan Ibnu Majah no. 3871. Al Hafizh Abu Thohir mengatakan bahwa sanad hadits ini shahih.',
       diBaca: 'Dibaca 1x',
       title: 'Memohon keselamatan dunia dan akhirat',
       arti: 'Ya Allah, sesungguhnya aku memohon kebajikan dan keselamatan di dunia dan akhirat. Ya Allah, sesungguhnya aku memohon kebajikan dan keselamatan dalam agama, dunia, keluarga dan hartaku. Ya Allah, tutupilah auratku (aib dan sesuatu yang tidak layak dilihat orang) dan tenteramkanlah aku dari rasa takut. Ya Allah, peliharalah aku dari muka, belakang, kanan, kiri dan atasku. Aku berlindung dengan kebesaran-Mu, agar aku tidak disambar dari bawahku (oleh ular atau tenggelam dalam bumi dan lain-lain yang membuat aku jatuh).',
@@ -76,7 +93,8 @@ export const dataPagi = {
     {
       id: 11,
       arab: ' اَللَّهُمَّ عَالِمَ الْغَيْبِ وَالشَّهَادَةِ فَاطِرَ السَّمَاوَاتِ وَاْلأَرْضِ، رَبَّ كُلِّ شَيْءٍ وَمَلِيْكَهُ، أَشْهَدُ أَنْ لاَ إِلَـهَ إِلاَّ أَنْتَ، أَعُوْذُ بِكَ مِنْ شَرِّ نَفْسِيْ، وَمِنْ شَرِّ الشَّيْطَانِ وَشِرْكِهِ، وَأَنْ أَقْتَرِفَ عَلَى نَفْسِيْ سُوْءًا أَوْ أَجُرَّهُ إِلَى مُسْلِمٍ ',
-      narrator: '',
+      narrator:
+        'Nabi صلي الله عليه وسلم bersabda kepada Abu Bakar ash-Shiddiq رضي الله عنه “Ucapkanlah pagi dan petang dan apabila engkau hendak tidur.” HR. Al-Bukhari dalam Al-Adabul Mufrad 1202, at-Tirmidzi no.3392 dan Abu Daud no. 5067,Lihat Shahih At- Tirmidzi no. 2798, Shahiih al-Adabil Mufrad no. 914, shahih. Lihat Silsilah al-Ahaadiits ash-Shahiihah no. 2753',
       diBaca: 'Dibaca 1x',
       title: "Do'a pagi, petang dan saat beranjak tidur",
       arti: 'Ya Allah, Yang Maha Mengetahui yang ghaib dan yang nyata, wahai Rabb pencipta langit dan bumi, Rabb segala sesuatu dan yang merajainya. Aku bersaksi bahwa tidak ada ilah yang berhak disembah kecuali Engkau. Aku berlindung kepadaMu dari kejahatan diriku, setan dan balatentaranya (godaan untuk berbuat syirik pada Allah), dan aku (berlindung kepada-Mu) dari berbuat kejelekan terhadap diriku atau menyeretnya kepada seorang muslim.',
@@ -84,7 +102,8 @@ export const dataPagi = {
     {
       id: 12,
       arab: ' بِسْمِ اللَّهِ الَّذِى لاَ يَضُرُّ مَعَ اسْمِهِ شَىْءٌ فِى الأَرْضِ وَلاَ فِى السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ ',
-      narrator: '',
+      narrator:
+        'HR. Abu Daud no. 5088, 5089, Tirmidzi no. 3388, dan Ibnu Majah no. 3869. Al Hafizh Abu Thohir mengatakan bahwa sanad hadits ini hasan.',
       diBaca: 'Dibaca 3x',
       title: "Do'a terhindar dari bahaya yang tiba-tiba",
       arti: 'Dengan nama Allah yang bila disebut, segala sesuatu di bumi dan langit tidak akan berbahaya, Dia-lah Yang Maha Mendengar lagi Maha Mengetahui.',
@@ -92,7 +111,8 @@ export const dataPagi = {
     {
       id: 13,
       arab: ' رَضِيْتُ بِاللهِ رَبًّا، وَبِاْلإِسْلاَمِ دِيْنًا، وَبِمُحَمَّدٍ صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ نَبِيًّا ',
-      narrator: '',
+      narrator:
+        'HR. Abu Daud no. 5072, Tirmidzi no. 3389. Al Hafizh Abu Thohir mengatakan bahwa hadits ini hasan.',
       diBaca: 'Dibaca 3x',
       title: 'Ridha',
       arti: 'Aku ridha Allah sebagai Rabb, Islam sebagai agama dan Muhammad shallallahu ‘alaihi wa sallam sebagai nabi.',
@@ -100,7 +120,8 @@ export const dataPagi = {
     {
       id: 14,
       arab: ' يَا حَيُّ يَا قَيُّوْمُ بِرَحْمَتِكَ أَسْتَغِيْثُ، وَأَصْلِحْ لِيْ شَأْنِيْ كُلَّهُ وَلاَ تَكِلْنِيْ إِلَى نَفْسِيْ طَرْفَةَ عَيْنٍ أَبَدًا ',
-      narrator: '',
+      narrator:
+        'HR. Ibnu As Sunni dalam ‘Amalul Yaum wal Lailah no. 46, An Nasai dalam Al Kubro (381/ 570), Al Bazzar dalam musnadnya (4/ 25/ 3107), Al Hakim (1: 545). Sanad hadits ini hasan sebagaimana dikatakan oleh Syaikh Al Albani dalam As Silsilah Ash Shahihah no. 227.',
       diBaca: 'Dibaca 1x',
       title: "Do'a meminta dilancarkan urusan",
       arti: 'Wahai Rabb Yang Maha Hidup, wahai Rabb Yang Berdiri Sendiri (tidak butuh segala sesuatu), dengan rahmat-Mu aku minta pertolongan, perbaikilah segala urusanku dan jangan diserahkan kepadaku sekali pun sekejap mata (tanpa mendapat pertolongan dariMu).',
@@ -108,7 +129,7 @@ export const dataPagi = {
     {
       id: 15,
       arab: ' لاَ إِلَـهَ إِلاَّ اللهُ وَحْدَهُ لاَ شَرِيْكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيْرُ ',
-      narrator: '',
+      narrator: 'HR. An Nasai Al Kubra 6: 10.',
       diBaca: 'Dibaca 10x',
       title: 'Bertauhid',
       arti: 'Tidak ada ilah yang berhak disembah selain Allah semata, tidak ada sekutu bagiNya. Bagi-Nya kerajaan dan segala pujian. Dia-lah yang berkuasa atas segala sesuatu.',
@@ -116,7 +137,7 @@ export const dataPagi = {
     {
       id: 16,
       arab: ' سُبْحَانَ اللهِ وَبِحَمْدِهِ: عَدَدَ خَلْقِهِ، وَرِضَا نَفْسِهِ، وَزِنَةَ عَرْشِهِ وَمِدَادَ كَلِمَاتِهِ ',
-      narrator: '',
+      narrator: 'HR. Muslim no. 2726.',
       diBaca: 'Dibaca 3x',
       title: "Memuji-muji Allah Subhana wa Ta'ala",
       arti: 'Maha Suci Allah, aku memujiNya sebanyak makhluk-Nya, sejauh kerelaan-Nya, seberat timbangan ‘Arsy-Nya dan sebanyak tinta tulisan kalimat-Nya.',
@@ -124,7 +145,8 @@ export const dataPagi = {
     {
       id: 17,
       arab: ' اَللَّهُمَّ إِنِّيْ أَسْأَلُكَ عِلْمًا نَافِعًا، وَرِزْقًا طَيِّبًا، وَعَمَلاً مُتَقَبَّلاً ',
-      narrator: '',
+      narrator:
+        'HR. Ibnu Majah no. 925 dan Ahmad 6: 305, 322. Al Hafizh Abu Thohir mengatakan bahwa hadits ini shahih.',
       diBaca: 'Dibaca 1x',
       title: 'Meminta Ilmu dan Rezeki',
       arti: 'Ya Allah, sungguh aku memohon kepada-Mu ilmu yang bermanfaat (bagi diriku dan orang lain), rezeki yang halal dan amal yang diterima (di sisi-Mu dan mendapatkan ganjaran yang baik).',
@@ -132,7 +154,7 @@ export const dataPagi = {
     {
       id: 18,
       arab: ' سُبْحَانَ اللهِ وَبِحَمْدِهِ ',
-      narrator: '',
+      narrator: 'HR. Muslim no. 2692.',
       diBaca: 'Dibaca 100x',
       title: 'Dzikir Ringan Namun Berat di Timbangan',
       arti: 'Maha suci Allah, aku memuji-Nya.',
@@ -141,7 +163,6 @@ export const dataPagi = {
     {
       id: 19,
       arab: ' أَسْتَغْفِرُ اللهَ وَأَتُوْبُ إِلَيْهِ ',
-      faedah: '',
       narrator: 'HR. Bukhari no. 6307 dan Muslim no. 2702',
       diBaca: 'Dibaca 100x sehari',
       title: 'Istighfar',

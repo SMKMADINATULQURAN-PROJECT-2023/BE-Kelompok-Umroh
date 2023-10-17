@@ -18,10 +18,11 @@ import {
   UpdateAdminDto,
 } from './dto/admin.dto';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
-import { JwtService } from '@nestjs/jwt';
 import { jwt_config } from 'src/config/jwt.config';
 import { LoginAdminDto, ResetPasswordDto } from '../auth/auth.dto';
 import { jwtPayload } from '../auth/auth.inteface';
+import { AuthService } from '../auth/auth.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AdminService extends BaseResponse {
@@ -220,19 +221,20 @@ export class AdminService extends BaseResponse {
       filter.push(
         { username: Like(`%${keyword}%`) },
         { email: Like(`%${keyword}%`) },
-        { 'role_id.role_name': Like(`%${keyword}%`) },
+        // { 'role_id.role_name': Like(`%${keyword}%`) },
       );
     }
     console.log(filter);
-    const total = await this.adminRepository.count({ where: filter });
+    const total = await this.adminRepository.count({
+      where: { id: Not(id), ...filter },
+    });
     const result = await this.adminRepository.find({
-      where: filter,
+      where: { id: Not(id), ...filter },
       select: {
         id: true,
         avatar: true,
         username: true,
         email: true,
-
         role_id: {
           id: true,
           role_name: true,
@@ -284,9 +286,8 @@ export class AdminService extends BaseResponse {
     const check = await this.adminRepository.findOne({
       where: { id: id },
     });
-    if (!check) {
-      throw new NotFoundException(`Detail Admin Tidak Ditemukan`);
-    }
+    if (!check) throw new NotFoundException(`Admin Tidak Ditemukan`);
+
     const checkRole = await this.roleRepository.findOne({
       where: { id: payload.role_id },
     });
@@ -306,9 +307,8 @@ export class AdminService extends BaseResponse {
     const check = await this.adminRepository.findOne({
       where: { id: id },
     });
-    if (!check) {
-      throw new NotFoundException(`Detail Admin Tidak Ditemukan`);
-    }
+    if (!check) throw new NotFoundException(`Admin Tidak Ditemukan`);
+
     await this.adminRepository.delete(id);
     return this._success('Berhasil Menghapus Akun Admin');
   }

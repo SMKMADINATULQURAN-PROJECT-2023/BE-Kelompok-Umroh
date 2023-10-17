@@ -11,6 +11,7 @@ import { IsUnique } from 'src/utils/validator/unique.validator';
 import { Admin } from '../entities/admin.entity';
 import { OmitType, PartialType, PickType } from '@nestjs/mapped-types';
 import { PageRequestDto } from 'src/utils/dto/page.dto';
+import { UserDto } from 'src/app/auth/auth.dto';
 
 export class AdminDto {
   @IsInt()

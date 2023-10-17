@@ -90,6 +90,31 @@ Headers
 | :-----------: | :------: | :----: |
 | Authorization | Required | String |
 
+#### Admin Update Profile
+
+```markdown
+/auth/update-profile-admin
+```
+
+**Method : PUT**
+
+Headers
+
+|     Name      |  Status  |  type  |
+| :-----------: | :------: | :----: |
+| Authorization | Required | String |
+
+Body
+
+|     Name      |  Status  |                          |
+| :-----------: | :------: | :----------------------: |
+|   username    | required |          String          |
+|     email     | Optional |          String          |
+|   telephone   | Required |          String          |
+| tempat_lahir  | Required |          String          |
+| tanggal_lahir | Required |           Date           |
+| jenis_kelamin | Required | "Laki-Laki", "Perempuan" |
+
 #### User Profile
 
 ```markdown
@@ -158,6 +183,27 @@ Params
 Headers
 
 |     Name      |  Status  |  type  |
+| :-----------: | :------: | :----: |
+| Authorization | Required | String |
+
+#### Refresh Token
+
+```markdown
+/user/refresh-token
+```
+
+**Method : Post**
+
+Body
+
+|     Name      |  Status  |  Type   |
+| :-----------: | :------: | :-----: |
+|      id       | Required | integer |
+| refresh_token | Required | String  |
+
+Headers
+
+|     Name      |  Status  |        |
 | :-----------: | :------: | :----: |
 | Authorization | Required | String |
 
@@ -635,11 +681,12 @@ Params
 
 Body
 
-|    Name     |  Status  |        |
-| :---------: | :------: | :----: |
-| file_create | Required |  File  |
-|    title    | Required | String |
-| description | Required | String |
+|    Name     |  Status  |                             |
+| :---------: | :------: | :-------------------------: |
+|     url     | Required |           String            |
+|    title    | Required |           String            |
+| description | Required |           String            |
+|  kategori   | Required | "Laki-Laki" dan "Perempuan" |
 
 Headers
 
@@ -657,11 +704,12 @@ Headers
 
 Body
 
-|    Name     |  Status  |        |
-| :---------: | :------: | :----: |
-| file_update | Required |  File  |
-|    title    | Required | String |
-| description | Required | String |
+|    Name     |  Status  |                             |
+| :---------: | :------: | :-------------------------: |
+|     url     | Required |           String            |
+|    title    | Required |           String            |
+| description | Required |           String            |
+|  kategori   | Required | "Laki-Laki" dan "Perempuan" |
 
 Headers
 
@@ -693,11 +741,11 @@ Headers
 
 Params
 
-|   Name   |  Status  |         |                         |
-| :------: | :------: | :-----: | :---------------------: |
-|   page   | Optional | Integer |                         |
-| pageSize | Optional | Integer |                         |
-| keyword  | Optional | String  | Search by kategori_name |
+|   Name   |  Status  |         |                                       |
+| :------: | :------: | :-----: | :-----------------------------------: |
+|   page   | Optional | Integer |                                       |
+| pageSize | Optional | Integer |                                       |
+| kategori | Optional | String  | Search by "Laki-Laki" dan "Perempuan" |
 
 #### Detail
 

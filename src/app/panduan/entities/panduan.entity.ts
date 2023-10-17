@@ -15,10 +15,7 @@ export class Panduan extends BaseEntity {
   id: number;
 
   @Column()
-  video: string;
-
-  @Column()
-  id_video: string;
+  url: string;
 
   @Column()
   title: string;
