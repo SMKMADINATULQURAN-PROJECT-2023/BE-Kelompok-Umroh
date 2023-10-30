@@ -1,4 +1,5 @@
 import { Admin } from 'src/app/admin/entities/admin.entity';
+import { Status } from 'src/interface/status.interface';
 import {
   BaseEntity,
   ManyToOne,
@@ -33,6 +34,9 @@ export class LokasiZiarah extends BaseEntity {
 
   @Column()
   longitude: string;
+
+  @Column({ type: 'enum', enum: Status })
+  status: Status;
 
   @ManyToOne(() => Admin)
   @JoinColumn({ name: 'created_by' })

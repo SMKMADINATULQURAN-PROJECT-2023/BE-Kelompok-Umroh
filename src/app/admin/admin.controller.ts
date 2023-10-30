@@ -74,7 +74,7 @@ export class AdminController {
 
   @Put('reset-password')
   async resetPassword(@Body() payload: ResetPasswordDto, @Req() req) {
-    const { id, token } = req.user;
-    return this.adminService.resetPassword(payload, id, token);
+    const { id } = req.user;
+    return this.adminService.resetPassword(payload, id);
   }
 }

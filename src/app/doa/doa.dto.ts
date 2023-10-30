@@ -12,6 +12,7 @@ import { Injectable } from '@nestjs/common';
 import { OmitType, PickType } from '@nestjs/mapped-types';
 import { IsUnique } from 'src/utils/validator/unique.validator';
 import { KategoriDoa } from './entity/category_doa.entity';
+import { PageRequestDto } from 'src/utils/dto/page.dto';
 @Injectable()
 export class DoaDto {
   thumbnail: any;
@@ -64,6 +65,11 @@ export class UpdateKategoriDto extends PickType(DoaDto, [
   'kategori_name',
   'updated_by',
 ]) {}
+export class FindKategoriDto extends PageRequestDto {
+  @IsString()
+  @IsOptional()
+  keyword: string;
+}
 export class CreateDoaDto extends OmitType(DoaDto, [
   'kategori_name',
   'updated_by',
@@ -74,3 +80,8 @@ export class UpdateDoaDto extends OmitType(DoaDto, [
   'thumbnail',
   'id_thumbnail',
 ]) {}
+export class FindDoaDto extends PageRequestDto {
+  @IsString()
+  @IsOptional()
+  keyword: string;
+}

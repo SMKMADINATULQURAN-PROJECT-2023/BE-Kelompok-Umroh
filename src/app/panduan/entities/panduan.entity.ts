@@ -8,6 +8,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Admin } from 'src/app/admin/entities/admin.entity';
+import { Status } from 'src/interface/status.interface';
 
 @Entity()
 export class Panduan extends BaseEntity {
@@ -15,7 +16,7 @@ export class Panduan extends BaseEntity {
   id: number;
 
   @Column()
-  url: string;
+  link: string;
 
   @Column()
   title: string;
@@ -25,6 +26,9 @@ export class Panduan extends BaseEntity {
 
   @Column({ type: 'enum', enum: JenisKelamin })
   kategori: JenisKelamin;
+
+  @Column({ type: 'enum', enum: Status })
+  status: Status;
 
   @ManyToOne(() => Admin)
   @JoinColumn({ name: 'created_by' })

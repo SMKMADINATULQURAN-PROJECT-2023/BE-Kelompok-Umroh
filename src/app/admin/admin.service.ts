@@ -216,20 +216,20 @@ export class AdminService extends BaseResponse {
   async findAll(query: FindAdminDto, id: number): Promise<ResponsePagination> {
     const { page, pageSize, limit, keyword } = query;
 
-    const filter: any = [];
+    const filter: any = [{ id: Not(id) }];
     if (keyword) {
       filter.push(
         { username: Like(`%${keyword}%`) },
         { email: Like(`%${keyword}%`) },
-        // { 'role_id.role_name': Like(`%${keyword}%`) },
+        { role_id: { role_name: Like(`%${keyword}%`) } },
       );
     }
     console.log(filter);
     const total = await this.adminRepository.count({
-      where: { id: Not(id), ...filter },
+      where: filter,
     });
     const result = await this.adminRepository.find({
-      where: { id: Not(id), ...filter },
+      where: filter,
       select: {
         id: true,
         avatar: true,
@@ -312,59 +312,14 @@ export class AdminService extends BaseResponse {
     await this.adminRepository.delete(id);
     return this._success('Berhasil Menghapus Akun Admin');
   }
-
-  async updateProfile(
-    file: Express.Multer.File,
-    payload: UpdateAdminDto,
-    id: number,
-  ): Promise<ResponseSuccess> {
-    const check = await this.adminRepository.findOne({
-      where: { id: id },
-    });
-    if (!check) {
-      throw new HttpException(`Profile Tidak Ditemukan`, HttpStatus.NOT_FOUND);
-    }
-    if (!file?.path) {
-      payload.avatar = check.avatar;
-      payload.id_avatar = check.id_avatar;
-    }
-    if (
-      file?.mimetype == 'image/png' ||
-      file?.mimetype == 'image/jpeg' ||
-      file?.mimetype == 'image/jpg'
-    ) {
-      const { public_id, url } = await this.cloudinary.uploadImage(
-        file,
-        'admin',
-      );
-      payload.avatar = url;
-      payload.id_avatar = public_id;
-    } else {
-      throw new HttpException(
-        ' file harus berekstensi .jpg, .jpeg, .png',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-    if (!check.id_avatar) {
-      await this.adminRepository.save({
-        ...payload,
-        role_id: { id: payload.role_id },
-        id: id,
-      });
-    }
-
-    return this._success('Berhasil Mengupdate Profile');
-  }
-
   async resetPassword(
     payload: ResetPasswordDto,
     id: number,
-    token: string,
   ): Promise<ResponseSuccess> {
     const check = await this.adminRepository.findOne({
       where: {
         id: id,
-        refresh_token: token,
+        refresh_token: payload.refresh_token,
       },
     });
     if (!check) {
@@ -379,6 +334,6 @@ export class AdminService extends BaseResponse {
       password: payload.new_password,
       id: id,
     });
-    return this._success('Reset Password Berhasil, Silahkan login ulang');
+    return this._success('Berhasil Reset Password');
   }
 }

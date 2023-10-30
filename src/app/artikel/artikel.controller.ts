@@ -7,6 +7,9 @@ import {
   UploadedFile,
   UseGuards,
   Put,
+  Req,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { ArtikelService } from './artikel.service';
 import { CreateArtikelDto, UpdateArtikelDto } from './dto/artikel.dto';
@@ -26,13 +29,35 @@ export class ArtikelController {
   create(
     @UploadedFile() file: Express.Multer.File,
     @InjectCreatedBy() payload: CreateArtikelDto,
+    @Req() req,
   ) {
-    return this.artikelService.create(payload, file);
+    if (
+      req?.user?.role_id?.role_name == 'Admin' ||
+      req?.user?.role_id?.role_name == 'Content Creator'
+    ) {
+      return this.artikelService.create(payload, file);
+    } else {
+      throw new HttpException(
+        'Anda Tidak Memiliki Izin Untuk Mengakses Sumber Daya Ini.',
+        HttpStatus.FORBIDDEN,
+      );
+    }
   }
 
   @Get()
-  findAll(@Pagination() query) {
-    return this.artikelService.findAll(query);
+  findAll(@Pagination() query, @Req() req) {
+    if (
+      req?.user?.role_id?.role_name == 'Admin' ||
+      req?.user?.role_id?.role_name == 'Content Creator' ||
+      req?.user?.role_id == 'User'
+    ) {
+      return this.artikelService.findAll(query);
+    } else {
+      throw new HttpException(
+        'Anda Tidak Memiliki Izin Untuk Mengakses Sumber Daya Ini.',
+        HttpStatus.FORBIDDEN,
+      );
+    }
   }
 
   @Get(':id')

@@ -27,7 +27,7 @@ export class PanduanService extends BaseResponse {
   }
 
   async findAll(query: FindPanduanDto): Promise<ResponsePagination> {
-    const { page, pageSize, limit, kategori } = query;
+    const { page, pageSize, limit, kategori, keyword } = query;
     const total = await this.panduanRepo.count();
     const result = await this.panduanRepo.find({
       where: { kategori: kategori },

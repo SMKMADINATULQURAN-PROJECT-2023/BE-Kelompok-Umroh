@@ -1,14 +1,17 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
-import { CreateArtikelDto, UpdateArtikelDto } from './dto/artikel.dto';
+import {
+  CreateArtikelDto,
+  FindArtikelDto,
+  UpdateArtikelDto,
+} from './dto/artikel.dto';
 import { ResponsePagination, ResponseSuccess } from 'src/interface';
 import BaseResponse from 'src/utils/response/base.response';
 import { Artikel } from './entities/artikel.entity';
-import { Repository } from 'typeorm';
+import { Repository, Like } from 'typeorm';
 import { HttpException } from '@nestjs/common/exceptions';
 import { HttpStatus } from '@nestjs/common/enums';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
-import { PageRequestDto } from 'src/utils/dto/page.dto';
 
 @Injectable()
 export class ArtikelService extends BaseResponse {
@@ -51,11 +54,33 @@ export class ArtikelService extends BaseResponse {
     return this._success('Berhasil Menyimpan Artikel');
   }
 
-  async findAll(query: PageRequestDto): Promise<ResponsePagination> {
-    const { page, pageSize, limit } = query;
+  async findAll(query: FindArtikelDto): Promise<ResponsePagination> {
+    const { page, pageSize, limit, keyword } = query;
+    const filterKeyword = [];
+
+    if (keyword) {
+      filterKeyword.push(
+        {
+          title: Like(`%${keyword}%`),
+        },
+        {
+          description: Like(`%${keyword}%`),
+        },
+        {
+          source: Like(`%${keyword}%`),
+        },
+        {
+          created_by: {
+            username: Like(`%${keyword}%`),
+          },
+        },
+      );
+    }
+
     const result = await this.artikelRepo.find({
       take: pageSize,
       skip: limit,
+      where: keyword && filterKeyword,
       select: {
         created_by: {
           id: true,
@@ -70,7 +95,7 @@ export class ArtikelService extends BaseResponse {
       },
       relations: ['created_by', 'updated_by'],
     });
-    const total = await this.artikelRepo.count();
+    const total = await this.artikelRepo.count({ where: filterKeyword });
     return this._pagination(
       'Berhasil Menemukan Artikel',
       result,

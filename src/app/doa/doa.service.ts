@@ -5,13 +5,14 @@ import {
   HttpStatus,
   NotFoundException,
 } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Repository, Like } from 'typeorm';
 import BaseResponse from 'src/utils/response/base.response';
 import { ResponsePagination, ResponseSuccess } from 'src/interface';
-import { PageRequestDto } from 'src/utils/dto/page.dto';
 import {
   CreateDoaDto,
   CreateKategoriDto,
+  FindDoaDto,
+  FindKategoriDto,
   UpdateDoaDto,
   UpdateKategoriDto,
 } from './doa.dto';
@@ -47,11 +48,26 @@ export class DoaService extends BaseResponse {
     return this._success('Berhasil Membuat Doa');
   }
 
-  async getDoa(query: PageRequestDto): Promise<ResponsePagination> {
-    const { page, pageSize, limit } = query;
+  async getDoa(query: FindDoaDto): Promise<ResponsePagination> {
+    const { page, pageSize, limit, keyword } = query;
+    const filterKeyword = [];
+    console.log(query);
+    if (keyword) {
+      filterKeyword.push(
+        {
+          name: Like(`%${keyword}%`),
+        },
+        {
+          created_by: {
+            username: Like(`%${keyword}%`),
+          },
+        },
+      );
+    }
     const result = await this.doaRepo.find({
       skip: limit,
       take: pageSize,
+      where: keyword && filterKeyword,
       select: {
         created_by: {
           id: true,
@@ -66,7 +82,7 @@ export class DoaService extends BaseResponse {
       },
       relations: ['kategori_id', 'created_by', 'updated_by'],
     });
-    const total = await this.doaRepo.count();
+    const total = await this.doaRepo.count({ where: filterKeyword });
     return this._pagination(
       'Berhasil Menemukan Doa',
       result,
@@ -163,11 +179,26 @@ export class DoaService extends BaseResponse {
     return this._success('Berhasil Menyimpan Kategori Doa');
   }
 
-  async getKategori(query: PageRequestDto): Promise<ResponsePagination> {
-    const { page, pageSize, limit } = query;
+  async getKategori(query: FindKategoriDto): Promise<ResponsePagination> {
+    const { page, pageSize, limit, keyword } = query;
+    const filterKeyword = [];
+
+    if (keyword) {
+      filterKeyword.push(
+        {
+          name: Like(`%${keyword}%`),
+        },
+        {
+          created_by: {
+            username: Like(`%${keyword}%`),
+          },
+        },
+      );
+    }
     const result = await this.kategoriRepo.find({
       skip: limit,
       take: pageSize,
+      where: filterKeyword,
       select: {
         created_by: {
           id: true,

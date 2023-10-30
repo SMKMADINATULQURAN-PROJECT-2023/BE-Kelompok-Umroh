@@ -1,4 +1,5 @@
 import { Admin } from 'src/app/admin/entities/admin.entity';
+import { Status } from 'src/interface/status.interface';
 import {
   BaseEntity,
   Column,
@@ -27,6 +28,9 @@ export class Artikel extends BaseEntity {
 
   @Column()
   source: string;
+
+  @Column({ type: 'enum', enum: Status })
+  status: Status;
 
   @ManyToOne(() => Admin)
   @JoinColumn({ name: 'created_by' })

@@ -1,6 +1,6 @@
 import { JenisKelamin } from 'src/interface';
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from 'typeorm';
-import * as bcrypt from 'bcrypt';
+
 @Entity()
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -16,7 +16,7 @@ export class User extends BaseEntity {
   email: string;
 
   @Column({ nullable: true })
-  email_verified: string;
+  email_verified: boolean;
 
   @Column({ nullable: false })
   password: string;

@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import {
   LoginDto,
+  LoginGoogleDto,
   RegisterDto,
   ResetPasswordDto,
   updateProfileDto,
@@ -35,8 +36,8 @@ export class AuthController {
   }
 
   @Post('google-login')
-  async googleLogin(@Body() email: string) {
-    return this.authService.loginGoogle(email);
+  async googleLogin(@Body() payload: LoginGoogleDto) {
+    return this.authService.loginGoogle(payload);
   }
 
   @Post('lupa-password')
@@ -92,7 +93,13 @@ export class AuthController {
     @Body() payload: UpdateAdminDto,
     @Req() req,
   ) {
-    const { id } = req.user;
-    return this.authService.updateProfileAdmin(file, payload, id);
+    const { id, refresh_token } = req.user;
+    console.log(refresh_token);
+    return this.authService.updateProfileAdmin(
+      file,
+      payload,
+      id,
+      refresh_token,
+    );
   }
 }

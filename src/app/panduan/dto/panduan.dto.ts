@@ -42,4 +42,8 @@ export class FindPanduanDto extends PageRequestDto {
   @IsOptional()
   @IsEnum(JenisKelamin)
   kategori: JenisKelamin;
+
+  @IsOptional()
+  @IsString()
+  keyword: string;
 }

@@ -1,5 +1,6 @@
 import { PickType } from '@nestjs/mapped-types';
 import {
+  IsBoolean,
   IsDate,
   IsEmail,
   IsEnum,
@@ -22,12 +23,17 @@ export class UserDto {
   @MinLength(2)
   username: string;
 
+  @IsOptional()
   avatar: string;
 
   @IsNotEmpty()
   @IsString()
   @IsEmail()
   email: string;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  email_verified: boolean;
 
   @IsString()
   @MinLength(8)
@@ -58,6 +64,9 @@ export class UserDto {
 
 export class ResetPasswordDto {
   @IsString()
+  refresh_token: string;
+
+  @IsString()
   @MinLength(8)
   new_password: string;
 }
@@ -70,6 +79,13 @@ export class RegisterDto extends PickType(UserDto, [
 ]) {}
 
 export class LoginDto extends PickType(UserDto, ['telephone', 'password']) {}
+export class LoginGoogleDto extends PickType(UserDto, [
+  'avatar',
+  'username',
+  'email',
+  'email_verified',
+  'telephone',
+]) {}
 export class LoginAdminDto extends PickType(UserDto, ['email', 'password']) {}
 export class updateProfileDto extends PickType(UserDto, [
   'username',

@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Admin } from 'src/app/admin/entities/admin.entity';
 import { Doa } from './doa.entity';
+import { Status } from 'src/interface/status.interface';
 
 @Entity()
 export class KategoriDoa extends BaseEntity {
@@ -26,6 +27,9 @@ export class KategoriDoa extends BaseEntity {
 
   @OneToMany(() => Doa, (doa) => doa.kategori_id)
   doa_id: Doa[];
+
+  @Column({ type: 'enum', enum: Status })
+  status: Status;
 
   @ManyToOne(() => Admin)
   @JoinColumn({ name: 'created_by' })

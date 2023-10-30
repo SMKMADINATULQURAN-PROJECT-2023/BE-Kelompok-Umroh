@@ -13,6 +13,8 @@ import { Pagination } from 'src/utils/decorator/pagination.decorator';
 import {
   CreateDoaDto,
   CreateKategoriDto,
+  FindDoaDto,
+  FindKategoriDto,
   UpdateDoaDto,
   UpdateKategoriDto,
 } from './doa.dto';
@@ -20,7 +22,6 @@ import { InjectCreatedBy } from 'src/utils/decorator/inject-created_by.decorator
 import { InjectUpdatedBy } from 'src/utils/decorator/inject-updated_by.decorator';
 import { JwtGuard } from '../auth/auth.guard';
 import { FileInterceptorCustom } from 'src/utils/decorator/fileInterceptor.decorator';
-import { PageRequestDto } from 'src/utils/dto/page.dto';
 
 @UseGuards(JwtGuard)
 @Controller('doa')
@@ -33,7 +34,7 @@ export class DoaController {
   }
 
   @Get()
-  async getDoa(@Pagination() query) {
+  async getDoa(@Pagination() query: FindDoaDto) {
     return this.doaService.getDoa(query);
   }
 
@@ -61,16 +62,16 @@ export class DoaController {
   }
 
   @Get('kategori')
-  async getKategori(@Pagination() query: PageRequestDto) {
+  async getKategori(@Pagination() query: FindKategoriDto) {
     return this.doaService.getKategori(query);
   }
 
   @Put('kategori/update/:id')
   @FileInterceptorCustom('file_update', 'kategori_doa')
   async updateKategoriDoa(
+    @InjectUpdatedBy() payload: UpdateKategoriDto,
     @UploadedFile() file: Express.Multer.File,
     @Param('id') id: string,
-    @InjectUpdatedBy() payload: UpdateKategoriDto,
   ) {
     return this.doaService.updateKategori(+id, payload, file);
   }

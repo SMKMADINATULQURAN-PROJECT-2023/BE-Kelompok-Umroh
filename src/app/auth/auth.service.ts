@@ -8,6 +8,7 @@ import { Repository } from 'typeorm';
 import { ResponseSuccess } from 'src/interface';
 import {
   LoginDto,
+  LoginGoogleDto,
   RegisterDto,
   ResetPasswordDto,
   updateProfileDto,
@@ -105,6 +106,7 @@ export class AuthService extends BaseResponse {
         telephone: checkUserExists.telephone,
         alamat: checkUserExists.alamat,
         tanggal_lahir: checkUserExists.tanggal_lahir,
+        role_id: 'User',
       };
 
       const access_token = await this.generateJWT(
@@ -135,21 +137,21 @@ export class AuthService extends BaseResponse {
     }
   }
 
-  async loginGoogle(email: string): Promise<ResponseSuccess> {
+  async loginGoogle(payload: LoginGoogleDto): Promise<ResponseSuccess> {
+    const data = await this.authRepository.save(payload);
+
     const checkUserExists = await this.authRepository.findOne({
       where: {
-        email: email,
+        email: data.email,
       },
     });
-    if (!checkUserExists)
-      throw new NotFoundException('Email Tidak ditemukan, Silahkan Daftar');
     const jwtPayload: jwtPayload = {
       id: checkUserExists.id,
+      avatar: checkUserExists.avatar,
       username: checkUserExists.username,
       email: checkUserExists.email,
+      email_verified: checkUserExists.email_verified,
       telephone: checkUserExists.telephone,
-      alamat: checkUserExists.alamat,
-      tanggal_lahir: checkUserExists.tanggal_lahir,
     };
     const access_token = await this.generateJWT(
       jwtPayload,
@@ -161,11 +163,6 @@ export class AuthService extends BaseResponse {
       '7d',
       jwt_config.refresh_token_secret,
     );
-
-    await this.authRepository.save({
-      refresh_token: refresh_token,
-      id: checkUserExists.id,
-    });
 
     return this._success('Berhasil Login', {
       ...checkUserExists,
@@ -195,18 +192,21 @@ export class AuthService extends BaseResponse {
       },
     });
     if (!check) throw new NotFoundException('User Tidak Ditemkan');
-    if (
-      file?.mimetype == 'image/png' ||
-      file?.mimetype == 'image/jpeg' ||
-      file?.mimetype == 'image/jpg'
-    ) {
-      const { url } = await this.cloudinary.uploadImage(file, 'user');
-      payload.avatar = url;
+    const allowedMimetypes = ['image/png', 'image/jpeg', 'image/jpg'];
+    if (file) {
+      if (allowedMimetypes.includes(file?.mimetype)) {
+        const { url } = await this.cloudinary.uploadImage(file, 'user');
+        payload.avatar = url;
+      } else {
+        throw new HttpException(
+          ' file harus berekstensi .jpg, .jpeg, .png',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    } else if (check.avatar) {
+      payload.avatar = check.avatar;
     } else {
-      throw new HttpException(
-        ' file harus berekstensi .jpg, .jpeg, .png',
-        HttpStatus.BAD_REQUEST,
-      );
+      return;
     }
 
     await this.authRepository.save({
@@ -312,34 +312,36 @@ export class AuthService extends BaseResponse {
     file: Express.Multer.File,
     payload: UpdateAdminDto,
     id: number,
+    refresh_token: string,
   ): Promise<ResponseSuccess> {
     const check = await this.adminRepository.findOne({
-      where: { id: id },
+      where: { id: id, refresh_token: refresh_token },
     });
     if (!check) {
-      throw new HttpException(`Profile Tidak Ditemukan`, HttpStatus.NOT_FOUND);
+      throw new HttpException(`Token Tidak Valid`, HttpStatus.NOT_FOUND);
     }
-    if (!file?.path) {
+    const allowedMimetypes = ['image/png', 'image/jpeg', 'image/jpg'];
+    if (file) {
+      if (allowedMimetypes.includes(file.mimetype)) {
+        const { public_id, url } = await this.cloudinary.uploadImage(
+          file,
+          'admin',
+        );
+        payload.avatar = url;
+        payload.id_avatar = public_id;
+      } else {
+        throw new HttpException(
+          ' file harus berekstensi .jpg, .jpeg, .png',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    } else if (check.avatar || check.id_avatar) {
       payload.avatar = check.avatar;
       payload.id_avatar = check.id_avatar;
-    }
-    if (
-      file?.mimetype == 'image/png' ||
-      file?.mimetype == 'image/jpeg' ||
-      file?.mimetype == 'image/jpg'
-    ) {
-      const { public_id, url } = await this.cloudinary.uploadImage(
-        file,
-        'admin',
-      );
-      payload.avatar = url;
-      payload.id_avatar = public_id;
     } else {
-      throw new HttpException(
-        ' file harus berekstensi .jpg, .jpeg, .png',
-        HttpStatus.BAD_REQUEST,
-      );
+      return;
     }
+
     if (!check.id_avatar) {
       await this.adminRepository.save({
         ...payload,
