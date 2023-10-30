@@ -10,18 +10,6 @@ https://github.com/SMKMADINATULQURAN-PROJECT-2023/BE-Kelompok-Umroh.git
 
 2. run `npm install`
 
-3. run `npm run dev:start`
-
-# Usage
-
-1. Clone this repository
-
-```markdown
-https://github.com/SMKMADINATULQURAN-PROJECT-2023/BE-Kelompok-Umroh.git
-```
-
-2. run `npm install`
-
 3. run `npm run start:dev`
 
 # Documentation
