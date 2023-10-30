@@ -25,7 +25,7 @@ export class PanduanDto {
 
   @IsString()
   @IsEnum(JenisKelamin)
-  kategori: JenisKelamin;
+  gender: JenisKelamin;
 
   @IsObject()
   @IsOptional()
@@ -41,7 +41,7 @@ export class UpdatePanduanDto extends OmitType(PanduanDto, ['created_by']) {}
 export class FindPanduanDto extends PageRequestDto {
   @IsOptional()
   @IsEnum(JenisKelamin)
-  kategori: JenisKelamin;
+  gender: JenisKelamin;
 
   @IsOptional()
   @IsString()

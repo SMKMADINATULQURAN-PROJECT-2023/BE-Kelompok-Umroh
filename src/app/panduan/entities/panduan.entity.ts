@@ -10,6 +10,10 @@ import {
 import { Admin } from 'src/app/admin/entities/admin.entity';
 import { Status } from 'src/interface/status.interface';
 
+export enum KategoriPanduan {
+  UMRAH = 'Umrah',
+  HAJI = 'Haji',
+}
 @Entity()
 export class Panduan extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -25,7 +29,10 @@ export class Panduan extends BaseEntity {
   description: string;
 
   @Column({ type: 'enum', enum: JenisKelamin })
-  kategori: JenisKelamin;
+  gender: JenisKelamin;
+
+  @Column({ type: 'enum', enum: KategoriPanduan })
+  kategori_panduan: KategoriPanduan;
 
   @Column({ type: 'enum', enum: Status })
   status: Status;

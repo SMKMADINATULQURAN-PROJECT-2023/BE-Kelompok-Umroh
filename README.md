@@ -686,7 +686,8 @@ Body
 |     url     | Required |           String            |
 |    title    | Required |           String            |
 | description | Required |           String            |
-|  kategori   | Required | "Laki-Laki" dan "Perempuan" |
+|  gender   | Required | "Laki-Laki" dan "Perempuan" |
+|  kategori_panduan   | Required | "Haji" dan "Umrah" |
 
 Headers
 

@@ -11,7 +11,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Panduan } from './entities/panduan.entity';
 import { Repository } from 'typeorm';
 import { ResponsePagination, ResponseSuccess } from 'src/interface';
-import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @Injectable()
 export class PanduanService extends BaseResponse {
@@ -27,10 +26,10 @@ export class PanduanService extends BaseResponse {
   }
 
   async findAll(query: FindPanduanDto): Promise<ResponsePagination> {
-    const { page, pageSize, limit, kategori, keyword } = query;
+    const { page, pageSize, limit, gender, keyword } = query;
     const total = await this.panduanRepo.count();
     const result = await this.panduanRepo.find({
-      where: { kategori: kategori },
+      where: { gender: gender },
       take: pageSize,
       skip: limit,
     });
