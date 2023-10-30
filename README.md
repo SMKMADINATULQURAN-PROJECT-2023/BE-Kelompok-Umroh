@@ -5,7 +5,7 @@
 1. Clone this repository
 
 ```markdown
-https://github.com/Al-Ghozy03/kecamatan-jonggol.git
+https://github.com/SMKMADINATULQURAN-PROJECT-2023/BE-Kelompok-Umroh.git
 ```
 
 2. run `npm install`
@@ -17,16 +17,16 @@ https://github.com/Al-Ghozy03/kecamatan-jonggol.git
 1. Clone this repository
 
 ```markdown
-https://github.com/Al-Ghozy03/kecamatan-jonggol.git
+https://github.com/SMKMADINATULQURAN-PROJECT-2023/BE-Kelompok-Umroh.git
 ```
 
 2. run `npm install`
 
-3. run `npm run dev:start`
+3. run `npm run start:dev`
 
 # Documentation
 
-**BASE URL = http://localhost:5002**
+`BASE URL = http://localhost:5002`
 
 ## Auth
 
