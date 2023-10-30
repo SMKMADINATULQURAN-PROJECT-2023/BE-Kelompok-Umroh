@@ -9,6 +9,7 @@ import {
 } from 'class-validator';
 import { JenisKelamin } from 'src/interface';
 import { PageRequestDto } from 'src/utils/dto/page.dto';
+import { KategoriPanduan } from '../entities/panduan.entity';
 export class PanduanDto {
   @IsString()
   @IsNotEmpty()
@@ -26,6 +27,10 @@ export class PanduanDto {
   @IsString()
   @IsEnum(JenisKelamin)
   gender: JenisKelamin;
+
+  @IsString()
+  @IsEnum(KategoriPanduan)
+  kategori_panduan: KategoriPanduan;
 
   @IsObject()
   @IsOptional()

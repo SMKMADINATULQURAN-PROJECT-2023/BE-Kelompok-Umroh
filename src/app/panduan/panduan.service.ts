@@ -32,6 +32,7 @@ export class PanduanService extends BaseResponse {
       where: { gender: gender },
       take: pageSize,
       skip: limit,
+      relations: ['created_by', 'updated_by'],
     });
     return this._pagination(
       'Berhasil Menemukan Panduan',

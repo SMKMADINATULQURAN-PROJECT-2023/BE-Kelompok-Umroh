@@ -681,13 +681,13 @@ Params
 
 Body
 
-|    Name     |  Status  |                             |
-| :---------: | :------: | :-------------------------: |
-|     url     | Required |           String            |
-|    title    | Required |           String            |
-| description | Required |           String            |
-|  gender   | Required | "Laki-Laki" dan "Perempuan" |
-|  kategori_panduan   | Required | "Haji" dan "Umrah" |
+|       Name       |  Status  |                             |
+| :--------------: | :------: | :-------------------------: |
+|       url        | Required |           String            |
+|      title       | Required |           String            |
+|   description    | Required |           String            |
+|      gender      | Required | "Laki-Laki" dan "Perempuan" |
+| kategori_panduan | Required |     "Haji" dan "Umrah"      |
 
 Headers
 
@@ -705,12 +705,13 @@ Headers
 
 Body
 
-|    Name     |  Status  |                             |
-| :---------: | :------: | :-------------------------: |
-|     url     | Required |           String            |
-|    title    | Required |           String            |
-| description | Required |           String            |
-|  kategori   | Required | "Laki-Laki" dan "Perempuan" |
+|       Name       |  Status  |                             |
+| :--------------: | :------: | :-------------------------: |
+|       url        | Required |           String            |
+|      title       | Required |           String            |
+|   description    | Required |           String            |
+|      gender      | Required | "Laki-Laki" dan "Perempuan" |
+| kategori_panduan | Required |     "Haji" dan "Umrah"      |
 
 Headers
 
