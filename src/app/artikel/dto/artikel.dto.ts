@@ -1,5 +1,12 @@
 import { OmitType, PartialType } from '@nestjs/mapped-types';
-import { IsNotEmpty, IsObject, IsOptional, IsString } from 'class-validator';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsObject,
+  IsOptional,
+  IsString,
+} from 'class-validator';
+import { Status } from 'src/interface/status.interface';
 import { PageRequestDto } from 'src/utils/dto/page.dto';
 
 export class ArtikelDto {
@@ -31,6 +38,11 @@ export class ArtikelDto {
 export class CreateArtikelDto extends OmitType(ArtikelDto, ['updated_by']) {}
 export class UpdateArtikelDto extends OmitType(ArtikelDto, ['created_by']) {}
 export class FindArtikelDto extends PageRequestDto {
+  @IsOptional()
+  @IsString()
+  @IsEnum(Status)
+  status: Status;
+
   @IsString()
   @IsOptional()
   keyword: string;

@@ -191,28 +191,32 @@ export class AuthService extends BaseResponse {
         id,
       },
     });
-    if (!check) throw new NotFoundException('User Tidak Ditemkan');
+
+    if (!check) {
+      throw new NotFoundException('User Tidak Ditemukan');
+    }
+
     const allowedMimetypes = ['image/png', 'image/jpeg', 'image/jpg'];
-    if (file) {
-      if (allowedMimetypes.includes(file?.mimetype)) {
-        const { url } = await this.cloudinary.uploadImage(file, 'user');
-        payload.avatar = url;
-      } else {
-        throw new HttpException(
-          ' file harus berekstensi .jpg, .jpeg, .png',
-          HttpStatus.BAD_REQUEST,
-        );
+
+    if (!file) {
+      if (check.avatar) {
+        payload.avatar = check.avatar;
       }
-    } else if (check.avatar) {
-      payload.avatar = check.avatar;
+    } else if (!allowedMimetypes.includes(file.mimetype)) {
+      throw new HttpException(
+        'File harus berekstensi .jpg, .jpeg, .png',
+        HttpStatus.BAD_REQUEST,
+      );
     } else {
-      return;
+      const { url } = await this.cloudinary.uploadImage(file, 'user');
+      payload.avatar = url;
     }
 
     await this.authRepository.save({
       ...payload,
-      id: id,
+      id,
     });
+
     return this._success('Berhasil Mengupdate User');
   }
 
@@ -278,6 +282,31 @@ export class AuthService extends BaseResponse {
     });
 
     return this._success('Reset Password Berhasil, Silahkan Login Ulang');
+  }
+
+  async updatePassword(
+    payload: ResetPasswordDto,
+    id: number,
+  ): Promise<ResponseSuccess> {
+    const check = await this.authRepository.findOne({
+      where: {
+        refresh_token: payload.refresh_token,
+        id: id,
+      },
+    });
+
+    if (!check) {
+      throw new HttpException(
+        'Token tidak valid',
+        HttpStatus.UNPROCESSABLE_ENTITY, // jika tidak sah , berikan pesan token tidak valid
+      );
+    }
+    payload.new_password = await hash(payload.new_password, 12); //hash password
+    await this.authRepository.save({
+      ...payload,
+      id: id,
+    });
+    return this._success('Berhasil Mengupdate Password');
   }
 
   // ** Admin =================================

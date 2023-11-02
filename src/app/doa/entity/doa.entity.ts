@@ -30,7 +30,7 @@ export class Doa extends BaseEntity {
   @JoinColumn({ name: 'kategori_id' })
   kategori_id: KategoriDoa;
 
-  @Column({ type: 'enum', enum: Status })
+  @Column({ type: 'enum', enum: Status, default: Status.PENDING })
   status: Status;
 
   @ManyToOne(() => Admin)

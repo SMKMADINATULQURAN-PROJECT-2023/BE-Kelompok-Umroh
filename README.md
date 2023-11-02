@@ -182,6 +182,27 @@ Body
 | tanggal_lahir | Required |           Date           |
 | jenis_kelamin | Required | "Laki-Laki", "Perempuan" |
 
+#### User Update Password
+
+```markdown
+/auth/update-password
+```
+
+**Method : PUT**
+
+Headers
+
+|     Name      |  Status  |  type  |
+| :-----------: | :------: | :----: |
+| Authorization | Required | String |
+
+Body
+
+|     Name      |  Status  |        |
+| :-----------: | :------: | :----: |
+| refresh_token | required | String |
+| new_password  | Optional | String |
+
 ## User
 
 #### List (Admin only)
@@ -771,11 +792,12 @@ Headers
 
 Params
 
-|   Name   |  Status  |         |                                       |
-| :------: | :------: | :-----: | :-----------------------------------: |
-|   page   | Optional | Integer |                                       |
-| pageSize | Optional | Integer |                                       |
-| kategori | Optional | String  | Search by "Laki-Laki" dan "Perempuan" |
+|       Name       |  Status  |         |                                       |
+| :--------------: | :------: | :-----: | :-----------------------------------: |
+|       page       | Optional | Integer |                                       |
+|     pageSize     | Optional | Integer |                                       |
+| kategori_panduan | Optional | String  |     Search by "Haji" dan "Umrah"      |
+|      gender      | Optional | String  | Search by "Laki-Laki" dan "Perempuan" |
 
 #### Detail
 

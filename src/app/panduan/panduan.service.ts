@@ -9,8 +9,9 @@ import { UpdatePanduanDto } from './dto/panduan.dto';
 import BaseResponse from 'src/utils/response/base.response';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Panduan } from './entities/panduan.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { ResponsePagination, ResponseSuccess } from 'src/interface';
+import { Status } from 'src/interface/status.interface';
 
 @Injectable()
 export class PanduanService extends BaseResponse {
@@ -26,12 +27,35 @@ export class PanduanService extends BaseResponse {
   }
 
   async findAll(query: FindPanduanDto): Promise<ResponsePagination> {
-    const { page, pageSize, limit, gender, keyword } = query;
-    const total = await this.panduanRepo.count();
+    const { page, pageSize, limit, gender, kategori_panduan } = query;
+    const filterQuery = {};
+
+    if (gender) {
+      filterQuery['gender'] = Like(`${gender}`);
+    }
+    if (kategori_panduan) {
+      filterQuery['kategori_panduan'] = Like(`${kategori_panduan}`);
+    }
+
+    const total = await this.panduanRepo.count({
+      where: filterQuery,
+    });
     const result = await this.panduanRepo.find({
-      where: { gender: gender },
+      where: filterQuery,
       take: pageSize,
       skip: limit,
+      select: {
+        created_by: {
+          id: true,
+          avatar: true,
+          username: true,
+        },
+        updated_by: {
+          id: true,
+          avatar: true,
+          username: true,
+        },
+      },
       relations: ['created_by', 'updated_by'],
     });
     return this._pagination(
@@ -44,7 +68,21 @@ export class PanduanService extends BaseResponse {
   }
 
   async findOne(id: number): Promise<ResponseSuccess> {
-    const result = await this.panduanRepo.findOne({ where: { id } });
+    const result = await this.panduanRepo.findOne({
+      where: { id },
+      select: {
+        created_by: {
+          id: true,
+          avatar: true,
+          username: true,
+        },
+        updated_by: {
+          id: true,
+          avatar: true,
+          username: true,
+        },
+      },
+    });
     if (!result) {
       throw new HttpException(`Panduan Tidak Ditemukan`, HttpStatus.NOT_FOUND);
     }

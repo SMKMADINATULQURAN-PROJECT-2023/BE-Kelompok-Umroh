@@ -29,7 +29,7 @@ export class Artikel extends BaseEntity {
   @Column()
   source: string;
 
-  @Column({ type: 'enum', enum: Status })
+  @Column({ type: 'enum', enum: Status, default: Status.PENDING })
   status: Status;
 
   @ManyToOne(() => Admin)

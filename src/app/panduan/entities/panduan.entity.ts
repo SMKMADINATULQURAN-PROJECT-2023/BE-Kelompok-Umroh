@@ -34,7 +34,7 @@ export class Panduan extends BaseEntity {
   @Column({ type: 'enum', enum: KategoriPanduan })
   kategori_panduan: KategoriPanduan;
 
-  @Column({ type: 'enum', enum: Status })
+  @Column({ type: 'enum', enum: Status, default: Status.ACCEPT })
   status: Status;
 
   @ManyToOne(() => Admin)

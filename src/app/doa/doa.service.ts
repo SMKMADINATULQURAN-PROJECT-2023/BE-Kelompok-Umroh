@@ -19,6 +19,7 @@ import {
 import { Doa } from './entity/doa.entity';
 import { KategoriDoa } from './entity/category_doa.entity';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { Status } from 'src/interface/status.interface';
 
 @Injectable()
 export class DoaService extends BaseResponse {
@@ -82,7 +83,9 @@ export class DoaService extends BaseResponse {
       },
       relations: ['kategori_id', 'created_by', 'updated_by'],
     });
-    const total = await this.doaRepo.count({ where: filterKeyword });
+    const total = await this.doaRepo.count({
+      where: keyword && filterKeyword,
+    });
     return this._pagination(
       'Berhasil Menemukan Doa',
       result,
@@ -198,7 +201,7 @@ export class DoaService extends BaseResponse {
     const result = await this.kategoriRepo.find({
       skip: limit,
       take: pageSize,
-      where: filterKeyword,
+      where: keyword && filterKeyword,
       select: {
         created_by: {
           id: true,
@@ -213,7 +216,9 @@ export class DoaService extends BaseResponse {
       },
       relations: ['doa_id', 'created_by', 'updated_by'],
     });
-    const total = await this.kategoriRepo.count();
+    const total = await this.kategoriRepo.count({
+      where: keyword && filterKeyword,
+    });
     return this._pagination(
       'Berhasil Menemukan Kategori Doa',
       result,

@@ -76,6 +76,13 @@ export class AuthController {
     return this.authService.updateProfile(payload, file, id);
   }
 
+  @UseGuards(JwtGuard)
+  @Put('update-password')
+  async updatePassword(@Body() payload: ResetPasswordDto, @Req() req) {
+    const { id } = req.user;
+    return this.authService.updatePassword(payload, id);
+  }
+
   // ** Admin =================================
   @UseGuards(JwtGuard) // impelementasi guard pada route , hal ini berarti endpoint profile hanya bisa diakses jika client membawa token
   @Get('profile-admin')

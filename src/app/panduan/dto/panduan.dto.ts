@@ -10,6 +10,7 @@ import {
 import { JenisKelamin } from 'src/interface';
 import { PageRequestDto } from 'src/utils/dto/page.dto';
 import { KategoriPanduan } from '../entities/panduan.entity';
+import { Status } from 'src/interface/status.interface';
 export class PanduanDto {
   @IsString()
   @IsNotEmpty()
@@ -44,6 +45,15 @@ export class PanduanDto {
 export class CreatePanduanDto extends OmitType(PanduanDto, ['updated_by']) {}
 export class UpdatePanduanDto extends OmitType(PanduanDto, ['created_by']) {}
 export class FindPanduanDto extends PageRequestDto {
+  @IsOptional()
+  @IsString()
+  @IsEnum(Status)
+  status: Status;
+
+  @IsOptional()
+  @IsEnum(KategoriPanduan)
+  kategori_panduan: KategoriPanduan;
+
   @IsOptional()
   @IsEnum(JenisKelamin)
   gender: JenisKelamin;

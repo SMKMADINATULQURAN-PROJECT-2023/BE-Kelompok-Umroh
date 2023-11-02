@@ -7,12 +7,14 @@ import {
   IsNumber,
   IsObject,
   IsOptional,
+  IsEnum,
 } from 'class-validator';
 import { Injectable } from '@nestjs/common';
 import { OmitType, PickType } from '@nestjs/mapped-types';
 import { IsUnique } from 'src/utils/validator/unique.validator';
 import { KategoriDoa } from './entity/category_doa.entity';
 import { PageRequestDto } from 'src/utils/dto/page.dto';
+import { Status } from 'src/interface/status.interface';
 @Injectable()
 export class DoaDto {
   thumbnail: any;
@@ -66,12 +68,19 @@ export class UpdateKategoriDto extends PickType(DoaDto, [
   'updated_by',
 ]) {}
 export class FindKategoriDto extends PageRequestDto {
+  @IsOptional()
+  @IsString()
+  @IsEnum(Status)
+  status: Status;
+
   @IsString()
   @IsOptional()
   keyword: string;
 }
 export class CreateDoaDto extends OmitType(DoaDto, [
   'kategori_name',
+  'thumbnail',
+  'id_thumbnail',
   'updated_by',
 ]) {}
 export class UpdateDoaDto extends OmitType(DoaDto, [
@@ -81,6 +90,11 @@ export class UpdateDoaDto extends OmitType(DoaDto, [
   'id_thumbnail',
 ]) {}
 export class FindDoaDto extends PageRequestDto {
+  @IsOptional()
+  @IsString()
+  @IsEnum(Status)
+  status: Status;
+
   @IsString()
   @IsOptional()
   keyword: string;

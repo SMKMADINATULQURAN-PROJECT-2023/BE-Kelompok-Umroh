@@ -93,6 +93,20 @@ import { AdminMiddleware } from './utils/middleware/admin/admin.middleware';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
+      .apply(UserMiddleware)
+      .forRoutes(
+        { path: 'auth/profile', method: RequestMethod.GET },
+        { path: 'auth/update-profile', method: RequestMethod.PUT },
+        { path: 'user/refresh-token', method: RequestMethod.POST },
+        { path: 'doa', method: RequestMethod.GET },
+        { path: 'doa/kategori', method: RequestMethod.GET },
+        { path: 'lokasi_ziarah', method: RequestMethod.GET },
+        { path: 'lokasi_ziarah', method: RequestMethod.GET },
+        { path: 'dzikir/pagi', method: RequestMethod.GET },
+        { path: 'dzikir/petang', method: RequestMethod.GET },
+        { path: 'panduan', method: RequestMethod.GET },
+      );
+    consumer
       .apply(AdminMiddleware)
       .exclude(
         { path: 'admin/login', method: RequestMethod.POST },
@@ -129,19 +143,5 @@ export class AppModule implements NestModule {
         { path: 'user', method: RequestMethod.GET },
         { path: 'user/:id', method: RequestMethod.GET },
       ); // Sesuaikan dengan rute yang ingin Anda proteksi.
-    consumer
-      .apply(UserMiddleware)
-      .forRoutes(
-        { path: 'auth/profile', method: RequestMethod.GET },
-        { path: 'auth/update-profile', method: RequestMethod.PUT },
-        { path: 'user/refresh-token', method: RequestMethod.POST },
-        { path: 'doa', method: RequestMethod.GET },
-        { path: 'doa/kategori', method: RequestMethod.GET },
-        { path: 'lokasi_ziarah', method: RequestMethod.GET },
-        { path: 'lokasi_ziarah', method: RequestMethod.GET },
-        { path: 'dzikir/pagi', method: RequestMethod.GET },
-        { path: 'dzikir/petang', method: RequestMethod.GET },
-        { path: 'panduan', method: RequestMethod.GET },
-      );
   }
 }

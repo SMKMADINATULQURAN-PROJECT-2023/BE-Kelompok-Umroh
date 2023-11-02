@@ -35,7 +35,7 @@ export class LokasiZiarah extends BaseEntity {
   @Column()
   longitude: string;
 
-  @Column({ type: 'enum', enum: Status })
+  @Column({ type: 'enum', enum: Status, default: Status.PENDING })
   status: Status;
 
   @ManyToOne(() => Admin)

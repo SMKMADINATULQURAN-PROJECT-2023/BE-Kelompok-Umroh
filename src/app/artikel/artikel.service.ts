@@ -12,6 +12,7 @@ import { Repository, Like } from 'typeorm';
 import { HttpException } from '@nestjs/common/exceptions';
 import { HttpStatus } from '@nestjs/common/enums';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { Status } from 'src/interface/status.interface';
 
 @Injectable()
 export class ArtikelService extends BaseResponse {
@@ -95,7 +96,9 @@ export class ArtikelService extends BaseResponse {
       },
       relations: ['created_by', 'updated_by'],
     });
-    const total = await this.artikelRepo.count({ where: filterKeyword });
+    const total = await this.artikelRepo.count({
+      where: keyword && filterKeyword,
+    });
     return this._pagination(
       'Berhasil Menemukan Artikel',
       result,

@@ -15,6 +15,7 @@ import {
   UpdateZiarahDto,
 } from './lokasi_ziarah.dto';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { Status } from 'src/interface/status.interface';
 
 @Injectable()
 export class LokasiZiarahService extends BaseResponse {
@@ -86,7 +87,9 @@ export class LokasiZiarahService extends BaseResponse {
       },
       relations: ['created_by', 'updated_by'],
     });
-    const total = await this.ziarahRepository.count();
+    const total = await this.ziarahRepository.count({
+      where: keyword && filterKeyword,
+    });
     return this._pagination(
       'Berhasil Menemukan Lokasi Ziarah',
       result,

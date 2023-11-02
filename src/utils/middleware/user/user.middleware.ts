@@ -15,7 +15,11 @@ export class UserMiddleware implements NestMiddleware {
     const token = req.headers.authorization.split(' ')[1];
     const decode: any = this.jwtService.decode(token);
     console.log('decode user =>', decode);
-    if (decode?.role_id?.role_name == 'Admin' || decode?.role_id == 'User') {
+    if (
+      decode?.role_id?.role_name == 'Admin' ||
+      decode?.role_id == 'User' ||
+      !decode?.role_id
+    ) {
       next();
     } else {
       throw new HttpException(

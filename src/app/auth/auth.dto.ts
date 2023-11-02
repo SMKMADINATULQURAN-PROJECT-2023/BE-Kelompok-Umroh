@@ -90,6 +90,7 @@ export class LoginAdminDto extends PickType(UserDto, ['email', 'password']) {}
 export class updateProfileDto extends PickType(UserDto, [
   'username',
   'avatar',
+  'email',
   'telephone',
   'alamat',
   'tanggal_lahir',

@@ -75,6 +75,7 @@ export class UserService extends BaseResponse {
     });
 
     if (!check) {
+      console.log('err');
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
     }
 

@@ -2,19 +2,18 @@ import { Injectable } from '@nestjs/common';
 import { OmitType, PartialType } from '@nestjs/mapped-types';
 
 import {
+  IsEnum,
   IsInt,
   IsNotEmpty,
   IsObject,
   IsOptional,
   IsString,
 } from 'class-validator';
+import { Status } from 'src/interface/status.interface';
 import { PageRequestDto } from 'src/utils/dto/page.dto';
 
 @Injectable()
 export class LokasiZiarahDto {
-  @IsInt()
-  id: number;
-
   thumbnail: any;
 
   id_thumbnail: string;
@@ -49,13 +48,19 @@ export class LokasiZiarahDto {
 }
 
 export class CreateZiarahDto extends OmitType(LokasiZiarahDto, [
-  'id',
   'updated_by',
 ]) {}
 
 export class FindZiarahDto extends PageRequestDto {
+  @IsOptional()
+  @IsString()
+  @IsEnum(Status)
+  status: Status;
+
   @IsString()
   @IsOptional()
   keyword: string;
 }
-export class UpdateZiarahDto extends PartialType(LokasiZiarahDto) {}
+export class UpdateZiarahDto extends OmitType(LokasiZiarahDto, [
+  'created_by',
+]) {}

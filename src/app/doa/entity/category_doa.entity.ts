@@ -28,7 +28,7 @@ export class KategoriDoa extends BaseEntity {
   @OneToMany(() => Doa, (doa) => doa.kategori_id)
   doa_id: Doa[];
 
-  @Column({ type: 'enum', enum: Status })
+  @Column({ type: 'enum', enum: Status, default: Status.PENDING })
   status: Status;
 
   @ManyToOne(() => Admin)
