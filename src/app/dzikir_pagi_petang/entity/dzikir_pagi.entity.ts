@@ -25,7 +25,7 @@ export class DzikirPagi extends BaseEntity {
   @Column()
   diBaca: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', collation: 'utf8mb4_unicode_ci' })
   narrator: string;
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })

@@ -37,6 +37,6 @@ async function bootstrap() {
     }),
   );
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
-  await app.listen(1234);
+  await app.listen(5002);
 }
 bootstrap();
