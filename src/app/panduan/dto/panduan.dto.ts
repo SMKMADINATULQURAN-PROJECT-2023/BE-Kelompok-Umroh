@@ -12,10 +12,14 @@ import { PageRequestDto } from 'src/utils/dto/page.dto';
 import { KategoriPanduan } from '../entities/panduan.entity';
 import { Status } from 'src/interface/status.interface';
 export class PanduanDto {
+  thumbnail: string;
+
+  id_thumbnail: string;
+
   @IsString()
   @IsNotEmpty()
   @IsUrl({}, { message: 'URL harus berupa tautan YouTube yang valid' })
-  url: string;
+  link: string;
 
   @IsString()
   @IsNotEmpty()

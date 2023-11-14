@@ -65,7 +65,7 @@ export class DoaService extends BaseResponse {
         },
       );
     }
-    const result = await this.doaRepo.find({
+    const [result, count] = await this.doaRepo.findAndCount({
       skip: limit,
       take: pageSize,
       where: keyword && filterKeyword,
@@ -83,13 +83,11 @@ export class DoaService extends BaseResponse {
       },
       relations: ['kategori_id', 'created_by', 'updated_by'],
     });
-    const total = await this.doaRepo.count({
-      where: keyword && filterKeyword,
-    });
+
     return this._pagination(
       'Berhasil Menemukan Doa',
       result,
-      total,
+      count,
       page,
       pageSize,
     );
@@ -198,7 +196,7 @@ export class DoaService extends BaseResponse {
         },
       );
     }
-    const result = await this.kategoriRepo.find({
+    const [result, count] = await this.kategoriRepo.findAndCount({
       skip: limit,
       take: pageSize,
       where: keyword && filterKeyword,
@@ -216,13 +214,11 @@ export class DoaService extends BaseResponse {
       },
       relations: ['doa_id', 'created_by', 'updated_by'],
     });
-    const total = await this.kategoriRepo.count({
-      where: keyword && filterKeyword,
-    });
+
     return this._pagination(
       'Berhasil Menemukan Kategori Doa',
       result,
-      total,
+      count,
       page,
       pageSize,
     );
@@ -268,17 +264,29 @@ export class DoaService extends BaseResponse {
     });
     return this._success('Berhasil Mengupdate Kategori');
   }
-
   async removeKategori(id: number): Promise<ResponseSuccess> {
     const check = await this.kategoriRepo.findOne({
       where: { id: id },
+      select: {
+        doa_id: true,
+      },
+      relations: ['doa_id'],
     });
+
     if (!check) {
       throw new HttpException(
         `KategoriDoa Tidak Ditemukan`,
         HttpStatus.NOT_FOUND,
       );
     }
+
+    if (check.doa_id.length > 0) {
+      throw new HttpException(
+        `KategoriDoa Tidak Bisa Dihapus Karena Memiliki Relasi Dengan Doa`,
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
+
     await this.cloudinary.deleteImage(check.id_thumbnail);
     await this.kategoriRepo.delete(id);
     return this._success('Berhasil Menghapus KategoriDoa');

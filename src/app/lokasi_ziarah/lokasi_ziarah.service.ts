@@ -3,6 +3,7 @@ import {
   HttpException,
   HttpStatus,
   NotFoundException,
+  Inject,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ResponsePagination, ResponseSuccess } from 'src/interface';
@@ -15,7 +16,8 @@ import {
   UpdateZiarahDto,
 } from './lokasi_ziarah.dto';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
-import { Status } from 'src/interface/status.interface';
+import { Traffic } from '../traffic/entity/traffic.entity';
+import { REQUEST } from '@nestjs/core';
 
 @Injectable()
 export class LokasiZiarahService extends BaseResponse {
@@ -23,6 +25,9 @@ export class LokasiZiarahService extends BaseResponse {
     @InjectRepository(LokasiZiarah)
     private readonly ziarahRepository: Repository<LokasiZiarah>,
     private cloudinary: CloudinaryService,
+    @InjectRepository(Traffic)
+    private readonly trafficRepo: Repository<Traffic>,
+    @Inject(REQUEST) private req: any,
   ) {
     super();
   }
@@ -69,7 +74,7 @@ export class LokasiZiarahService extends BaseResponse {
       );
     }
 
-    const result = await this.ziarahRepository.find({
+    const [result, count] = await this.ziarahRepository.findAndCount({
       where: keyword && filterKeyword,
       skip: limit,
       take: pageSize,
@@ -87,13 +92,11 @@ export class LokasiZiarahService extends BaseResponse {
       },
       relations: ['created_by', 'updated_by'],
     });
-    const total = await this.ziarahRepository.count({
-      where: keyword && filterKeyword,
-    });
+
     return this._pagination(
       'Berhasil Menemukan Lokasi Ziarah',
       result,
-      total,
+      count,
       page,
       pageSize,
     );

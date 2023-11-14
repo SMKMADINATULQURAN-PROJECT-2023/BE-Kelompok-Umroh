@@ -11,17 +11,44 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Panduan } from './entities/panduan.entity';
 import { Like, Repository } from 'typeorm';
 import { ResponsePagination, ResponseSuccess } from 'src/interface';
-import { Status } from 'src/interface/status.interface';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @Injectable()
 export class PanduanService extends BaseResponse {
   constructor(
     @InjectRepository(Panduan)
     private readonly panduanRepo: Repository<Panduan>,
+    private cloudinary: CloudinaryService,
   ) {
     super();
   }
-  async create(payload: CreatePanduanDto): Promise<ResponseSuccess> {
+  async create(
+    payload: CreatePanduanDto,
+    file: Express.Multer.File,
+  ): Promise<ResponseSuccess> {
+    if (!file?.path) {
+      throw new HttpException(
+        'thumbnail Tidak Boleh Kosong',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    if (
+      file?.mimetype === 'image/png' ||
+      file?.mimetype === 'image/jpeg' ||
+      file?.mimetype === 'image/jpg'
+    ) {
+      const { public_id, url } = await this.cloudinary.uploadImage(
+        file,
+        'lokasi ziarah',
+      );
+      payload.id_thumbnail = public_id;
+      payload.thumbnail = url;
+    } else {
+      throw new HttpException(
+        ' file harus berekstensi .jpg, .jpeg, .png',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     await this.panduanRepo.save(payload);
     return this._success('Berhasil Membuat Panduan');
   }
@@ -37,10 +64,7 @@ export class PanduanService extends BaseResponse {
       filterQuery['kategori_panduan'] = Like(`${kategori_panduan}`);
     }
 
-    const total = await this.panduanRepo.count({
-      where: filterQuery,
-    });
-    const result = await this.panduanRepo.find({
+    const [result, count] = await this.panduanRepo.findAndCount({
       where: filterQuery,
       take: pageSize,
       skip: limit,
@@ -61,7 +85,7 @@ export class PanduanService extends BaseResponse {
     return this._pagination(
       'Berhasil Menemukan Panduan',
       result,
-      total,
+      count,
       page,
       pageSize,
     );
@@ -92,9 +116,32 @@ export class PanduanService extends BaseResponse {
   async update(
     id: number,
     payload: UpdatePanduanDto,
+    file: Express.Multer.File,
   ): Promise<ResponseSuccess> {
     const check = await this.panduanRepo.findOne({ where: { id } });
     if (!check) throw new NotFoundException('Panduan Tidak Ditemukan');
+
+    if (file?.path === undefined) {
+      payload.id_thumbnail = check.id_thumbnail;
+      payload.thumbnail = check.thumbnail;
+    } else if (
+      file?.mimetype == 'image/png' ||
+      file?.mimetype == 'image/jpeg' ||
+      file?.mimetype == 'image/jpg'
+    ) {
+      await this.cloudinary.deleteImage(check.id_thumbnail);
+      const { public_id, url } = await this.cloudinary.uploadImage(
+        file,
+        'lokasi ziarah',
+      );
+      payload.id_thumbnail = public_id;
+      payload.thumbnail = url;
+    } else {
+      throw new HttpException(
+        ' file harus berekstensi .jpg, .jpeg, .png',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
 
     return this._success('Berhasil Mengupdate Panduan');
   }

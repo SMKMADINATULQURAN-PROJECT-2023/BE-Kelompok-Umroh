@@ -18,23 +18,17 @@ export class TrafficService extends BaseResponse {
   }
 
   async create(): Promise<ResponseSuccess> {
-    console.log(this.req);
-    if (this.req?.headers && this.req?.headers['user-agent']) {
-      await this.trafficRepo.save({
-        user_agent: this.req?.headers['user-agent'],
-        ip: this.req?.socket?.remoteAddress,
-      });
-      return this._success(null);
-    } else {
-      // Handle the case where req.headers or req.headers['user-agent'] is undefined
-      throw new HttpException(
-        'User-Agent header not found in the request.',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
+    console.log(this.req.ip);
+
+    await this.trafficRepo.save({
+      user_agent: this.req?.headers['user-agent'],
+      ip: this.req?.ip,
+      original_url: this.req?.originalUrl,
+    });
+    return this._success(null);
   }
 
-  async totalPengunjung(): Promise<ResponseSuccess> {
+  async totalPengunjung(url): Promise<ResponseSuccess> {
     const months = [
       'januari',
       'februari',
@@ -50,12 +44,17 @@ export class TrafficService extends BaseResponse {
       'desember',
     ];
 
-    const total = await this.trafficRepo.count();
+    const total = await this.trafficRepo.count({
+      where: { original_url: url.url.toString() },
+    });
     const data = [];
     for (let i = 0; i < months.length; i++) {
       const count = await this.trafficRepo
         .createQueryBuilder()
-        .where(`MONTH(created_at) = :month`, { month: i + 1 })
+        .where(`MONTH(created_at) = :month AND original_url LIKE :url`, {
+          month: i + 1,
+          url: `%${url.url.toString()}%`,
+        })
         .getCount();
       data.push({ [months[i]]: count });
     }

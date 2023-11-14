@@ -6,6 +6,7 @@ import {
   Delete,
   Put,
   UseGuards,
+  UploadedFile,
 } from '@nestjs/common';
 import { PanduanService } from './panduan.service';
 import { CreatePanduanDto, FindPanduanDto } from './dto/panduan.dto';
@@ -33,16 +34,21 @@ export class PanduanController {
 
   @Post('create')
   @FileInterceptorCustom('file_create', 'panduan')
-  create(@InjectCreatedBy() payload: CreatePanduanDto) {
-    return this.panduanService.create(payload);
+  create(
+    @InjectCreatedBy() payload: CreatePanduanDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.panduanService.create(payload, file);
   }
 
   @Put('update/:id')
+  @FileInterceptorCustom('file_update', 'panduan')
   update(
     @Param('id') id: string,
     @InjectUpdatedBy() payload: UpdatePanduanDto,
+    @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.panduanService.update(+id, payload);
+    return this.panduanService.update(+id, payload, file);
   }
 
   @Delete('delete/:id')

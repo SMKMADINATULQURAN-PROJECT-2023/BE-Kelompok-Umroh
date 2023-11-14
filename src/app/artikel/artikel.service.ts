@@ -78,7 +78,7 @@ export class ArtikelService extends BaseResponse {
       );
     }
 
-    const result = await this.artikelRepo.find({
+    const [result, count] = await this.artikelRepo.findAndCount({
       take: pageSize,
       skip: limit,
       where: keyword && filterKeyword,
@@ -96,13 +96,11 @@ export class ArtikelService extends BaseResponse {
       },
       relations: ['created_by', 'updated_by'],
     });
-    const total = await this.artikelRepo.count({
-      where: keyword && filterKeyword,
-    });
+
     return this._pagination(
       'Berhasil Menemukan Artikel',
       result,
-      total,
+      count,
       page,
       pageSize,
     );

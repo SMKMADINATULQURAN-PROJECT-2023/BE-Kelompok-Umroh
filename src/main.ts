@@ -6,15 +6,16 @@ import { AdminSeeder } from './seeds/admin.seed';
 import { RoleActionSeeder } from './seeds/role_action.seed';
 import { DzikirPagiSeeder } from './seeds/dzikirPagi.seed';
 import { DzikirPetangSeeder } from './seeds/dzikirPetang.seed';
-import * as admin from 'firebase-admin';
-import * as serviceAccount from './utils/json/serviceAccount.json';
+import * as dotenv from 'dotenv';
+import { MenuSeeder } from './seeds/menu.seed';
+
+dotenv.config();
+
 async function bootstrap() {
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
-  });
   const app = await NestFactory.create(AppModule);
   // Inisialisasi dan jalankan seeder di sini
-
+  const menuSeeder = app.get(MenuSeeder);
+  await menuSeeder.create();
   const roleActionSeeder = app.get(RoleActionSeeder);
   await roleActionSeeder.create();
   const adminSeeder = app.get(AdminSeeder);
@@ -37,6 +38,8 @@ async function bootstrap() {
     }),
   );
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
-  await app.listen(5002);
+  await app.listen(process.env.PORT_API, () => {
+    console.table([{ HOST: `${process.env.BASE_CLIENT_URL}` }]);
+  });
 }
 bootstrap();

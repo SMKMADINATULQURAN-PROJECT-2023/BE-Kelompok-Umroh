@@ -3,8 +3,10 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
+  JoinTable,
 } from 'typeorm';
 import { Role } from '../../role/entity/role.entity';
 

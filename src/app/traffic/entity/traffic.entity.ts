@@ -11,6 +11,9 @@ export class Traffic extends BaseEntity {
   @Column()
   ip: string;
 
+  @Column()
+  original_url: string;
+
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 

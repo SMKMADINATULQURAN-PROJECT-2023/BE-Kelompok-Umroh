@@ -138,13 +138,42 @@ export class AuthService extends BaseResponse {
   }
 
   async loginGoogle(payload: LoginGoogleDto): Promise<ResponseSuccess> {
-    const data = await this.authRepository.save(payload);
-
     const checkUserExists = await this.authRepository.findOne({
       where: {
-        email: data.email,
+        email: payload.email,
       },
     });
+    if (!checkUserExists) {
+      const data = await this.authRepository.save(payload);
+      const result = await this.authRepository.findOne({
+        where: {
+          email: data.email,
+        },
+      });
+      const jwtPayload: jwtPayload = {
+        id: result.id,
+        avatar: result.avatar,
+        username: result.username,
+        email: result.email,
+        email_verified: result.email_verified,
+        telephone: result.telephone,
+      };
+      const access_token = await this.generateJWT(
+        jwtPayload,
+        '1d',
+        jwt_config.access_token_secret,
+      );
+      const refresh_token = await this.generateJWT(
+        jwtPayload,
+        '7d',
+        jwt_config.refresh_token_secret,
+      );
+      return this._success('Berhasil Login', {
+        ...checkUserExists,
+        access_token: access_token,
+        refresh_token: refresh_token,
+      });
+    }
     const jwtPayload: jwtPayload = {
       id: checkUserExists.id,
       avatar: checkUserExists.avatar,
@@ -303,7 +332,7 @@ export class AuthService extends BaseResponse {
     }
     payload.new_password = await hash(payload.new_password, 12); //hash password
     await this.authRepository.save({
-      ...payload,
+      password: payload.new_password,
       id: id,
     });
     return this._success('Berhasil Mengupdate Password');

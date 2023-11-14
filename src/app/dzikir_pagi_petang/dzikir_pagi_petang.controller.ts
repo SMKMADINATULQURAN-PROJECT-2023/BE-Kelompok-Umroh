@@ -8,18 +8,6 @@ import { JwtGuard } from '../auth/auth.guard';
 export class DzikirPagiPetangController {
   constructor(private dzikirPagiPetangService: DzikirPagiPetangService) {}
 
-  // @Post('pagi/create-bulk')
-  // async createBulkDzikirPagi(@Body() payload: CreateDzikirPagiPetangArrayDto) {
-  //   return this.dzikirPagiPetangService.createBulkDzikirPagi(payload);
-  // }
-
-  // @Post('petang/create-bulk')
-  // async createBulkDzikirPetang(
-  //   @Body() payload: CreateDzikirPagiPetangArrayDto,
-  // ) {
-  //   return this.dzikirPagiPetangService.createBulkDzikirPetang(payload);
-  // }
-
   @Get('pagi')
   async getDzikirPagi(@Pagination() query) {
     return this.dzikirPagiPetangService.getDzikirPagi(query);

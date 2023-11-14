@@ -28,16 +28,15 @@ export class RoleService extends BaseResponse {
 
   async get(query: PageRequestDto): Promise<ResponsePagination> {
     const { page, pageSize, limit } = query;
-    const result = await this.roleRepo.find({
+    const [result, count] = await this.roleRepo.findAndCount({
       take: pageSize,
       skip: limit,
     });
-    const total = await this.roleRepo.count();
 
     return this._pagination(
       'Berhasil Menemukan Role',
       result,
-      total,
+      count,
       page,
       pageSize,
     );

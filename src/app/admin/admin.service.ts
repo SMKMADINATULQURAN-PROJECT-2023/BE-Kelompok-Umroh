@@ -225,10 +225,8 @@ export class AdminService extends BaseResponse {
       );
     }
     console.log(filter);
-    const total = await this.adminRepository.count({
-      where: filter,
-    });
-    const result = await this.adminRepository.find({
+
+    const [result, count] = await this.adminRepository.findAndCount({
       where: filter,
       select: {
         id: true,
@@ -251,7 +249,7 @@ export class AdminService extends BaseResponse {
     return this._pagination(
       'Berhasil Menemukan List Admin',
       result,
-      total,
+      count,
       page,
       pageSize,
     );

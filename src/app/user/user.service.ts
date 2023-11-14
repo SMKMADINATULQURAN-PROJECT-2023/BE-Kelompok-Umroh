@@ -29,15 +29,14 @@ export class UserService extends BaseResponse {
 
   async findAll(query: PageRequestDto): Promise<ResponsePagination> {
     const { page, pageSize, limit } = query;
-    const result = await this.userRepo.find({
+    const [result, count] = await this.userRepo.findAndCount({
       take: pageSize,
       skip: limit,
     });
-    const total = await this.userRepo.count();
     return this._pagination(
       'Berhasil Menemukan User',
       result,
-      total,
+      count,
       page,
       pageSize,
     );

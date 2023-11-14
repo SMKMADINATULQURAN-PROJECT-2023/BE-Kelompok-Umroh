@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
 import { TrafficService } from './traffic.service';
-import { Get, Post, UseGuards } from '@nestjs/common/decorators';
+import { Get, Post, UseGuards, Query } from '@nestjs/common/decorators';
 import { JwtGuard } from '../auth/auth.guard';
 
 @UseGuards(JwtGuard)
@@ -14,7 +14,8 @@ export class TrafficController {
   }
 
   @Get()
-  async get() {
-    return this.trafficService.totalPengunjung();
+  async get(@Query() url) {
+    console.log(url.url.toString());
+    return this.trafficService.totalPengunjung(url);
   }
 }

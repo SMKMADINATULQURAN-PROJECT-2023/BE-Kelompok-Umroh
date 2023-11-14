@@ -1,4 +1,3 @@
-import { Delete } from '@nestjs/common/decorators';
 import {
   MiddlewareConsumer,
   Module,
@@ -40,16 +39,21 @@ import { DzikirPetang } from './app/dzikir_pagi_petang/entity/dzikir_petang.enti
 import { DzikirPetangSeeder } from './seeds/dzikirPetang.seed';
 import { UserModule } from './app/user/user.module';
 import { KategoriDoa } from './app/doa/entity/category_doa.entity';
-import { TrafficModule } from './app/traffic/traffic.module';
 import { UserMiddleware } from './utils/middleware/user/user.middleware';
 import { AdminMiddleware } from './utils/middleware/admin/admin.middleware';
+import { TrafficMiddleware } from './utils/middleware/traffic/traffic.middleware';
+import { Traffic } from './app/traffic/entity/traffic.entity';
+import { MenuModule } from './app/menu/menu.module';
+import { MenuSeeder } from './seeds/menu.seed';
+import { Menu } from './app/menu/entity/menu.entity';
+import { AccessModule } from './app/access/access.module';
+import { RoleAccessMenuModule } from './app/role_access_menu/role_access_menu.module';
 
 @Module({
   imports: [
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
     }),
-
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -62,6 +66,8 @@ import { AdminMiddleware } from './utils/middleware/admin/admin.middleware';
       KategoriDoa,
       DzikirPagi,
       DzikirPetang,
+      Traffic,
+      Menu,
     ]),
     AuthModule,
     MailModule,
@@ -77,7 +83,9 @@ import { AdminMiddleware } from './utils/middleware/admin/admin.middleware';
     ActionModule,
     PanduanModule,
     UserModule,
-    TrafficModule,
+    MenuModule,
+    AccessModule,
+    RoleAccessMenuModule,
   ],
   controllers: [AppController],
   providers: [
@@ -87,11 +95,23 @@ import { AdminMiddleware } from './utils/middleware/admin/admin.middleware';
     RoleActionSeeder,
     DzikirPagiSeeder,
     DzikirPetangSeeder,
+    MenuSeeder,
     JwtService,
   ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(TrafficMiddleware)
+      .forRoutes(
+        { path: 'doa', method: RequestMethod.GET },
+        { path: 'doa/kategori', method: RequestMethod.GET },
+        { path: 'artikel', method: RequestMethod.GET },
+        { path: 'lokasi_ziarah', method: RequestMethod.GET },
+        { path: 'dzikir/pagi', method: RequestMethod.GET },
+        { path: 'dzikir/petang', method: RequestMethod.GET },
+        { path: 'panduan', method: RequestMethod.GET },
+      );
     consumer
       .apply(UserMiddleware)
       .forRoutes(
@@ -101,7 +121,7 @@ export class AppModule implements NestModule {
         { path: 'doa', method: RequestMethod.GET },
         { path: 'doa/kategori', method: RequestMethod.GET },
         { path: 'lokasi_ziarah', method: RequestMethod.GET },
-        { path: 'lokasi_ziarah', method: RequestMethod.GET },
+        { path: 'artikel', method: RequestMethod.GET },
         { path: 'dzikir/pagi', method: RequestMethod.GET },
         { path: 'dzikir/petang', method: RequestMethod.GET },
         { path: 'panduan', method: RequestMethod.GET },
@@ -142,6 +162,8 @@ export class AppModule implements NestModule {
         { path: 'panduan/delete/:id', method: RequestMethod.DELETE },
         { path: 'user', method: RequestMethod.GET },
         { path: 'user/:id', method: RequestMethod.GET },
+        { path: 'traffic', method: RequestMethod.GET },
+        { path: 'traffic/create', method: RequestMethod.POST },
       ); // Sesuaikan dengan rute yang ingin Anda proteksi.
   }
 }
