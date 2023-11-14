@@ -732,7 +732,8 @@ Body
 
 |       Name       |  Status  |                             |
 | :--------------: | :------: | :-------------------------: |
-|       url        | Required |           String            |
+|   file_create    | Required |            File             |
+|       link       | Required |           String            |
 |      title       | Required |           String            |
 |   description    | Required |           String            |
 |      gender      | Required | "Laki-Laki" dan "Perempuan" |
@@ -756,7 +757,8 @@ Body
 
 |       Name       |  Status  |                             |
 | :--------------: | :------: | :-------------------------: |
-|       url        | Required |           String            |
+|   file_update    | Required |            File             |
+|       link       | Required |           String            |
 |      title       | Required |           String            |
 |   description    | Required |           String            |
 |      gender      | Required | "Laki-Laki" dan "Perempuan" |
