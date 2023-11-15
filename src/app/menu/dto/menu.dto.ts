@@ -1,0 +1,20 @@
+import { IsUnique } from 'src/utils/validator/unique.validator';
+import { Menu } from '../entity/menu.entity';
+import { IsObject, IsOptional, IsString } from 'class-validator';
+import { OmitType } from '@nestjs/mapped-types';
+
+export class MenuDto {
+  @IsUnique([Menu, 'name'])
+  @IsString()
+  name: string;
+
+  @IsObject()
+  @IsOptional()
+  created_by: { id: number };
+
+  @IsObject()
+  @IsOptional()
+  updated_by: { id: number };
+}
+export class CreateMenuDto extends OmitType(MenuDto, ['updated_by']) {}
+export class UpdateMenuDto extends OmitType(MenuDto, ['created_by']) {}

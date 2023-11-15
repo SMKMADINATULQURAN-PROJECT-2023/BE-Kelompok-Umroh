@@ -46,7 +46,6 @@ import { Traffic } from './app/traffic/entity/traffic.entity';
 import { MenuModule } from './app/menu/menu.module';
 import { MenuSeeder } from './seeds/menu.seed';
 import { Menu } from './app/menu/entity/menu.entity';
-import { AccessModule } from './app/access/access.module';
 import { RoleAccessMenuModule } from './app/role_access_menu/role_access_menu.module';
 
 @Module({
@@ -70,6 +69,7 @@ import { RoleAccessMenuModule } from './app/role_access_menu/role_access_menu.mo
       Menu,
     ]),
     AuthModule,
+    RoleAccessMenuModule,
     MailModule,
     LokasiZiarahModule,
     DzikirPagiPetangModule,
@@ -84,8 +84,6 @@ import { RoleAccessMenuModule } from './app/role_access_menu/role_access_menu.mo
     PanduanModule,
     UserModule,
     MenuModule,
-    AccessModule,
-    RoleAccessMenuModule,
   ],
   controllers: [AppController],
   providers: [

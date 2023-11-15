@@ -134,14 +134,11 @@ Headers
 
 Body
 
-|     Name      |  Status  |                          |
-| :-----------: | :------: | :----------------------: |
-|   username    | required |          String          |
-|     email     | Optional |          String          |
-|   telephone   | Required |          String          |
-| tempat_lahir  | Required |          String          |
-| tanggal_lahir | Required |           Date           |
-| jenis_kelamin | Required | "Laki-Laki", "Perempuan" |
+|       Name        |  Status  |        |
+| :---------------: | :------: | :----: |
+| file_edit_profile | required |  File  |
+|     username      | required | String |
+|       email       | Optional | String |
 
 #### User Profile
 

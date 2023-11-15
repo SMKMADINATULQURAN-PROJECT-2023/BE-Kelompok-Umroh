@@ -39,7 +39,7 @@ export class PanduanService extends BaseResponse {
     ) {
       const { public_id, url } = await this.cloudinary.uploadImage(
         file,
-        'lokasi ziarah',
+        'panduan',
       );
       payload.id_thumbnail = public_id;
       payload.thumbnail = url;
@@ -132,7 +132,7 @@ export class PanduanService extends BaseResponse {
       await this.cloudinary.deleteImage(check.id_thumbnail);
       const { public_id, url } = await this.cloudinary.uploadImage(
         file,
-        'lokasi ziarah',
+        'panduan',
       );
       payload.id_thumbnail = public_id;
       payload.thumbnail = url;
@@ -143,12 +143,18 @@ export class PanduanService extends BaseResponse {
       );
     }
 
+    await this.panduanRepo.save({
+      ...payload,
+      id: id,
+    });
     return this._success('Berhasil Mengupdate Panduan');
   }
 
   async remove(id: number): Promise<ResponseSuccess> {
     const check = await this.panduanRepo.findOne({ where: { id } });
     if (!check) throw new NotFoundException('Panduan Tidak Ditemukan');
+
+    await this.cloudinary.deleteImage(check.id_thumbnail);
     await this.panduanRepo.delete({ id });
     return this._success('Berhasil Menghapus Panduan');
   }

@@ -4,36 +4,46 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ResponseSuccess } from 'src/interface';
 import BaseResponse from 'src/utils/response/base.response';
 import { Role } from '../role/entity/role.entity';
-import { Access } from '../access/entity/access.entity';
 import { Menu } from '../menu/entity/menu.entity';
 import { Repository } from 'typeorm';
+import { RolesAccessMenus } from './entity/role_access_menu.entity';
+import { Admin } from '../admin/entities/admin.entity';
+import { RoleAccessMenuDto } from './dto/role_access_menu.dto';
 
 @Injectable()
 export class RoleAccessMenuService extends BaseResponse {
   constructor(
+    @InjectRepository(Admin) private readonly adminRepo: Repository<Admin>,
     @InjectRepository(Role) private readonly roleRepo: Repository<Role>,
-    @InjectRepository(Access) private readonly accessRepo: Repository<Access>,
     @InjectRepository(Menu) private readonly menuRepo: Repository<Menu>,
+    @InjectRepository(RolesAccessMenus)
+    private readonly roleAccessMenuRepo: Repository<RolesAccessMenus>,
   ) {
     super();
   }
-
-  async create(payload): Promise<ResponseSuccess> {
+  async create(payload: RoleAccessMenuDto): Promise<ResponseSuccess> {
+    const admin = await this.adminRepo.findOne({
+      where: {
+        id: payload.adminId,
+      },
+    });
+    if (!admin) throw new NotFoundException('Role Tidak Ditemukan');
     const role = await this.roleRepo.findOne({
-      where: { role_name: payload.role },
+      where: {
+        id: payload.roleId,
+      },
     });
-    const access = await this.accessRepo.findOne({
-      where: { name: payload.access },
+    if (!role) throw new NotFoundException('Role Tidak Ditemukan');
+
+    const menu = await this.menuRepo.findOne({
+      where: {
+        id: payload.menuId,
+      },
     });
-    if (!role || !access)
-      throw new NotFoundException('Role Atau Access Tidak Ditemukan');
-    const id = await this.menuRepo.save(payload);
-    await this.accessRepo.save({
-      menu_id: id,
-    });
-    await this.roleRepo.save({
-      access_id: payload.access_id,
-    });
+    if (!menu) throw new NotFoundException('Menu Tidak Ditemukan');
+
+    await this.roleAccessMenuRepo.save({ ...payload });
+
     return this._success('Berhasil Membuat Role Access Menu');
   }
 }
