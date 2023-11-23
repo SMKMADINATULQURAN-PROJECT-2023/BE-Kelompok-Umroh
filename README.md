@@ -408,13 +408,13 @@ Headers
 
 Params
 
-|    Name    |  Status  |         |                                                        |
-| :--------: | :------: | :-----: | :----------------------------------------------------: |
-|    page    | Optional | Integer |                                                        |
-|  pageSize  | Optional | Integer |                                                        |
-|  keyword   | Optional | String  |                 Cari berdasarkan judul                 |
-|   status   | Optional | String  |     Cari berdasarkan "Pending", "Reject", "Accept"     |
-| created_by | Optional | String  | Cari berdasarkan "saya" = kalo mau nyari punya sendiri |
+|    Name    |  Status  |         |                                                                       |
+| :--------: | :------: | :-----: | :-------------------------------------------------------------------: |
+|    page    | Optional | Integer |                                                                       |
+|  pageSize  | Optional | Integer |                                                                       |
+|  keyword   | Optional | String  | Cari berdasarkan title, description, source, username dari created_by |
+|   status   | Optional | String  |            Cari berdasarkan "Pending", "Reject", "Accept"             |
+| created_by | Optional | String  |        Cari berdasarkan "saya" = kalo mau nyari punya sendiri         |
 
 #### Detail
 
@@ -501,7 +501,7 @@ Params
 | :--------: | :------: | :-----: | :----------------------------------------------------: |
 |    page    | Optional | Integer |                                                        |
 |  pageSize  | Optional | Integer |                                                        |
-|  keyword   | Optional | String  |                 Cari berdasarkan name                  |
+|  keyword   | Optional | String  |    Cari berdasarkan name, username dari created_by     |
 |   status   | Optional | String  |     Cari berdasarkan "Pending", "Reject", "Accept"     |
 | created_by | Optional | String  | Cari berdasarkan "saya" = kalo mau nyari punya sendiri |
 
@@ -581,13 +581,13 @@ Headers
 
 Params
 
-|    Name    |  Status  |         |                                                        |
-| :--------: | :------: | :-----: | :----------------------------------------------------: |
-|    page    | Optional | Integer |                                                        |
-|  pageSize  | Optional | Integer |                                                        |
-|  keyword   | Optional | String  |             Cari berdasarkan kategori_name             |
-|   status   | Optional | String  |     Cari berdasarkan "Pending", "Reject", "Accept"     |
-| created_by | Optional | String  | Cari berdasarkan "saya" = kalo mau nyari punya sendiri |
+|    Name    |  Status  |         |                                                          |
+| :--------: | :------: | :-----: | :------------------------------------------------------: |
+|    page    | Optional | Integer |                                                          |
+|  pageSize  | Optional | Integer |                                                          |
+|  keyword   | Optional | String  | Cari berdasarkan kategori_name, username dari created_by |
+|   status   | Optional | String  |      Cari berdasarkan "Pending", "Reject", "Accept"      |
+| created_by | Optional | String  |  Cari berdasarkan "saya" = kalo mau nyari punya sendiri  |
 
 #### Detail
 
@@ -707,13 +707,13 @@ Headers
 
 Params
 
-|    Name    |  Status  |         |                                                        |
-| :--------: | :------: | :-----: | :----------------------------------------------------: |
-|    page    | Optional | Integer |                                                        |
-|  pageSize  | Optional | Integer |                                                        |
-|  keyword   | Optional | String  |             Cari berdasarkan kategori_name             |
-|   status   | Optional | String  |     Cari berdasarkan "Pending", "Reject", "Accept"     |
-| created_by | Optional | String  | Cari berdasarkan "saya" = kalo mau nyari punya sendiri |
+|    Name    |  Status  |         |                                                                        |
+| :--------: | :------: | :-----: | :--------------------------------------------------------------------: |
+|    page    | Optional | Integer |                                                                        |
+|  pageSize  | Optional | Integer |                                                                        |
+|  keyword   | Optional | String  | Cari berdasarkan name, location, description, username dari created_by |
+|   status   | Optional | String  |             Cari berdasarkan "Pending", "Reject", "Accept"             |
+| created_by | Optional | String  |         Cari berdasarkan "saya" = kalo mau nyari punya sendiri         |
 
 #### Detail
 

@@ -196,7 +196,7 @@ export class DoaService extends BaseResponse {
     if (keyword) {
       filterKeyword.push(
         {
-          name: Like(`%${keyword}%`),
+          kategori_name: Like(`%${keyword}%`),
         },
         {
           created_by: {

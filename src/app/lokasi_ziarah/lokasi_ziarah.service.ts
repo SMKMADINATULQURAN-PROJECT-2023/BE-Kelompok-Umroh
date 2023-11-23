@@ -71,6 +71,11 @@ export class LokasiZiarahService extends BaseResponse {
         { name: Like(`%${keyword}%`) },
         { location: Like(`%${keyword}%`) },
         { description: Like(`%${keyword}%`) },
+        {
+          created_by: {
+            username: Like(`%${keyword}%`),
+          },
+        },
       );
     } else {
       if (created_by == 'saya') {
