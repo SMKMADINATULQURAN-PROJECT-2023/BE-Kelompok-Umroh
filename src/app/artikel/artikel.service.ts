@@ -1,18 +1,19 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import {
   CreateArtikelDto,
   FindArtikelDto,
   UpdateArtikelDto,
+  UpdateStatusArtikelDto,
 } from './dto/artikel.dto';
 import { ResponsePagination, ResponseSuccess } from 'src/interface';
 import BaseResponse from 'src/utils/response/base.response';
 import { Artikel } from './entities/artikel.entity';
-import { Repository, Like } from 'typeorm';
-import { HttpException } from '@nestjs/common/exceptions';
+import { Repository, Like, Not } from 'typeorm';
+import { HttpException, NotFoundException } from '@nestjs/common/exceptions';
 import { HttpStatus } from '@nestjs/common/enums';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
-import { Status } from 'src/interface/status.interface';
+import { REQUEST } from '@nestjs/core';
 
 @Injectable()
 export class ArtikelService extends BaseResponse {
@@ -20,6 +21,7 @@ export class ArtikelService extends BaseResponse {
     @InjectRepository(Artikel)
     private readonly artikelRepo: Repository<Artikel>,
     private cluodinary: CloudinaryService,
+    @Inject(REQUEST) private req,
   ) {
     super();
   }
@@ -56,8 +58,9 @@ export class ArtikelService extends BaseResponse {
   }
 
   async findAll(query: FindArtikelDto): Promise<ResponsePagination> {
-    const { page, pageSize, limit, keyword } = query;
+    const { page, pageSize, limit, keyword, created_by, status } = query;
     const filterKeyword = [];
+    const filterQuery = {};
 
     if (keyword) {
       filterKeyword.push(
@@ -76,12 +79,19 @@ export class ArtikelService extends BaseResponse {
           },
         },
       );
+    } else {
+      if (created_by == 'saya') {
+        filterQuery['created_by.id'] = this.req.user.id;
+      }
+      if (status) {
+        filterQuery['status'] = Like(`%${status}%`);
+      }
     }
 
     const [result, count] = await this.artikelRepo.findAndCount({
       take: pageSize,
       skip: limit,
-      where: keyword && filterKeyword,
+      where: keyword ? filterKeyword : filterQuery,
       select: {
         created_by: {
           id: true,
@@ -177,5 +187,32 @@ export class ArtikelService extends BaseResponse {
     await this.cluodinary.deleteImage(check.id_thumbnail);
     await this.artikelRepo.delete(id);
     return this._success('Berhasil Menghapus Artikel');
+  }
+
+  async updateStatus(
+    id: number,
+    payload: UpdateStatusArtikelDto,
+  ): Promise<ResponseSuccess> {
+    const check = await this.artikelRepo.findOne({
+      where: {
+        id: id,
+      },
+    });
+    if (!check) throw new NotFoundException('Artikel Tidak Ditemukan');
+
+    const verify = await this.artikelRepo.findOne({
+      where: {
+        id: id,
+        created_by: Not(this.req.user.id),
+      },
+    });
+    console.log(verify);
+    if (verify)
+      throw new HttpException(
+        'Anda Tidak Memiliki Izin Untuk Mengakses Sumber Daya Ini.',
+        HttpStatus.FORBIDDEN,
+      );
+    await this.artikelRepo.save({ payload, id: id });
+    return this._success('Berhasil Mengupdate Status Artikel');
   }
 }

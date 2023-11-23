@@ -6,7 +6,7 @@ import BaseResponse from 'src/utils/response/base.response';
 import { Role } from '../role/entity/role.entity';
 import { Menu } from '../menu/entity/menu.entity';
 import { Repository } from 'typeorm';
-import { RolesAccessMenus } from './entity/role_access_menu.entity';
+import { AdminsPermissions } from './entity/role_access_menu.entity';
 import { Admin } from '../admin/entities/admin.entity';
 import { RoleAccessMenuDto } from './dto/role_access_menu.dto';
 
@@ -16,8 +16,8 @@ export class RoleAccessMenuService extends BaseResponse {
     @InjectRepository(Admin) private readonly adminRepo: Repository<Admin>,
     @InjectRepository(Role) private readonly roleRepo: Repository<Role>,
     @InjectRepository(Menu) private readonly menuRepo: Repository<Menu>,
-    @InjectRepository(RolesAccessMenus)
-    private readonly roleAccessMenuRepo: Repository<RolesAccessMenus>,
+    @InjectRepository(AdminsPermissions)
+    private readonly roleAccessMenuRepo: Repository<AdminsPermissions>,
   ) {
     super();
   }

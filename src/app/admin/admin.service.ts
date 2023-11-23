@@ -173,28 +173,28 @@ export class AdminService extends BaseResponse {
     payload: CreateAdminDto,
     file: Express.Multer.File,
   ): Promise<ResponseSuccess> {
-    if (!file.path) {
+    if (!file?.path) {
       throw new HttpException(
         'thumbnail should not be empty',
         HttpStatus.BAD_REQUEST,
       );
     }
-    if (
-      file?.mimetype === 'image/png' ||
-      file?.mimetype === 'image/jpg' ||
-      file?.mimetype === 'image/jpeg'
-    ) {
-      const { public_id, url } = await this.cloudinary.uploadImage(
-        file,
-        'admin',
-      );
-      payload.id_avatar = public_id;
-      payload.avatar = url;
-    } else {
-      throw new HttpException(
-        ' file harus berekstensi .jpg, .jpeg, .png',
-        HttpStatus.BAD_REQUEST,
-      );
+    const allowedMimetypes = ['image/png', 'image/jpeg', 'image/jpg'];
+
+    if (file) {
+      if (allowedMimetypes.includes(file.mimetype)) {
+        const { public_id, url } = await this.cloudinary.uploadImage(
+          file,
+          'admin',
+        );
+        payload.avatar = url;
+        payload.avatar = public_id;
+      } else {
+        throw new HttpException(
+          ' file harus berekstensi .jpg, .jpeg, .png',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
     }
     const checkRole = await this.roleRepository.findOne({
       where: { id: payload.role_id },
@@ -280,19 +280,50 @@ export class AdminService extends BaseResponse {
     return this._success('Berhasil Menemukan Detail Admin', result);
   }
 
-  async update(id: number, payload: UpdateAdminDto): Promise<ResponseSuccess> {
+  async update(
+    id: number,
+    payload: UpdateAdminDto,
+    file: Express.Multer.File,
+  ): Promise<ResponseSuccess> {
     const check = await this.adminRepository.findOne({
       where: { id: id },
     });
     if (!check) throw new NotFoundException(`Admin Tidak Ditemukan`);
 
+    const allowedMimetypes = ['image/png', 'image/jpeg', 'image/jpg'];
+
+    if (file) {
+      if (allowedMimetypes.includes(file.mimetype)) {
+        const { public_id, url } = await this.cloudinary.uploadImage(
+          file,
+          'admin',
+        );
+        payload.avatar = url;
+        payload.id_avatar = public_id;
+      } else {
+        throw new HttpException(
+          ' file harus berekstensi .jpg, .jpeg, .png',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    } else {
+      payload.avatar = check.avatar;
+      payload.id_avatar = check.id_avatar;
+    }
     const checkRole = await this.roleRepository.findOne({
       where: { id: payload.role_id },
     });
     if (!checkRole) {
       throw new NotFoundException('Role Tidak Ditemukan');
     }
-
+    const checkEmail = await this.adminRepository.findOne({
+      where: {
+        id: id,
+        email: payload.email,
+      },
+    });
+    if (!checkEmail)
+      throw new HttpException('email Sudah Digunakan', HttpStatus.BAD_REQUEST);
     await this.adminRepository.save({
       ...payload,
       role_id: { id: payload.role_id },
@@ -307,6 +338,7 @@ export class AdminService extends BaseResponse {
     });
     if (!check) throw new NotFoundException(`Admin Tidak Ditemukan`);
 
+    await this.cloudinary.deleteImage(check.id_avatar);
     await this.adminRepository.delete(id);
     return this._success('Berhasil Menghapus Akun Admin');
   }

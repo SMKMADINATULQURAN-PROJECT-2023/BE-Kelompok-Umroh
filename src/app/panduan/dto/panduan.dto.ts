@@ -54,6 +54,10 @@ export class FindPanduanDto extends PageRequestDto {
   @IsEnum(Status)
   status: Status;
 
+  @IsString()
+  @IsOptional()
+  created_by: string;
+
   @IsOptional()
   @IsEnum(KategoriPanduan)
   kategori_panduan: KategoriPanduan;

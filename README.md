@@ -212,11 +212,11 @@ Body
 
 Params
 
-|   Name   |  Status  |  tyoe   |                   description                   |
-| :------: | :------: | :-----: | :---------------------------------------------: |
-|   page   | Optional | Integer |                                                 |
-| pageSize | Optional | Integer |                                                 |
-| keyword  | Optional | String  | Search by username, telephone and jenis_kelamin |
+|   Name   |  Status  |  tyoe   |                      description                       |
+| :------: | :------: | :-----: | :----------------------------------------------------: |
+|   page   | Optional | Integer |                                                        |
+| pageSize | Optional | Integer |                                                        |
+| keyword  | Optional | String  | Cari berdasarkan username, telephone and jenis_kelamin |
 
 #### Detail
 
@@ -304,11 +304,11 @@ Headers
 
 Params
 
-|   Name   |  Status  |         |                 |
-| :------: | :------: | :-----: | :-------------: |
-|   page   | Optional | Integer |                 |
-| pageSize | Optional | Integer |                 |
-| keyword  | Optional | String  | Search by email |
+|   Name   |  Status  |         |                        |
+| :------: | :------: | :-----: | :--------------------: |
+|   page   | Optional | Integer |                        |
+| pageSize | Optional | Integer |                        |
+| keyword  | Optional | String  | Cari berdasarkan email |
 
 Headers
 
@@ -408,11 +408,13 @@ Headers
 
 Params
 
-|   Name   |  Status  |         |                 |
-| :------: | :------: | :-----: | :-------------: |
-|   page   | Optional | Integer |                 |
-| pageSize | Optional | Integer |                 |
-| keyword  | Optional | String  | Search by judul |
+|    Name    |  Status  |         |                                                        |
+| :--------: | :------: | :-----: | :----------------------------------------------------: |
+|    page    | Optional | Integer |                                                        |
+|  pageSize  | Optional | Integer |                                                        |
+|  keyword   | Optional | String  |                 Cari berdasarkan judul                 |
+|   status   | Optional | String  |     Cari berdasarkan "Pending", "Reject", "Accept"     |
+| created_by | Optional | String  | Cari berdasarkan "saya" = kalo mau nyari punya sendiri |
 
 #### Detail
 
@@ -495,11 +497,13 @@ Headers
 
 Params
 
-|   Name   |  Status  |         |                |
-| :------: | :------: | :-----: | :------------: |
-|   page   | Optional | Integer |                |
-| pageSize | Optional | Integer |                |
-| keyword  | Optional | String  | Search by name |
+|    Name    |  Status  |         |                                                        |
+| :--------: | :------: | :-----: | :----------------------------------------------------: |
+|    page    | Optional | Integer |                                                        |
+|  pageSize  | Optional | Integer |                                                        |
+|  keyword   | Optional | String  |                 Cari berdasarkan name                  |
+|   status   | Optional | String  |     Cari berdasarkan "Pending", "Reject", "Accept"     |
+| created_by | Optional | String  | Cari berdasarkan "saya" = kalo mau nyari punya sendiri |
 
 #### Detail
 
@@ -577,11 +581,13 @@ Headers
 
 Params
 
-|   Name   |  Status  |         |                         |
-| :------: | :------: | :-----: | :---------------------: |
-|   page   | Optional | Integer |                         |
-| pageSize | Optional | Integer |                         |
-| keyword  | Optional | String  | Search by kategori_name |
+|    Name    |  Status  |         |                                                        |
+| :--------: | :------: | :-----: | :----------------------------------------------------: |
+|    page    | Optional | Integer |                                                        |
+|  pageSize  | Optional | Integer |                                                        |
+|  keyword   | Optional | String  |             Cari berdasarkan kategori_name             |
+|   status   | Optional | String  |     Cari berdasarkan "Pending", "Reject", "Accept"     |
+| created_by | Optional | String  | Cari berdasarkan "saya" = kalo mau nyari punya sendiri |
 
 #### Detail
 
@@ -701,11 +707,13 @@ Headers
 
 Params
 
-|   Name   |  Status  |         |                         |
-| :------: | :------: | :-----: | :---------------------: |
-|   page   | Optional | Integer |                         |
-| pageSize | Optional | Integer |                         |
-| keyword  | Optional | String  | Search by kategori_name |
+|    Name    |  Status  |         |                                                        |
+| :--------: | :------: | :-----: | :----------------------------------------------------: |
+|    page    | Optional | Integer |                                                        |
+|  pageSize  | Optional | Integer |                                                        |
+|  keyword   | Optional | String  |             Cari berdasarkan kategori_name             |
+|   status   | Optional | String  |     Cari berdasarkan "Pending", "Reject", "Accept"     |
+| created_by | Optional | String  | Cari berdasarkan "saya" = kalo mau nyari punya sendiri |
 
 #### Detail
 
@@ -791,12 +799,14 @@ Headers
 
 Params
 
-|       Name       |  Status  |         |                                       |
-| :--------------: | :------: | :-----: | :-----------------------------------: |
-|       page       | Optional | Integer |                                       |
-|     pageSize     | Optional | Integer |                                       |
-| kategori_panduan | Optional | String  |     Search by "Haji" dan "Umrah"      |
-|      gender      | Optional | String  | Search by "Laki-Laki" dan "Perempuan" |
+|       Name       |  Status  |         |                                                        |
+| :--------------: | :------: | :-----: | :----------------------------------------------------: |
+|       page       | Optional | Integer |                                                        |
+|     pageSize     | Optional | Integer |                                                        |
+| kategori_panduan | Optional | String  |          Cari berdasarkan "Haji" dan "Umrah"           |
+|      gender      | Optional | String  |      Cari berdasarkan "Laki-Laki" dan "Perempuan"      |
+|      status      | Optional | String  |     Cari berdasarkan "Pending", "Reject", "Accept"     |
+|    created_by    | Optional | String  | Cari berdasarkan "saya" = kalo mau nyari punya sendiri |
 
 #### Detail
 

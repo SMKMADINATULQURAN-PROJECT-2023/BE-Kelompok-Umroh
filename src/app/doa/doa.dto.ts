@@ -64,14 +64,21 @@ export class CreateKategoriDto extends PickType(DoaDto, [
 export class UpdateKategoriDto extends PickType(DoaDto, [
   'thumbnail',
   'id_thumbnail',
-  'kategori_name',
   'updated_by',
-]) {}
+]) {
+  @IsString()
+  @IsNotEmpty()
+  kategori_name: string;
+}
 export class FindKategoriDto extends PageRequestDto {
   @IsOptional()
   @IsString()
   @IsEnum(Status)
   status: Status;
+
+  @IsString()
+  @IsOptional()
+  created_by: string;
 
   @IsString()
   @IsOptional()
@@ -94,6 +101,10 @@ export class FindDoaDto extends PageRequestDto {
   @IsString()
   @IsEnum(Status)
   status: Status;
+
+  @IsString()
+  @IsOptional()
+  created_by: string;
 
   @IsString()
   @IsOptional()

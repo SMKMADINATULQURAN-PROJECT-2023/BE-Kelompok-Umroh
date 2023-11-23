@@ -61,9 +61,14 @@ export class AdminController {
   }
 
   @UseGuards(JwtGuard)
+  @FileInterceptorCustom('file_create', 'admin')
   @Put('update/:id')
-  update(@Param('id') id: string, @Body() payload: UpdateAdminDto) {
-    return this.adminService.update(+id, payload);
+  update(
+    @Param('id') id: string,
+    @Body() payload: UpdateAdminDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.adminService.update(+id, payload, file);
   }
 
   @UseGuards(JwtGuard)

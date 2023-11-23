@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import BaseResponse from 'src/utils/response/base.response';
 import { Menu } from './entity/menu.entity';
@@ -47,6 +52,14 @@ export class MenuService extends BaseResponse {
       where: { id: id },
     });
     if (!check) throw new NotFoundException('Menu Tidak Ditemukan');
+    const checkMenuName = await this.menuRepo.findOne({
+      where: {
+        id: id,
+        name: payload.name,
+      },
+    });
+    if (!checkMenuName)
+      throw new HttpException('Menu Sudah Digunakan', HttpStatus.BAD_REQUEST);
     await this.menuRepo.save(payload);
     return this._success('Berhasil Mengupdate Menu');
   }

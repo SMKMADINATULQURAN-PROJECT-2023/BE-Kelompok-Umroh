@@ -21,7 +21,7 @@ import { NotFoundException } from '@nestjs/common/exceptions';
 import { jwtPayload } from './auth.inteface';
 import { Admin } from '../admin/entities/admin.entity';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
-import { UpdateAdminDto } from '../admin/dto/admin.dto';
+import { UpdateProfileAdminDto } from '../admin/dto/admin.dto';
 
 @Injectable()
 export class AuthService extends BaseResponse {
@@ -227,18 +227,18 @@ export class AuthService extends BaseResponse {
 
     const allowedMimetypes = ['image/png', 'image/jpeg', 'image/jpg'];
 
-    if (!file) {
-      if (check.avatar) {
-        payload.avatar = check.avatar;
+    if (file) {
+      if (allowedMimetypes.includes(file.mimetype)) {
+        const { url } = await this.cloudinary.uploadImage(file, 'user');
+        payload.avatar = url;
+      } else {
+        throw new HttpException(
+          ' file harus berekstensi .jpg, .jpeg, .png',
+          HttpStatus.BAD_REQUEST,
+        );
       }
-    } else if (!allowedMimetypes.includes(file.mimetype)) {
-      throw new HttpException(
-        'File harus berekstensi .jpg, .jpeg, .png',
-        HttpStatus.BAD_REQUEST,
-      );
     } else {
-      const { url } = await this.cloudinary.uploadImage(file, 'user');
-      payload.avatar = url;
+      payload.avatar = check.avatar;
     }
 
     await this.authRepository.save({
@@ -368,7 +368,7 @@ export class AuthService extends BaseResponse {
 
   async updateProfileAdmin(
     file: Express.Multer.File,
-    payload: UpdateAdminDto,
+    payload: UpdateProfileAdminDto,
     id: number,
     refresh_token: string,
   ): Promise<ResponseSuccess> {
@@ -396,17 +396,19 @@ export class AuthService extends BaseResponse {
     } else if (check.avatar || check.id_avatar) {
       payload.avatar = check.avatar;
       payload.id_avatar = check.id_avatar;
-    } else {
-      return;
     }
-
-    if (!check.id_avatar) {
-      await this.adminRepository.save({
-        ...payload,
-        role_id: { id: payload.role_id },
+    const checkEmail = await this.adminRepository.findOne({
+      where: {
         id: id,
-      });
-    }
+        email: payload.email,
+      },
+    });
+    if (!checkEmail)
+      throw new HttpException('Email Sudah Digunakan', HttpStatus.BAD_REQUEST);
+    await this.adminRepository.save({
+      ...payload,
+      id: id,
+    });
 
     return this._success('Berhasil Mengupdate Profile');
   }

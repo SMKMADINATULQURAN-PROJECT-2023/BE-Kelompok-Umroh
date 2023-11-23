@@ -1,4 +1,4 @@
-import { OmitType, PartialType } from '@nestjs/mapped-types';
+import { OmitType, PickType } from '@nestjs/mapped-types';
 import {
   IsEnum,
   IsNotEmpty,
@@ -26,6 +26,10 @@ export class ArtikelDto {
   @IsString()
   source: string;
 
+  @IsString()
+  @IsEnum(Status)
+  status: Status;
+
   @IsObject()
   @IsOptional()
   created_by: { id: number };
@@ -37,11 +41,16 @@ export class ArtikelDto {
 
 export class CreateArtikelDto extends OmitType(ArtikelDto, ['updated_by']) {}
 export class UpdateArtikelDto extends OmitType(ArtikelDto, ['created_by']) {}
+export class UpdateStatusArtikelDto extends PickType(ArtikelDto, ['status']) {}
 export class FindArtikelDto extends PageRequestDto {
   @IsOptional()
   @IsString()
   @IsEnum(Status)
   status: Status;
+
+  @IsString()
+  @IsOptional()
+  created_by: string;
 
   @IsString()
   @IsOptional()

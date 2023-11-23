@@ -10,7 +10,6 @@ export const Pagination = createParamDecorator(
     if (!!request.query.pageSize === false) {
       request.query.pageSize = 10;
     }
-
     request.query.limit =
       (Number(request.query.page) - 1) * Number(request.query.pageSize);
     request.query.pageSize = Number(request.query.pageSize);

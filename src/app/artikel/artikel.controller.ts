@@ -10,6 +10,7 @@ import {
   Req,
   HttpException,
   HttpStatus,
+  Body,
 } from '@nestjs/common';
 import { ArtikelService } from './artikel.service';
 import { CreateArtikelDto, UpdateArtikelDto } from './dto/artikel.dto';
@@ -78,5 +79,10 @@ export class ArtikelController {
   @Delete('delete/:id')
   remove(@Param('id') id: string) {
     return this.artikelService.remove(+id);
+  }
+
+  @Put('update/status/:id')
+  async updateStatus(@Param('id') id: string, @Body() payload) {
+    return this.artikelService.updateStatus(+id, payload);
   }
 }

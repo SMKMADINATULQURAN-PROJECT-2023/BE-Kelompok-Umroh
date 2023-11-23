@@ -18,7 +18,7 @@ import {
 import { AuthService } from './auth.service';
 import { JwtGuard } from './auth.guard';
 import { FileInterceptorCustom } from 'src/utils/decorator/fileInterceptor.decorator';
-import { UpdateAdminDto } from '../admin/dto/admin.dto';
+import { UpdateProfileAdminDto } from '../admin/dto/admin.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -97,7 +97,7 @@ export class AuthController {
   @Put('update-profile-admin')
   async updateProfile(
     @UploadedFile() file: Express.Multer.File,
-    @Body() payload: UpdateAdminDto,
+    @Body() payload: UpdateProfileAdminDto,
     @Req() req,
   ) {
     const { id, refresh_token } = req.user;

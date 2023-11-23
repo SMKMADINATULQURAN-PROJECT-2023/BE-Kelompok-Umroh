@@ -41,41 +41,48 @@ export class LokasiZiarahService extends BaseResponse {
         HttpStatus.BAD_REQUEST,
       );
     }
-    if (
-      file?.mimetype === 'image/png' ||
-      file?.mimetype === 'image/jpeg' ||
-      file?.mimetype === 'image/jpg'
-    ) {
-      const { public_id, url } = await this.cloudinary.uploadImage(
-        file,
-        'lokasi ziarah',
-      );
-      payload.id_thumbnail = public_id;
-      payload.thumbnail = url;
-    } else {
-      throw new HttpException(
-        ' file harus berekstensi .jpg, .jpeg, .png',
-        HttpStatus.BAD_REQUEST,
-      );
+    const allowedMimetypes = ['image/png', 'image/jpeg', 'image/jpg'];
+
+    if (file) {
+      if (allowedMimetypes.includes(file.mimetype)) {
+        const { public_id, url } = await this.cloudinary.uploadImage(
+          file,
+          'lokasi ziarah',
+        );
+        payload.thumbnail = url;
+        payload.id_thumbnail = public_id;
+      } else {
+        throw new HttpException(
+          ' file harus berekstensi .jpg, .jpeg, .png',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
     }
     await this.ziarahRepository.save(payload);
     return this._success('Berhasil Menambah Lokasi Ziarah');
   }
 
   async get(query: FindZiarahDto): Promise<ResponsePagination> {
-    const { page, pageSize, limit, keyword } = query;
+    const { page, pageSize, limit, keyword, created_by, status } = query;
     const filterKeyword = [];
-
+    const filterQuery = {};
     if (keyword) {
       filterKeyword.push(
         { name: Like(`%${keyword}%`) },
         { location: Like(`%${keyword}%`) },
         { description: Like(`%${keyword}%`) },
       );
+    } else {
+      if (created_by == 'saya') {
+        filterQuery['created_by.id'] = this.req.user.id;
+      }
+      if (status) {
+        filterQuery['status'] = Like(`%${status}%`);
+      }
     }
 
     const [result, count] = await this.ziarahRepository.findAndCount({
-      where: keyword && filterKeyword,
+      where: keyword ? filterKeyword : filterQuery,
       skip: limit,
       take: pageSize,
       select: {
@@ -104,7 +111,7 @@ export class LokasiZiarahService extends BaseResponse {
 
   async update(
     id: number,
-    updateZiarahDto: UpdateZiarahDto,
+    payload: UpdateZiarahDto,
     file: Express.Multer.File,
   ): Promise<ResponseSuccess> {
     const check = await this.ziarahRepository.findOne({
@@ -116,30 +123,30 @@ export class LokasiZiarahService extends BaseResponse {
     if (!check) {
       throw new NotFoundException(`Lokasi Tidak Ditemukan`);
     }
-    if (file?.path === undefined) {
-      updateZiarahDto.id_thumbnail = check.id_thumbnail;
-      updateZiarahDto.thumbnail = check.thumbnail;
-    } else if (
-      file?.mimetype == 'image/png' ||
-      file?.mimetype == 'image/jpeg' ||
-      file?.mimetype == 'image/jpg'
-    ) {
-      await this.cloudinary.deleteImage(check.id_thumbnail);
-      const { public_id, url } = await this.cloudinary.uploadImage(
-        file,
-        'lokasi ziarah',
-      );
-      updateZiarahDto.id_thumbnail = public_id;
-      updateZiarahDto.thumbnail = url;
+
+    const allowedMimetypes = ['image/png', 'image/jpeg', 'image/jpg'];
+
+    if (file) {
+      if (allowedMimetypes.includes(file.mimetype)) {
+        const { public_id, url } = await this.cloudinary.uploadImage(
+          file,
+          'lokasi ziarah',
+        );
+        payload.thumbnail = url;
+        payload.id_thumbnail = public_id;
+      } else {
+        throw new HttpException(
+          ' file harus berekstensi .jpg, .jpeg, .png',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
     } else {
-      throw new HttpException(
-        ' file harus berekstensi .jpg, .jpeg, .png',
-        HttpStatus.BAD_REQUEST,
-      );
+      payload.thumbnail = check.thumbnail;
+      payload.id_thumbnail = check.id_thumbnail;
     }
 
     const updatedZiarah = await this.ziarahRepository.save({
-      ...updateZiarahDto,
+      ...payload,
       id: id,
     });
 

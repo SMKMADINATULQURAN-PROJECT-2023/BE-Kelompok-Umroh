@@ -44,7 +44,7 @@
     "firebase-admin": "^11.11.0",
     "handlebars": "^4.7.7",
     "jsonwebtoken": "^9.0.2",
-    "mysql2": "^3.5.2",
+    "mysql2": "^3.6.3",
     "nestjs-seeder": "^0.3.2",
     "nodemailer": "^6.9.4",
     "passport": "^0.6.0",

@@ -50,8 +50,9 @@ export class DoaService extends BaseResponse {
   }
 
   async getDoa(query: FindDoaDto): Promise<ResponsePagination> {
-    const { page, pageSize, limit, keyword } = query;
+    const { page, pageSize, limit, keyword, status, created_by } = query;
     const filterKeyword = [];
+    const filterQuery = {};
     console.log(query);
     if (keyword) {
       filterKeyword.push(
@@ -64,11 +65,18 @@ export class DoaService extends BaseResponse {
           },
         },
       );
+    } else {
+      if (created_by == 'saya') {
+        filterQuery['created_by.id'] = created_by;
+      }
+      if (status) {
+        filterQuery['status'] = Like(`%${status}%`);
+      }
     }
     const [result, count] = await this.doaRepo.findAndCount({
       skip: limit,
       take: pageSize,
-      where: keyword && filterKeyword,
+      where: keyword ? filterKeyword : filterQuery,
       select: {
         created_by: {
           id: true,
@@ -111,6 +119,7 @@ export class DoaService extends BaseResponse {
         HttpStatus.NOT_FOUND,
       );
     }
+
     await this.doaRepo.save({
       ...payload,
       kategori_id: { id: payload.kategori_id },
@@ -159,31 +168,31 @@ export class DoaService extends BaseResponse {
         HttpStatus.BAD_REQUEST,
       );
     }
-    if (
-      file?.mimetype === 'image/png' ||
-      file?.mimetype === 'image/jpeg' ||
-      file?.mimetype === 'image/jpg'
-    ) {
-      const { public_id, url } = await this.cloudinary.uploadImage(
-        file,
-        'kategori doa',
-      );
-      payload.id_thumbnail = public_id;
-      payload.thumbnail = url;
-    } else {
-      throw new HttpException(
-        ' file harus berekstensi .jpg, .jpeg, .png',
-        HttpStatus.BAD_REQUEST,
-      );
+    const allowedMimetypes = ['image/png', 'image/jpeg', 'image/jpg'];
+
+    if (file) {
+      if (allowedMimetypes.includes(file.mimetype)) {
+        const { public_id, url } = await this.cloudinary.uploadImage(
+          file,
+          'kategori doa',
+        );
+        payload.thumbnail = url;
+        payload.id_thumbnail = public_id;
+      } else {
+        throw new HttpException(
+          ' file harus berekstensi .jpg, .jpeg, .png',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
     }
     await this.kategoriRepo.save(payload);
     return this._success('Berhasil Menyimpan Kategori Doa');
   }
 
   async getKategori(query: FindKategoriDto): Promise<ResponsePagination> {
-    const { page, pageSize, limit, keyword } = query;
+    const { page, pageSize, limit, keyword, status, created_by } = query;
     const filterKeyword = [];
-
+    const filterQuery = {};
     if (keyword) {
       filterKeyword.push(
         {
@@ -195,11 +204,18 @@ export class DoaService extends BaseResponse {
           },
         },
       );
+    } else {
+      if (created_by == 'saya') {
+        filterQuery['created_by.id'] = created_by;
+      }
+      if (status) {
+        filterQuery['status'] = Like(`%${status}%`);
+      }
     }
     const [result, count] = await this.kategoriRepo.findAndCount({
       skip: limit,
       take: pageSize,
-      where: keyword && filterKeyword,
+      where: keyword ? filterKeyword : filterQuery,
       select: {
         created_by: {
           id: true,
@@ -236,28 +252,37 @@ export class DoaService extends BaseResponse {
       throw new HttpException(`Kategori Tidak Ditemukan`, HttpStatus.NOT_FOUND);
     }
 
-    if (file?.path === undefined) {
-      payload.id_thumbnail = check.id_thumbnail;
-      payload.thumbnail = check.thumbnail;
-    } else if (
-      file?.mimetype == 'image/png' ||
-      file?.mimetype == 'image/jpeg' ||
-      file?.mimetype == 'image/jpg'
-    ) {
-      await this.cloudinary.deleteImage(check.id_thumbnail);
-      const { public_id, url } = await this.cloudinary.uploadImage(
-        file,
-        'kategori doa',
-      );
-      payload.id_thumbnail = public_id;
-      payload.thumbnail = url;
+    const allowedMimetypes = ['image/png', 'image/jpeg', 'image/jpg'];
+
+    if (file) {
+      if (allowedMimetypes.includes(file.mimetype)) {
+        const { public_id, url } = await this.cloudinary.uploadImage(
+          file,
+          'kategori doa',
+        );
+        payload.thumbnail = url;
+        payload.id_thumbnail = public_id;
+      } else {
+        throw new HttpException(
+          ' file harus berekstensi .jpg, .jpeg, .png',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
     } else {
+      payload.thumbnail = check.thumbnail;
+      payload.id_thumbnail = check.id_thumbnail;
+    }
+    const checkKategoriName = await this.kategoriRepo.findOne({
+      where: {
+        id: id,
+        kategori_name: payload.kategori_name,
+      },
+    });
+    if (!checkKategoriName)
       throw new HttpException(
-        ' file harus berekstensi .jpg, .jpeg, .png',
+        'Kategori Name Sudah Digunakan',
         HttpStatus.BAD_REQUEST,
       );
-    }
-
     await this.kategoriRepo.save({
       ...payload,
       id,

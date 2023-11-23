@@ -32,29 +32,37 @@ export class PanduanService extends BaseResponse {
         HttpStatus.BAD_REQUEST,
       );
     }
-    if (
-      file?.mimetype === 'image/png' ||
-      file?.mimetype === 'image/jpeg' ||
-      file?.mimetype === 'image/jpg'
-    ) {
-      const { public_id, url } = await this.cloudinary.uploadImage(
-        file,
-        'panduan',
-      );
-      payload.id_thumbnail = public_id;
-      payload.thumbnail = url;
-    } else {
-      throw new HttpException(
-        ' file harus berekstensi .jpg, .jpeg, .png',
-        HttpStatus.BAD_REQUEST,
-      );
+    const allowedMimetypes = ['image/png', 'image/jpeg', 'image/jpg'];
+
+    if (file) {
+      if (allowedMimetypes.includes(file.mimetype)) {
+        const { public_id, url } = await this.cloudinary.uploadImage(
+          file,
+          'pandaun',
+        );
+        payload.thumbnail = url;
+        payload.id_thumbnail = public_id;
+      } else {
+        throw new HttpException(
+          ' file harus berekstensi .jpg, .jpeg, .png',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
     }
     await this.panduanRepo.save(payload);
     return this._success('Berhasil Membuat Panduan');
   }
 
   async findAll(query: FindPanduanDto): Promise<ResponsePagination> {
-    const { page, pageSize, limit, gender, kategori_panduan } = query;
+    const {
+      page,
+      pageSize,
+      limit,
+      gender,
+      kategori_panduan,
+      status,
+      created_by,
+    } = query;
     const filterQuery = {};
 
     if (gender) {
@@ -62,6 +70,12 @@ export class PanduanService extends BaseResponse {
     }
     if (kategori_panduan) {
       filterQuery['kategori_panduan'] = Like(`${kategori_panduan}`);
+    }
+    if (created_by == 'saya') {
+      filterQuery['created_by.id'] = created_by;
+    }
+    if (status) {
+      filterQuery['status'] = Like(`%${status}%`);
     }
 
     const [result, count] = await this.panduanRepo.findAndCount({
@@ -121,26 +135,25 @@ export class PanduanService extends BaseResponse {
     const check = await this.panduanRepo.findOne({ where: { id } });
     if (!check) throw new NotFoundException('Panduan Tidak Ditemukan');
 
-    if (file?.path === undefined) {
+    const allowedMimetypes = ['image/png', 'image/jpeg', 'image/jpg'];
+
+    if (file) {
+      if (allowedMimetypes.includes(file.mimetype)) {
+        const { public_id, url } = await this.cloudinary.uploadImage(
+          file,
+          'panduan',
+        );
+        payload.thumbnail = url;
+        payload.id_thumbnail = public_id;
+      } else {
+        throw new HttpException(
+          ' file harus berekstensi .jpg, .jpeg, .png',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    } else {
       payload.id_thumbnail = check.id_thumbnail;
       payload.thumbnail = check.thumbnail;
-    } else if (
-      file?.mimetype == 'image/png' ||
-      file?.mimetype == 'image/jpeg' ||
-      file?.mimetype == 'image/jpg'
-    ) {
-      await this.cloudinary.deleteImage(check.id_thumbnail);
-      const { public_id, url } = await this.cloudinary.uploadImage(
-        file,
-        'panduan',
-      );
-      payload.id_thumbnail = public_id;
-      payload.thumbnail = url;
-    } else {
-      throw new HttpException(
-        ' file harus berekstensi .jpg, .jpeg, .png',
-        HttpStatus.BAD_REQUEST,
-      );
     }
 
     await this.panduanRepo.save({

@@ -59,6 +59,10 @@ export class FindZiarahDto extends PageRequestDto {
 
   @IsString()
   @IsOptional()
+  created_by: string;
+
+  @IsString()
+  @IsOptional()
   keyword: string;
 }
 export class UpdateZiarahDto extends OmitType(LokasiZiarahDto, [

@@ -4,11 +4,11 @@ import { RoleAccessMenuService } from './role_access_menu.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Role } from '../role/entity/role.entity';
 import { Menu } from '../menu/entity/menu.entity';
-import { RolesAccessMenus } from './entity/role_access_menu.entity';
+import { AdminsPermissions } from './entity/role_access_menu.entity';
 import { Admin } from '../admin/entities/admin.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Admin, Role, Menu, RolesAccessMenus])],
+  imports: [TypeOrmModule.forFeature([Admin, Role, Menu, AdminsPermissions])],
   controllers: [RoleAccessMenuController],
   providers: [RoleAccessMenuService],
 })

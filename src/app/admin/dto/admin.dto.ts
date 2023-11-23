@@ -11,7 +11,6 @@ import { IsUnique } from 'src/utils/validator/unique.validator';
 import { Admin } from '../entities/admin.entity';
 import { OmitType, PartialType, PickType } from '@nestjs/mapped-types';
 import { PageRequestDto } from 'src/utils/dto/page.dto';
-import { UserDto } from 'src/app/auth/auth.dto';
 
 export class AdminDto {
   @IsInt()
@@ -54,7 +53,27 @@ export class CreateAdminDto extends OmitType(AdminDto, [
   'id',
   'refresh_token',
 ]) {}
-export class UpdateAdminDto extends PartialType(AdminDto) {}
+export class UpdateAdminDto extends PickType(AdminDto, [
+  'avatar',
+  'id_avatar',
+  'username',
+  'role_id',
+]) {
+  @IsNotEmpty()
+  @IsString()
+  @IsEmail()
+  email: string;
+}
+export class UpdateProfileAdminDto extends PickType(AdminDto, [
+  'avatar',
+  'id_avatar',
+  'username',
+]) {
+  @IsNotEmpty()
+  @IsString()
+  @IsEmail()
+  email: string;
+}
 export class RefreshTokenDto extends PickType(AdminDto, [
   'id',
   'refresh_token',

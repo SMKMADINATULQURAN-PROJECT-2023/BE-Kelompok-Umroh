@@ -11,7 +11,7 @@ import {
 } from 'typeorm';
 
 @Entity('admins_permissions')
-export class RolesAccessMenus extends BaseEntity {
+export class AdminsPermissions extends BaseEntity {
   @PrimaryColumn({ name: 'admin_id' })
   adminId: number;
 
