@@ -53,7 +53,6 @@ export class DoaService extends BaseResponse {
     const { page, pageSize, limit, keyword, status, created_by } = query;
     const filterKeyword = [];
     const filterQuery = {};
-    console.log(query);
     if (keyword) {
       filterKeyword.push(
         {
@@ -76,7 +75,6 @@ export class DoaService extends BaseResponse {
     const [result, count] = await this.doaRepo.findAndCount({
       skip: limit,
       take: pageSize,
-      where: keyword ? filterKeyword : filterQuery,
       select: {
         created_by: {
           id: true,

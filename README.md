@@ -337,6 +337,27 @@ Headers
 | :-----------: | :------: | :----: |
 | Authorization | Required | String |
 
+#### Reset Password
+
+```markdown
+/admin/reset-password
+```
+
+**Method : PUT**
+
+Headers
+
+|     Name      |  Status  |  type  |
+| :-----------: | :------: | :----: |
+| Authorization | Required | String |
+
+Body
+
+|     Name      |  Status  |        |
+| :-----------: | :------: | :----: |
+| refresh_token | required | String |
+| new_password  | Optional | String |
+
 ## Artikel
 
 #### Create
