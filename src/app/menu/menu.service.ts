@@ -8,7 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import BaseResponse from 'src/utils/response/base.response';
 import { Menu } from './entity/menu.entity';
 import { Repository } from 'typeorm';
-import { ResponsePagination, ResponseSuccess } from 'src/interface';
+import { ResponsePagination, ResponseSuccess } from 'src/utils/interface';
 import { CreateMenuDto, UpdateMenuDto } from './dto/menu.dto';
 
 @Injectable()

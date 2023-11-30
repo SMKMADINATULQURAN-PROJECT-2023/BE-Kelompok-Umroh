@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import BaseResponse from 'src/utils/response/base.response';
 
 import { Repository } from 'typeorm';
-import { ResponsePagination, ResponseSuccess } from 'src/interface';
+import { ResponsePagination, ResponseSuccess } from 'src/utils/interface';
 
 import { PageRequestDto } from 'src/utils/dto/page.dto';
 import { Action } from './entity/action.entity';

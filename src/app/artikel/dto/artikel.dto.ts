@@ -6,7 +6,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { Status } from 'src/interface/status.interface';
+import { Status } from 'src/utils/interface/status.interface';
 import { PageRequestDto } from 'src/utils/dto/page.dto';
 
 export class ArtikelDto {
@@ -26,6 +26,7 @@ export class ArtikelDto {
   @IsString()
   source: string;
 
+  @IsOptional()
   @IsString()
   @IsEnum(Status)
   status: Status;
@@ -39,8 +40,14 @@ export class ArtikelDto {
   updated_by: { id: number };
 }
 
-export class CreateArtikelDto extends OmitType(ArtikelDto, ['updated_by']) {}
-export class UpdateArtikelDto extends OmitType(ArtikelDto, ['created_by']) {}
+export class CreateArtikelDto extends OmitType(ArtikelDto, [
+  'updated_by',
+  'status',
+]) {}
+export class UpdateArtikelDto extends OmitType(ArtikelDto, [
+  'created_by',
+  'status',
+]) {}
 export class UpdateStatusArtikelDto extends PickType(ArtikelDto, ['status']) {}
 export class FindArtikelDto extends PageRequestDto {
   @IsOptional()

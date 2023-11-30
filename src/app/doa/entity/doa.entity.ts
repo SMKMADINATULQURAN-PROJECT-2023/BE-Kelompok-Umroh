@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { KategoriDoa } from './category_doa.entity';
 import { Admin } from 'src/app/admin/entities/admin.entity';
-import { Status } from 'src/interface/status.interface';
+import { Status } from 'src/utils/interface/status.interface';
 @Entity()
 export class Doa extends BaseEntity {
   @PrimaryGeneratedColumn()

@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import { Admin } from 'src/app/admin/entities/admin.entity';
 import { Doa } from './doa.entity';
-import { Status } from 'src/interface/status.interface';
+import { Status } from 'src/utils/interface/status.interface';
 
 @Entity()
 export class KategoriDoa extends BaseEntity {

@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import BaseResponse from 'src/utils/response/base.response';
 import { User } from './entity/auth.entity';
 import { Repository } from 'typeorm';
-import { ResponseSuccess } from 'src/interface';
+import { ResponseSuccess } from 'src/utils/interface';
 import {
   LoginDto,
   LoginGoogleDto,
@@ -111,7 +111,7 @@ export class AuthService extends BaseResponse {
 
       const access_token = await this.generateJWT(
         jwtPayload,
-        '1d',
+        '2m',
         jwt_config.access_token_secret,
       );
       const refresh_token = await this.generateJWT(
@@ -225,7 +225,13 @@ export class AuthService extends BaseResponse {
       throw new NotFoundException('User Tidak Ditemukan');
     }
 
-    const allowedMimetypes = ['image/png', 'image/jpeg', 'image/jpg'];
+    const allowedMimetypes = [
+      'image/png',
+      'image/jpeg',
+      'image/jpg',
+      'image/webp',
+      'image/webm',
+    ];
 
     if (file) {
       if (allowedMimetypes.includes(file.mimetype)) {
@@ -351,16 +357,18 @@ export class AuthService extends BaseResponse {
         email: true,
         created_at: true,
         updated_at: true,
+        refresh_token: true,
         role_id: {
           id: true,
           role_name: true,
-          action_id: {
+          menus: {
             id: true,
-            action_name: true,
+            name: true,
+            permission: true,
           },
         },
       },
-      relations: ['role_id', 'role_id.action_id'],
+      relations: ['role_id', 'role_id.menus', 'role_id.menus'],
     });
     if (!user) throw new NotFoundException('User Tidak Ditemukan');
     return this._success('Berhasil Menemukan Profile', user);
@@ -378,7 +386,13 @@ export class AuthService extends BaseResponse {
     if (!check) {
       throw new HttpException(`Token Tidak Valid`, HttpStatus.NOT_FOUND);
     }
-    const allowedMimetypes = ['image/png', 'image/jpeg', 'image/jpg'];
+    const allowedMimetypes = [
+      'image/png',
+      'image/jpeg',
+      'image/jpg',
+      'image/webp',
+      'image/webm',
+    ];
     if (file) {
       if (allowedMimetypes.includes(file.mimetype)) {
         const { public_id, url } = await this.cloudinary.uploadImage(

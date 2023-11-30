@@ -1,4 +1,5 @@
 import { Admin } from 'src/app/admin/entities/admin.entity';
+import { Role } from 'src/app/role/entity/role.entity';
 import {
   BaseEntity,
   Column,
@@ -6,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  ManyToMany,
 } from 'typeorm';
 
 @Entity()
@@ -15,6 +17,12 @@ export class Menu extends BaseEntity {
 
   @Column()
   name: string;
+
+  @Column()
+  permission: string;
+
+  @ManyToMany(() => Role, (role) => role.menus)
+  roles: Role[];
 
   @ManyToOne(() => Admin)
   @JoinColumn({ name: 'created_by' })

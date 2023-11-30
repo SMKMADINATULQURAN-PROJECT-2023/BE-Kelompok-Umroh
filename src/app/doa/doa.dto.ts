@@ -14,7 +14,7 @@ import { OmitType, PickType } from '@nestjs/mapped-types';
 import { IsUnique } from 'src/utils/validator/unique.validator';
 import { KategoriDoa } from './entity/category_doa.entity';
 import { PageRequestDto } from 'src/utils/dto/page.dto';
-import { Status } from 'src/interface/status.interface';
+import { Status } from 'src/utils/interface/status.interface';
 @Injectable()
 export class DoaDto {
   thumbnail: any;

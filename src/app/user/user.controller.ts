@@ -2,9 +2,9 @@ import { Body, Param, Post, UseGuards } from '@nestjs/common/decorators';
 import { Controller, Get } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Pagination } from 'src/utils/decorator/pagination.decorator';
-import { PageRequestDto } from 'src/utils/dto/page.dto';
 import { JwtGuard, JwtGuardRefreshToken } from '../auth/auth.guard';
 import { RefreshTokenDto } from '../admin/dto/admin.dto';
+import { FindUserDto } from './dto/user.dto';
 
 @Controller('user')
 export class UserController {
@@ -12,7 +12,7 @@ export class UserController {
 
   @UseGuards(JwtGuard)
   @Get()
-  async findAll(@Pagination() query: PageRequestDto) {
+  async findAll(@Pagination() query: FindUserDto) {
     return this.userService.findAll(query);
   }
 

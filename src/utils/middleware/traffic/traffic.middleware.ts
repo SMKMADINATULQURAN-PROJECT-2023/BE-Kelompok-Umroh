@@ -18,7 +18,7 @@ export class TrafficMiddleware implements NestMiddleware {
       });
       if (
         lastVisit &&
-        new Date().getHours() - new Date(lastVisit.created_at).getHours() < 1
+        new Date().getHours() - new Date(lastVisit.created_at).getHours() < 3
       ) {
         return next();
       } else {

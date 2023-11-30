@@ -9,7 +9,7 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-import { UserRole } from 'src/interface';
+import { UserRole } from 'src/utils/interface';
 
 export class RoleDto {
   @IsInt()
@@ -20,4 +20,13 @@ export class RoleDto {
 }
 
 export class CreateRoleDto extends OmitType(RoleDto, ['id']) {}
+export class createRoleMenuDto {
+  @IsNumber()
+  @IsNotEmpty()
+  menu_id: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  role_id: number;
+}
 export class UpdateRoleDto extends PartialType(RoleDto) {}

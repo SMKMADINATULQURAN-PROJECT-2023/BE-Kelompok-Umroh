@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { Repository, Like } from 'typeorm';
 import BaseResponse from 'src/utils/response/base.response';
-import { ResponsePagination, ResponseSuccess } from 'src/interface';
+import { ResponsePagination, ResponseSuccess } from 'src/utils/interface';
 import {
   CreateDoaDto,
   CreateKategoriDto,
@@ -19,7 +19,8 @@ import {
 import { Doa } from './entity/doa.entity';
 import { KategoriDoa } from './entity/category_doa.entity';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
-import { Status } from 'src/interface/status.interface';
+import { REQUEST } from '@nestjs/core';
+import { Inject } from '@nestjs/common/decorators';
 
 @Injectable()
 export class DoaService extends BaseResponse {
@@ -28,6 +29,7 @@ export class DoaService extends BaseResponse {
     @InjectRepository(KategoriDoa)
     private readonly kategoriRepo: Repository<KategoriDoa>,
     private cloudinary: CloudinaryService,
+    @Inject(REQUEST) private req: any,
   ) {
     super();
   }
@@ -66,7 +68,7 @@ export class DoaService extends BaseResponse {
       );
     } else {
       if (created_by == 'saya') {
-        filterQuery['created_by.id'] = created_by;
+        filterQuery['created_by.id'] = this.req.user.id;
       }
       if (status) {
         filterQuery['status'] = Like(`%${status}%`);
@@ -75,6 +77,7 @@ export class DoaService extends BaseResponse {
     const [result, count] = await this.doaRepo.findAndCount({
       skip: limit,
       take: pageSize,
+      where: keyword ? filterKeyword : filterQuery,
       select: {
         created_by: {
           id: true,
@@ -166,7 +169,13 @@ export class DoaService extends BaseResponse {
         HttpStatus.BAD_REQUEST,
       );
     }
-    const allowedMimetypes = ['image/png', 'image/jpeg', 'image/jpg'];
+    const allowedMimetypes = [
+      'image/png',
+      'image/jpeg',
+      'image/jpg',
+      'image/webp',
+      'image/webm',
+    ];
 
     if (file) {
       if (allowedMimetypes.includes(file.mimetype)) {
@@ -250,7 +259,13 @@ export class DoaService extends BaseResponse {
       throw new HttpException(`Kategori Tidak Ditemukan`, HttpStatus.NOT_FOUND);
     }
 
-    const allowedMimetypes = ['image/png', 'image/jpeg', 'image/jpg'];
+    const allowedMimetypes = [
+      'image/png',
+      'image/jpeg',
+      'image/jpg',
+      'image/webp',
+      'image/webm',
+    ];
 
     if (file) {
       if (allowedMimetypes.includes(file.mimetype)) {

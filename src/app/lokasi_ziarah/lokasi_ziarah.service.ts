@@ -6,7 +6,7 @@ import {
   Inject,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ResponsePagination, ResponseSuccess } from 'src/interface';
+import { ResponsePagination, ResponseSuccess } from 'src/utils/interface';
 import BaseResponse from 'src/utils/response/base.response';
 import { LokasiZiarah } from './entity/lokasi_ziarah.entity';
 import { Like, Repository } from 'typeorm';
@@ -41,7 +41,13 @@ export class LokasiZiarahService extends BaseResponse {
         HttpStatus.BAD_REQUEST,
       );
     }
-    const allowedMimetypes = ['image/png', 'image/jpeg', 'image/jpg'];
+    const allowedMimetypes = [
+      'image/png',
+      'image/jpeg',
+      'image/jpg',
+      'image/webp',
+      'image/webm',
+    ];
 
     if (file) {
       if (allowedMimetypes.includes(file.mimetype)) {
@@ -129,7 +135,13 @@ export class LokasiZiarahService extends BaseResponse {
       throw new NotFoundException(`Lokasi Tidak Ditemukan`);
     }
 
-    const allowedMimetypes = ['image/png', 'image/jpeg', 'image/jpg'];
+    const allowedMimetypes = [
+      'image/png',
+      'image/jpeg',
+      'image/jpg',
+      'image/webp',
+      'image/webm',
+    ];
 
     if (file) {
       if (allowedMimetypes.includes(file.mimetype)) {

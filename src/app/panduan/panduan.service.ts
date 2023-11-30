@@ -10,7 +10,7 @@ import BaseResponse from 'src/utils/response/base.response';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Panduan } from './entities/panduan.entity';
 import { Like, Repository } from 'typeorm';
-import { ResponsePagination, ResponseSuccess } from 'src/interface';
+import { ResponsePagination, ResponseSuccess } from 'src/utils/interface';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @Injectable()
@@ -32,7 +32,13 @@ export class PanduanService extends BaseResponse {
         HttpStatus.BAD_REQUEST,
       );
     }
-    const allowedMimetypes = ['image/png', 'image/jpeg', 'image/jpg'];
+    const allowedMimetypes = [
+      'image/png',
+      'image/jpeg',
+      'image/jpg',
+      'image/webp',
+      'image/webm',
+    ];
 
     if (file) {
       if (allowedMimetypes.includes(file.mimetype)) {
@@ -61,27 +67,45 @@ export class PanduanService extends BaseResponse {
       gender,
       kategori_panduan,
       status,
+      keyword,
       created_by,
     } = query;
     const filterQuery = {};
+    const filterKeyword = [];
 
-    if (gender) {
-      filterQuery['gender'] = Like(`${gender}`);
-    }
-    if (kategori_panduan) {
-      filterQuery['kategori_panduan'] = Like(`${kategori_panduan}`);
-    }
-    if (created_by == 'saya') {
-      filterQuery['created_by.id'] = created_by;
-    }
-    if (status) {
-      filterQuery['status'] = Like(`%${status}%`);
+    if (keyword) {
+      filterKeyword.push(
+        {
+          title: Like(`%${keyword}%`),
+        },
+        {
+          description: Like(`%${keyword}%`),
+        },
+        {
+          created_by: {
+            username: Like(`%${keyword}%`),
+          },
+        },
+      );
+    } else {
+      if (gender) {
+        filterQuery['gender'] = Like(`${gender}`);
+      }
+      if (kategori_panduan) {
+        filterQuery['kategori_panduan'] = Like(`${kategori_panduan}`);
+      }
+      if (created_by == 'saya') {
+        filterQuery['created_by.id'] = created_by;
+      }
+      if (status) {
+        filterQuery['status'] = Like(`%${status}%`);
+      }
     }
 
     const [result, count] = await this.panduanRepo.findAndCount({
-      where: filterQuery,
       take: pageSize,
       skip: limit,
+      where: keyword ? filterKeyword : filterQuery,
       select: {
         created_by: {
           id: true,
@@ -135,7 +159,13 @@ export class PanduanService extends BaseResponse {
     const check = await this.panduanRepo.findOne({ where: { id } });
     if (!check) throw new NotFoundException('Panduan Tidak Ditemukan');
 
-    const allowedMimetypes = ['image/png', 'image/jpeg', 'image/jpg'];
+    const allowedMimetypes = [
+      'image/png',
+      'image/jpeg',
+      'image/jpg',
+      'image/webp',
+      'image/webm',
+    ];
 
     if (file) {
       if (allowedMimetypes.includes(file.mimetype)) {

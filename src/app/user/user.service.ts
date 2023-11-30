@@ -1,16 +1,15 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { Injectable, HttpStatus } from '@nestjs/common';
 import { User } from '../auth/entity/auth.entity';
 import BaseResponse from 'src/utils/response/base.response';
-import { ResponsePagination, ResponseSuccess } from 'src/interface';
+import { ResponsePagination, ResponseSuccess } from 'src/utils/interface';
 import { HttpException, NotFoundException } from '@nestjs/common/exceptions';
-import { PageRequestDto } from 'src/utils/dto/page.dto';
 import { RefreshTokenDto } from '../admin/dto/admin.dto';
 import { jwtPayload } from '../auth/auth.inteface';
-import { AuthService } from '../auth/auth.service';
 import { jwt_config } from 'src/config/jwt.config';
 import { JwtService } from '@nestjs/jwt';
+import { FindUserDto } from './dto/user.dto';
 
 @Injectable()
 export class UserService extends BaseResponse {
@@ -27,9 +26,24 @@ export class UserService extends BaseResponse {
     });
   } //membuat method untuk generate jwt
 
-  async findAll(query: PageRequestDto): Promise<ResponsePagination> {
-    const { page, pageSize, limit } = query;
+  async findAll(query: FindUserDto): Promise<ResponsePagination> {
+    const { page, pageSize, limit, keyword } = query;
+    const filterKeyword = [];
+    if (keyword) {
+      filterKeyword.push(
+        {
+          email: Like(`%${keyword}%`),
+        },
+        {
+          username: Like(`%${keyword}%`),
+        },
+        {
+          telephone: Like(`%${keyword}%`),
+        },
+      );
+    }
     const [result, count] = await this.userRepo.findAndCount({
+      where: keyword && filterKeyword,
       take: pageSize,
       skip: limit,
     });
@@ -85,6 +99,7 @@ export class UserService extends BaseResponse {
       telephone: check.telephone,
       alamat: check.alamat,
       tanggal_lahir: check.tanggal_lahir,
+      role_id: 'User',
     };
 
     const access_token = await this.generateJWT(

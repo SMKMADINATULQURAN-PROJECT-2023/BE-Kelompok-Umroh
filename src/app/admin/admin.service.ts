@@ -5,7 +5,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import BaseResponse from 'src/utils/response/base.response';
-import { ResponsePagination, ResponseSuccess } from 'src/interface';
+import { ResponsePagination, ResponseSuccess } from 'src/utils/interface';
 import { compare, hash } from 'bcrypt';
 import { Admin } from './entities/admin.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -56,13 +56,14 @@ export class AdminService extends BaseResponse {
         role_id: {
           id: true,
           role_name: true,
-          action_id: {
+          menus: {
             id: true,
-            action_name: true,
+            name: true,
+            permission: true,
           },
         },
       },
-      relations: ['role_id', 'role_id.action_id'], // Nama relasi dan relasi bersarang
+      relations: ['role_id', 'role_id.menus'], // Nama relasi dan relasi bersarang
     });
 
     if (!checkUserExists) {
@@ -179,7 +180,13 @@ export class AdminService extends BaseResponse {
         HttpStatus.BAD_REQUEST,
       );
     }
-    const allowedMimetypes = ['image/png', 'image/jpeg', 'image/jpg'];
+    const allowedMimetypes = [
+      'image/png',
+      'image/jpeg',
+      'image/jpg',
+      'image/webp',
+      'image/webm',
+    ];
 
     if (file) {
       if (allowedMimetypes.includes(file.mimetype)) {
@@ -216,18 +223,18 @@ export class AdminService extends BaseResponse {
   async findAll(query: FindAdminDto, id: number): Promise<ResponsePagination> {
     const { page, pageSize, limit, keyword } = query;
 
-    const filter: any = [{ id: Not(id) }];
+    const filter = [];
     if (keyword) {
       filter.push(
+        // { id: Not(id) },
         { username: Like(`%${keyword}%`) },
         { email: Like(`%${keyword}%`) },
         { role_id: { role_name: Like(`%${keyword}%`) } },
       );
     }
-    console.log(filter);
 
     const [result, count] = await this.adminRepository.findAndCount({
-      where: filter,
+      where: keyword ? filter : { id: Not(id) },
       select: {
         id: true,
         avatar: true,
@@ -236,13 +243,14 @@ export class AdminService extends BaseResponse {
         role_id: {
           id: true,
           role_name: true,
-          action_id: {
-            action_name: true,
-            description: true,
+          menus: {
+            id: true,
+            name: true,
+            permission: true,
           },
         },
       },
-      relations: ['role_id', 'role_id.action_id'],
+      relations: ['role_id', 'role_id.menus'],
       take: pageSize,
       skip: limit,
     });
@@ -290,7 +298,13 @@ export class AdminService extends BaseResponse {
     });
     if (!check) throw new NotFoundException(`Admin Tidak Ditemukan`);
 
-    const allowedMimetypes = ['image/png', 'image/jpeg', 'image/jpg'];
+    const allowedMimetypes = [
+      'image/png',
+      'image/jpeg',
+      'image/jpg',
+      'image/webp',
+      'image/webm',
+    ];
 
     if (file) {
       if (allowedMimetypes.includes(file.mimetype)) {

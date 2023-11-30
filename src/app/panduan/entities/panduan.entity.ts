@@ -1,4 +1,4 @@
-import { JenisKelamin } from 'src/interface';
+import { JenisKelamin } from 'src/utils/interface';
 import {
   PrimaryGeneratedColumn,
   Entity,
@@ -8,7 +8,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Admin } from 'src/app/admin/entities/admin.entity';
-import { Status } from 'src/interface/status.interface';
+import { Status } from 'src/utils/interface/status.interface';
 
 export enum KategoriPanduan {
   UMRAH = 'Umrah',
@@ -40,7 +40,7 @@ export class Panduan extends BaseEntity {
   @Column({ type: 'enum', enum: KategoriPanduan })
   kategori_panduan: KategoriPanduan;
 
-  @Column({ type: 'enum', enum: Status, default: Status.ACCEPT })
+  @Column({ type: 'enum', enum: Status, default: Status.PENDING })
   status: Status;
 
   @ManyToOne(() => Admin)

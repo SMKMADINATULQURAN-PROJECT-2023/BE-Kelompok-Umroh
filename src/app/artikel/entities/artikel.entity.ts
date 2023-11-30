@@ -1,5 +1,5 @@
 import { Admin } from 'src/app/admin/entities/admin.entity';
-import { Status } from 'src/interface/status.interface';
+import { Status } from 'src/utils/interface/status.interface';
 import {
   BaseEntity,
   Column,

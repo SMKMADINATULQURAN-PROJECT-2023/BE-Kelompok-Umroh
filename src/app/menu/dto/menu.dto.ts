@@ -1,6 +1,12 @@
 import { IsUnique } from 'src/utils/validator/unique.validator';
 import { Menu } from '../entity/menu.entity';
-import { IsObject, IsOptional, IsString, IsNotEmpty } from 'class-validator';
+import {
+  IsObject,
+  IsOptional,
+  IsString,
+  IsNotEmpty,
+  IsNumber,
+} from 'class-validator';
 import { OmitType } from '@nestjs/mapped-types';
 
 export class MenuDto {
@@ -8,6 +14,10 @@ export class MenuDto {
   @IsNotEmpty()
   @IsString()
   name: string;
+
+  @IsNotEmpty()
+  @IsString()
+  permission: string;
 
   @IsObject()
   @IsOptional()

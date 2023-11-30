@@ -77,6 +77,7 @@ export class AdminController {
     return this.adminService.remove(+id);
   }
 
+  @UseGuards(JwtGuard)
   @Put('reset-password')
   async resetPassword(@Body() payload: ResetPasswordDto, @Req() req) {
     const { id } = req.user;

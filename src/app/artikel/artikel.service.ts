@@ -6,7 +6,7 @@ import {
   UpdateArtikelDto,
   UpdateStatusArtikelDto,
 } from './dto/artikel.dto';
-import { ResponsePagination, ResponseSuccess } from 'src/interface';
+import { ResponsePagination, ResponseSuccess } from 'src/utils/interface';
 import BaseResponse from 'src/utils/response/base.response';
 import { Artikel } from './entities/artikel.entity';
 import { Repository, Like, Not } from 'typeorm';
@@ -35,22 +35,28 @@ export class ArtikelService extends BaseResponse {
         HttpStatus.BAD_REQUEST,
       );
     }
-    if (
-      file?.mimetype === 'image/jpeg' ||
-      file?.mimetype === 'image/jpg' ||
-      file?.mimetype === 'image/png'
-    ) {
-      const { url, public_id } = await this.cluodinary.uploadImage(
-        file,
-        'artikel',
-      );
-      payload.id_thumbnail = public_id;
-      payload.thumbnail = url;
-    } else {
-      throw new HttpException(
-        ' file harus berekstensi .jpg, .jpeg, .png',
-        HttpStatus.BAD_REQUEST,
-      );
+    const allowedMimetypes = [
+      'image/png',
+      'image/jpeg',
+      'image/jpg',
+      'image/webp',
+      'image/webm',
+    ];
+
+    if (file) {
+      if (allowedMimetypes.includes(file.mimetype)) {
+        const { public_id, url } = await this.cluodinary.uploadImage(
+          file,
+          'artikel',
+        );
+        payload.thumbnail = url;
+        payload.id_thumbnail = public_id;
+      } else {
+        throw new HttpException(
+          ' file harus berekstensi .jpg, .jpeg, .png',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
     }
 
     await this.artikelRepo.save(payload);
@@ -148,26 +154,31 @@ export class ArtikelService extends BaseResponse {
     if (!check) {
       throw new HttpException(`Artikel Tidak Ditemukan`, HttpStatus.NOT_FOUND);
     }
-    if (!file?.path) {
+    const allowedMimetypes = [
+      'image/png',
+      'image/jpeg',
+      'image/jpg',
+      'image/webp',
+      'image/webm',
+    ];
+
+    if (file) {
+      if (allowedMimetypes.includes(file.mimetype)) {
+        const { public_id, url } = await this.cluodinary.uploadImage(
+          file,
+          'artikel',
+        );
+        payload.thumbnail = url;
+        payload.id_thumbnail = public_id;
+      } else {
+        throw new HttpException(
+          ' file harus berekstensi .jpg, .jpeg, .png',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    } else {
       payload.thumbnail = check.thumbnail;
       payload.id_thumbnail = check.id_thumbnail;
-    } else if (
-      file?.mimetype === 'image/jpeg' ||
-      file?.mimetype === 'image/jpg' ||
-      file?.mimetype === 'image/png'
-    ) {
-      await this.cluodinary.deleteImage(check.id_thumbnail);
-      const { url, public_id } = await this.cluodinary.uploadImage(
-        file,
-        'artikel',
-      );
-      payload.id_thumbnail = public_id;
-      payload.thumbnail = url;
-    } else {
-      throw new HttpException(
-        ' file harus berekstensi .jpg, .jpeg, .png',
-        HttpStatus.BAD_REQUEST,
-      );
     }
 
     await this.artikelRepo.save({

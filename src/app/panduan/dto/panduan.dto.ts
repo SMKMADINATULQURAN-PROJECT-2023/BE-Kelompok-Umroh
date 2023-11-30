@@ -7,10 +7,10 @@ import {
   IsString,
   IsUrl,
 } from 'class-validator';
-import { JenisKelamin } from 'src/interface';
+import { JenisKelamin } from 'src/utils/interface';
 import { PageRequestDto } from 'src/utils/dto/page.dto';
 import { KategoriPanduan } from '../entities/panduan.entity';
-import { Status } from 'src/interface/status.interface';
+import { Status } from 'src/utils/interface/status.interface';
 export class PanduanDto {
   thumbnail: string;
 

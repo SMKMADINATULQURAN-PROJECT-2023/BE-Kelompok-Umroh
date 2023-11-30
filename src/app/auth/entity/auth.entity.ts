@@ -1,4 +1,4 @@
-import { JenisKelamin } from 'src/interface';
+import { JenisKelamin } from 'src/utils/interface';
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()

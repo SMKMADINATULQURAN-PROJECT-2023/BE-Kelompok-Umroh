@@ -12,7 +12,7 @@ import {
   MinLength,
 } from 'class-validator';
 
-import { JenisKelamin } from 'src/interface';
+import { JenisKelamin } from 'src/utils/interface';
 
 export class UserDto {
   @IsInt()

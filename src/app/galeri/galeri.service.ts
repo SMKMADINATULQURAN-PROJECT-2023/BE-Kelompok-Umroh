@@ -4,7 +4,7 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import BaseResponse from 'src/utils/response/base.response';
 import { Galeri } from './entity/galeri.entity';
 import { CreateGaleriDto, FindGaleriDto, UpdateGaleriDto } from './galery.dto';
-import { ResponsePagination, ResponseSuccess } from 'src/interface';
+import { ResponsePagination, ResponseSuccess } from 'src/utils/interface';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @Injectable()

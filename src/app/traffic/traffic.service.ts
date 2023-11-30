@@ -2,7 +2,7 @@ import { Injectable, HttpStatus, HttpException, Inject } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Traffic } from './entity/traffic.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ResponseSuccess } from 'src/interface';
+import { ResponseSuccess } from 'src/utils/interface';
 import BaseResponse from 'src/utils/response/base.response';
 
 import { REQUEST } from '@nestjs/core';

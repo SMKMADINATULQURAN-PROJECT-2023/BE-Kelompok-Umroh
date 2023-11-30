@@ -1,17 +1,19 @@
 import { HttpStatus } from '@nestjs/common/enums';
-import { Injectable, HttpException } from '@nestjs/common';
+import { Injectable, HttpException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import BaseResponse from 'src/utils/response/base.response';
 import { Role } from './entity/role.entity';
 import { Repository } from 'typeorm';
-import { ResponsePagination, ResponseSuccess } from 'src/interface';
-import { CreateRoleDto, UpdateRoleDto } from './role.dto';
+import { ResponsePagination, ResponseSuccess } from 'src/utils/interface';
+import { CreateRoleDto, UpdateRoleDto, createRoleMenuDto } from './role.dto';
 import { PageRequestDto } from 'src/utils/dto/page.dto';
+import { Menu } from '../menu/entity/menu.entity';
 
 @Injectable()
 export class RoleService extends BaseResponse {
   constructor(
     @InjectRepository(Role) private readonly roleRepo: Repository<Role>,
+    @InjectRepository(Menu) private readonly menuRepo: Repository<Menu>,
   ) {
     super();
   }
@@ -87,5 +89,28 @@ export class RoleService extends BaseResponse {
       );
 
     return this._success('Berhasil Menemukan Detail Role', check);
+  }
+
+  async createRoleMenu(payload: createRoleMenuDto): Promise<ResponseSuccess> {
+    const role = await this.roleRepo.findOne({
+      where: {
+        id: payload.role_id,
+      },
+    });
+    if (!role) throw new NotFoundException('Role Tidak Ditemukan');
+
+    const menu = await this.menuRepo.findOne({
+      where: {
+        id: payload.menu_id,
+      },
+      relations: {
+        roles: true,
+      },
+    });
+    if (!menu) throw new NotFoundException('Menu Tidak Ditemukan');
+
+    menu.roles.push(role); // Assign the role entity to the 'roles' property of the role entity
+    await this.menuRepo.save(menu); // Save the new
+    return this._success('Berhasil Membuat Relasi Antara Role Dan Menu');
   }
 }

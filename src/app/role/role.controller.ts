@@ -1,7 +1,7 @@
 import { Delete, Param, Put, UseGuards } from '@nestjs/common/decorators';
 import { Controller, Body, Post, Get } from '@nestjs/common';
 import { RoleService } from './role.service';
-import { CreateRoleDto, UpdateRoleDto } from './role.dto';
+import { CreateRoleDto, UpdateRoleDto, createRoleMenuDto } from './role.dto';
 import { Pagination } from 'src/utils/decorator/pagination.decorator';
 import { JwtGuard } from '../auth/auth.guard';
 
@@ -13,6 +13,11 @@ export class RoleController {
   @Post('create')
   async create(@Body() payload: CreateRoleDto) {
     return this.roleService.create(payload);
+  }
+
+  @Post('create/role-menu')
+  async createRoleMenu(@Body() payload: createRoleMenuDto) {
+    return this.roleService.createRoleMenu(payload);
   }
 
   @Get('list')

@@ -13,8 +13,6 @@ import { Pagination } from 'src/utils/decorator/pagination.decorator';
 import {
   CreateDoaDto,
   CreateKategoriDto,
-  FindDoaDto,
-  FindKategoriDto,
   UpdateDoaDto,
   UpdateKategoriDto,
 } from './doa.dto';
@@ -34,7 +32,7 @@ export class DoaController {
   }
 
   @Get()
-  async getDoa(@Pagination() query: FindDoaDto) {
+  async getDoa(@Pagination() query) {
     return this.doaService.getDoa(query);
   }
 
@@ -62,7 +60,7 @@ export class DoaController {
   }
 
   @Get('kategori')
-  async getKategori(@Pagination() query: FindKategoriDto) {
+  async getKategori(@Pagination() query) {
     return this.doaService.getKategori(query);
   }
 

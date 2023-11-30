@@ -23,7 +23,7 @@ export class PanduanController {
   constructor(private readonly panduanService: PanduanService) {}
 
   @Get()
-  findAll(@Pagination() query: FindPanduanDto) {
+  findAll(@Pagination() query) {
     return this.panduanService.findAll(query);
   }
 

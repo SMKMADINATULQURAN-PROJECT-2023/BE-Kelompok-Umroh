@@ -37,8 +37,8 @@ export class LokasiZiarahController {
   }
 
   @Get()
-  async get(@Pagination() payload: FindZiarahDto) {
-    return this.ziarahService.get(payload);
+  async get(@Pagination() query) {
+    return this.ziarahService.get(query);
   }
 
   @Get(':id')

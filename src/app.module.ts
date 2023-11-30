@@ -14,8 +14,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { UniqueValidator } from './utils/validator/unique.validator';
-import { AdminSeeder } from './seeds/admin.seed';
-import { RoleActionSeeder } from './seeds/role_action.seed';
+import { AdminSeeder } from './utils/seeds/admin.seed';
 import { LokasiZiarahModule } from './app/lokasi_ziarah/lokasi_ziarah.module';
 import { GaleriModule } from './app/galeri/galeri.module';
 import { DzikirPagiPetangModule } from './app/dzikir_pagi_petang/dzikir_pagi_petang.module';
@@ -33,10 +32,10 @@ import { JwtService } from '@nestjs/jwt';
 import { AdminController } from './app/admin/admin.controller';
 import { Doa } from './app/doa/entity/doa.entity';
 import { PanduanModule } from './app/panduan/panduan.module';
-import { DzikirPagiSeeder } from './seeds/dzikirPagi.seed';
+import { DzikirPagiSeeder } from './utils/seeds/dzikirPagi.seed';
 import { DzikirPagi } from './app/dzikir_pagi_petang/entity/dzikir_pagi.entity';
 import { DzikirPetang } from './app/dzikir_pagi_petang/entity/dzikir_petang.entity';
-import { DzikirPetangSeeder } from './seeds/dzikirPetang.seed';
+import { DzikirPetangSeeder } from './utils/seeds/dzikirPetang.seed';
 import { UserModule } from './app/user/user.module';
 import { KategoriDoa } from './app/doa/entity/category_doa.entity';
 import { UserMiddleware } from './utils/middleware/user/user.middleware';
@@ -44,9 +43,8 @@ import { AdminMiddleware } from './utils/middleware/admin/admin.middleware';
 import { TrafficMiddleware } from './utils/middleware/traffic/traffic.middleware';
 import { Traffic } from './app/traffic/entity/traffic.entity';
 import { MenuModule } from './app/menu/menu.module';
-import { MenuSeeder } from './seeds/menu.seed';
+import { RolesMenuSeeder } from './utils/seeds/rolesMenu.seed';
 import { Menu } from './app/menu/entity/menu.entity';
-import { RoleAccessMenuModule } from './app/role_access_menu/role_access_menu.module';
 
 @Module({
   imports: [
@@ -69,7 +67,6 @@ import { RoleAccessMenuModule } from './app/role_access_menu/role_access_menu.mo
       Menu,
     ]),
     AuthModule,
-    RoleAccessMenuModule,
     MailModule,
     LokasiZiarahModule,
     DzikirPagiPetangModule,
@@ -90,10 +87,9 @@ import { RoleAccessMenuModule } from './app/role_access_menu/role_access_menu.mo
     AppService,
     UniqueValidator,
     AdminSeeder,
-    RoleActionSeeder,
     DzikirPagiSeeder,
     DzikirPetangSeeder,
-    MenuSeeder,
+    RolesMenuSeeder,
     JwtService,
   ],
 })
