@@ -18,7 +18,13 @@ import {
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { Traffic } from '../traffic/entity/traffic.entity';
 import { REQUEST } from '@nestjs/core';
-
+const ALLOWEDMIMETYPES = [
+  'image/png',
+  'image/jpeg',
+  'image/jpg',
+  'image/webp',
+  'image/webm',
+];
 @Injectable()
 export class LokasiZiarahService extends BaseResponse {
   constructor(
@@ -41,16 +47,9 @@ export class LokasiZiarahService extends BaseResponse {
         HttpStatus.BAD_REQUEST,
       );
     }
-    const allowedMimetypes = [
-      'image/png',
-      'image/jpeg',
-      'image/jpg',
-      'image/webp',
-      'image/webm',
-    ];
 
     if (file) {
-      if (allowedMimetypes.includes(file.mimetype)) {
+      if (ALLOWEDMIMETYPES.includes(file.mimetype)) {
         const { public_id, url } = await this.cloudinary.uploadImage(
           file,
           'lokasi ziarah',
@@ -135,16 +134,8 @@ export class LokasiZiarahService extends BaseResponse {
       throw new NotFoundException(`Lokasi Tidak Ditemukan`);
     }
 
-    const allowedMimetypes = [
-      'image/png',
-      'image/jpeg',
-      'image/jpg',
-      'image/webp',
-      'image/webm',
-    ];
-
     if (file) {
-      if (allowedMimetypes.includes(file.mimetype)) {
+      if (ALLOWEDMIMETYPES.includes(file.mimetype)) {
         const { public_id, url } = await this.cloudinary.uploadImage(
           file,
           'lokasi ziarah',

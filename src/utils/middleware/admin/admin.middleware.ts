@@ -11,11 +11,13 @@ import { JwtService } from '@nestjs/jwt';
 export class AdminMiddleware implements NestMiddleware {
   constructor(private jwtService: JwtService) {}
   use(req: any, res: any, next: () => void) {
-    if (!req.headers.authorization) throw new UnauthorizedException();
-    const token = req.headers.authorization.split(' ')[1];
+    const authorization = req.headers.authorization;
+    if (!authorization) throw new UnauthorizedException();
+
+    const token = authorization.split(' ')[1];
     const decode: any = this.jwtService.decode(token);
-    console.log('decode =>', decode);
-    if (decode?.role_id?.role_name == 'Admin') {
+    console.log('decode Admin =>', decode);
+    if (decode?.role_id?.role_name === 'Admin') {
       next();
     } else {
       throw new HttpException(

@@ -16,7 +16,7 @@ export class Menu extends BaseEntity {
   id: number;
 
   @Column()
-  name: string;
+  menu_name: string;
 
   @Column()
   permission: string;

@@ -24,6 +24,14 @@ import { jwtPayload } from '../auth/auth.inteface';
 import { AuthService } from '../auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
 
+const ALLOWEDMIMETYPES = [
+  'image/png',
+  'image/jpeg',
+  'image/jpg',
+  'image/webp',
+  'image/webm',
+];
+
 @Injectable()
 export class AdminService extends BaseResponse {
   constructor(
@@ -58,7 +66,7 @@ export class AdminService extends BaseResponse {
           role_name: true,
           menus: {
             id: true,
-            name: true,
+            menu_name: true,
             permission: true,
           },
         },
@@ -180,16 +188,9 @@ export class AdminService extends BaseResponse {
         HttpStatus.BAD_REQUEST,
       );
     }
-    const allowedMimetypes = [
-      'image/png',
-      'image/jpeg',
-      'image/jpg',
-      'image/webp',
-      'image/webm',
-    ];
 
     if (file) {
-      if (allowedMimetypes.includes(file.mimetype)) {
+      if (ALLOWEDMIMETYPES.includes(file.mimetype)) {
         const { public_id, url } = await this.cloudinary.uploadImage(
           file,
           'admin',
@@ -245,7 +246,7 @@ export class AdminService extends BaseResponse {
           role_name: true,
           menus: {
             id: true,
-            name: true,
+            menu_name: true,
             permission: true,
           },
         },
@@ -293,21 +294,15 @@ export class AdminService extends BaseResponse {
     payload: UpdateAdminDto,
     file: Express.Multer.File,
   ): Promise<ResponseSuccess> {
-    const check = await this.adminRepository.findOne({
-      where: { id: id },
+    const check = await this.adminRepository.preload({
+      id: id,
+      ...payload,
+      role_id: { id: payload.role_id },
     });
     if (!check) throw new NotFoundException(`Admin Tidak Ditemukan`);
 
-    const allowedMimetypes = [
-      'image/png',
-      'image/jpeg',
-      'image/jpg',
-      'image/webp',
-      'image/webm',
-    ];
-
     if (file) {
-      if (allowedMimetypes.includes(file.mimetype)) {
+      if (ALLOWEDMIMETYPES.includes(file.mimetype)) {
         const { public_id, url } = await this.cloudinary.uploadImage(
           file,
           'admin',
@@ -330,14 +325,7 @@ export class AdminService extends BaseResponse {
     if (!checkRole) {
       throw new NotFoundException('Role Tidak Ditemukan');
     }
-    const checkEmail = await this.adminRepository.findOne({
-      where: {
-        id: id,
-        email: payload.email,
-      },
-    });
-    if (!checkEmail)
-      throw new HttpException('email Sudah Digunakan', HttpStatus.BAD_REQUEST);
+
     await this.adminRepository.save({
       ...payload,
       role_id: { id: payload.role_id },

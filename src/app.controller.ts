@@ -7,7 +7,7 @@ export class AppController {
 
   @Get()
   getHello(@Req() req): string {
-    return this.appService.getHello();
+    return this.appService.getHello(req);
   }
 
   @Get('list')

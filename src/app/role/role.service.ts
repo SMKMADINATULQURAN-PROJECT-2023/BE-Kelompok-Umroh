@@ -33,6 +33,7 @@ export class RoleService extends BaseResponse {
     const [result, count] = await this.roleRepo.findAndCount({
       take: pageSize,
       skip: limit,
+      relations: ['menus'],
     });
 
     return this._pagination(

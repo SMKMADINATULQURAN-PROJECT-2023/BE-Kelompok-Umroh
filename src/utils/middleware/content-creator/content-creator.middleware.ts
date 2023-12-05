@@ -1,14 +1,14 @@
+import { HttpException } from '@nestjs/common/exceptions';
+import { HttpStatus } from '@nestjs/common/enums';
 import {
   Injectable,
   NestMiddleware,
   UnauthorizedException,
-  HttpException,
-  HttpStatus,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
-export class UserMiddleware implements NestMiddleware {
+export class ContentCreatorMiddleware implements NestMiddleware {
   constructor(private jwtService: JwtService) {}
   use(req: any, res: any, next: () => void) {
     const authorization = req.headers.authorization;
@@ -16,18 +16,14 @@ export class UserMiddleware implements NestMiddleware {
 
     const token = authorization.split(' ')[1];
     const decode: any = this.jwtService.decode(token);
-
-    if (
-      decode?.role_id?.role_name !== 'Admin' &&
-      decode?.role_id !== 'User' &&
-      decode?.role_id
-    ) {
+    console.log('decode Content Creator =>', decode);
+    if (decode?.role_id?.role_name === 'Content Creator') {
+      next();
+    } else {
       throw new HttpException(
         'Anda Tidak Memiliki Izin Untuk Mengakses Sumber Daya Ini.',
         HttpStatus.FORBIDDEN,
       );
     }
-
-    next();
   }
 }

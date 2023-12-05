@@ -48,19 +48,14 @@ export class MenuService extends BaseResponse {
   }
 
   async update(id: number, payload: UpdateMenuDto): Promise<ResponseSuccess> {
-    const check = await this.menuRepo.findOne({
-      where: { id: id },
+    const check = await this.menuRepo.preload({
+      id: id,
+      ...payload,
     });
+
     if (!check) throw new NotFoundException('Menu Tidak Ditemukan');
-    const checkMenuName = await this.menuRepo.findOne({
-      where: {
-        id: id,
-        name: payload.name,
-      },
-    });
-    if (!checkMenuName)
-      throw new HttpException('Menu Sudah Digunakan', HttpStatus.BAD_REQUEST);
-    await this.menuRepo.save(payload);
+
+    await this.menuRepo.save(check);
     return this._success('Berhasil Mengupdate Menu');
   }
 

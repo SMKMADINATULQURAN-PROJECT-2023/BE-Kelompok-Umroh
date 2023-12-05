@@ -14,7 +14,13 @@ import { HttpException, NotFoundException } from '@nestjs/common/exceptions';
 import { HttpStatus } from '@nestjs/common/enums';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { REQUEST } from '@nestjs/core';
-
+const ALLOWEDMIMETYPES = [
+  'image/png',
+  'image/jpeg',
+  'image/jpg',
+  'image/webp',
+  'image/webm',
+];
 @Injectable()
 export class ArtikelService extends BaseResponse {
   constructor(
@@ -35,16 +41,9 @@ export class ArtikelService extends BaseResponse {
         HttpStatus.BAD_REQUEST,
       );
     }
-    const allowedMimetypes = [
-      'image/png',
-      'image/jpeg',
-      'image/jpg',
-      'image/webp',
-      'image/webm',
-    ];
 
     if (file) {
-      if (allowedMimetypes.includes(file.mimetype)) {
+      if (ALLOWEDMIMETYPES.includes(file.mimetype)) {
         const { public_id, url } = await this.cluodinary.uploadImage(
           file,
           'artikel',
@@ -154,16 +153,9 @@ export class ArtikelService extends BaseResponse {
     if (!check) {
       throw new HttpException(`Artikel Tidak Ditemukan`, HttpStatus.NOT_FOUND);
     }
-    const allowedMimetypes = [
-      'image/png',
-      'image/jpeg',
-      'image/jpg',
-      'image/webp',
-      'image/webm',
-    ];
 
     if (file) {
-      if (allowedMimetypes.includes(file.mimetype)) {
+      if (ALLOWEDMIMETYPES.includes(file.mimetype)) {
         const { public_id, url } = await this.cluodinary.uploadImage(
           file,
           'artikel',

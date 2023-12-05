@@ -15,7 +15,6 @@ export class TrafficController {
 
   @Get()
   async get(@Query() url) {
-    console.log(url.url.toString());
     return this.trafficService.totalPengunjung(url);
   }
 }

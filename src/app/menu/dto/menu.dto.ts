@@ -13,7 +13,7 @@ export class MenuDto {
   @IsUnique([Menu, 'name'])
   @IsNotEmpty()
   @IsString()
-  name: string;
+  menu_name: string;
 
   @IsNotEmpty()
   @IsString()
@@ -31,5 +31,5 @@ export class CreateMenuDto extends OmitType(MenuDto, ['updated_by']) {}
 export class UpdateMenuDto extends OmitType(MenuDto, ['created_by']) {
   @IsNotEmpty()
   @IsString()
-  name: string;
+  menu_name: string;
 }

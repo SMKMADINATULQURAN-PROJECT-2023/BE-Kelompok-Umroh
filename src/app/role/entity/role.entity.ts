@@ -8,8 +8,8 @@ import {
   JoinTable,
 } from 'typeorm';
 import { Action } from '../../action/entity/action.entity';
-import { UserRole } from 'src/utils/interface';
-import { Menu } from 'src/app/menu/entity/menu.entity';
+import { UserRole } from '../../../utils/interface';
+import { Menu } from '../../../app/menu/entity/menu.entity';
 
 @Entity()
 export class Role extends BaseEntity {

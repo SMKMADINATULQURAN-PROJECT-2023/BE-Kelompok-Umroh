@@ -30,35 +30,14 @@ export class ArtikelController {
   create(
     @UploadedFile() file: Express.Multer.File,
     @InjectCreatedBy() payload: CreateArtikelDto,
-    @Req() req,
   ) {
-    if (
-      req?.user?.role_id?.role_name == 'Admin' ||
-      req?.user?.role_id?.role_name == 'Content Creator'
-    ) {
-      return this.artikelService.create(payload, file);
-    } else {
-      throw new HttpException(
-        'Anda Tidak Memiliki Izin Untuk Mengakses Sumber Daya Ini.',
-        HttpStatus.FORBIDDEN,
-      );
-    }
+    return this.artikelService.create(payload, file);
   }
 
   @Get()
   findAll(@Pagination() query, @Req() req) {
-    if (
-      req?.user?.role_id?.role_name == 'Admin' ||
-      req?.user?.role_id?.role_name == 'Content Creator' ||
-      req?.user?.role_id == 'User'
-    ) {
-      return this.artikelService.findAll(query);
-    } else {
-      throw new HttpException(
-        'Anda Tidak Memiliki Izin Untuk Mengakses Sumber Daya Ini.',
-        HttpStatus.FORBIDDEN,
-      );
-    }
+    console.log(req);
+    return this.artikelService.findAll(query);
   }
 
   @Get(':id')

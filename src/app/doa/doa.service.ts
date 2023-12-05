@@ -21,7 +21,13 @@ import { KategoriDoa } from './entity/category_doa.entity';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { REQUEST } from '@nestjs/core';
 import { Inject } from '@nestjs/common/decorators';
-
+const ALLOWEDMIMETYPES = [
+  'image/png',
+  'image/jpeg',
+  'image/jpg',
+  'image/webp',
+  'image/webm',
+];
 @Injectable()
 export class DoaService extends BaseResponse {
   constructor(
@@ -169,16 +175,9 @@ export class DoaService extends BaseResponse {
         HttpStatus.BAD_REQUEST,
       );
     }
-    const allowedMimetypes = [
-      'image/png',
-      'image/jpeg',
-      'image/jpg',
-      'image/webp',
-      'image/webm',
-    ];
 
     if (file) {
-      if (allowedMimetypes.includes(file.mimetype)) {
+      if (ALLOWEDMIMETYPES.includes(file.mimetype)) {
         const { public_id, url } = await this.cloudinary.uploadImage(
           file,
           'kategori doa',
@@ -252,23 +251,20 @@ export class DoaService extends BaseResponse {
     payload: UpdateKategoriDto,
     file: Express.Multer.File,
   ): Promise<ResponseSuccess> {
-    const check = await this.kategoriRepo.findOne({
-      where: { id: id },
-    });
+    const check = await this.kategoriRepo.findOne({ where: { id: id } });
     if (!check) {
       throw new HttpException(`Kategori Tidak Ditemukan`, HttpStatus.NOT_FOUND);
     }
 
-    const allowedMimetypes = [
-      'image/png',
-      'image/jpeg',
-      'image/jpg',
-      'image/webp',
-      'image/webm',
-    ];
+    if (check.kategori_name === payload.kategori_name && !check.id) {
+      throw new HttpException(
+        'Kategori Name Sudah Digunakan',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
 
     if (file) {
-      if (allowedMimetypes.includes(file.mimetype)) {
+      if (ALLOWEDMIMETYPES.includes(file.mimetype)) {
         const { public_id, url } = await this.cloudinary.uploadImage(
           file,
           'kategori doa',
@@ -285,23 +281,14 @@ export class DoaService extends BaseResponse {
       payload.thumbnail = check.thumbnail;
       payload.id_thumbnail = check.id_thumbnail;
     }
-    const checkKategoriName = await this.kategoriRepo.findOne({
-      where: {
-        id: id,
-        kategori_name: payload.kategori_name,
-      },
-    });
-    if (!checkKategoriName)
-      throw new HttpException(
-        'Kategori Name Sudah Digunakan',
-        HttpStatus.BAD_REQUEST,
-      );
+
     await this.kategoriRepo.save({
       ...payload,
       id,
     });
     return this._success('Berhasil Mengupdate Kategori');
   }
+
   async removeKategori(id: number): Promise<ResponseSuccess> {
     const check = await this.kategoriRepo.findOne({
       where: { id: id },

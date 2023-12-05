@@ -16,49 +16,51 @@ export class RolesMenuSeeder {
   async create() {
     const menusData = [
       {
-        name: 'Admin',
+        menu_name: 'Admin',
         created_by: { id: 1 },
         permission: 'Create, Read, Update, Delete',
       },
       {
-        name: 'Artikel',
+        menu_name: 'Artikel',
         created_by: { id: 1 },
         permission: 'Create, Read, Update, Delete',
       },
       {
-        name: 'Doa',
+        menu_name: 'Doa',
         created_by: { id: 1 },
         permission: 'Create, Read, Update, Delete',
       },
       {
-        name: 'Dzikir',
+        menu_name: 'Dzikir',
         created_by: { id: 1 },
         permission: 'Create, Read, Update, Delete',
       },
       {
-        name: 'Lokasi Ziarah',
+        menu_name: 'Lokasi Ziarah',
         created_by: { id: 1 },
         permission: 'Create, Read, Update, Delete',
       },
       {
-        name: 'Panduan',
+        menu_name: 'Panduan',
         created_by: { id: 1 },
         permission: 'Create, Read, Update, Delete',
       },
     ];
+
+    const saveIfNotExist = async (repository, data, condition) => {
+      const exist = await repository.findOne({ where: condition });
+      if (!exist) {
+        const entity = repository.create(data);
+        return repository.save(entity);
+      }
+    };
+
     const menu_id = await Promise.all(
-      menusData.map(async (data) => {
-        const name: string = data.name;
-        const check = await this.menuRepository.findOne({
-          where: {
-            name: name,
-          },
-        });
-        if (!check) {
-          const menu = this.menuRepository.create(data);
-          await this.menuRepository.save(menu);
-        }
-      }),
+      menusData.map((data) =>
+        saveIfNotExist(this.menuRepository, data, {
+          menu_name: data.menu_name,
+        }),
+      ),
     );
 
     const rolesData = [
@@ -71,18 +73,13 @@ export class RolesMenuSeeder {
         menus: menusData[1],
       },
     ];
+
     for (const data of rolesData) {
-      const { role_name, menus } = data;
-      const check = await this.roleRepository.findOne({
-        where: {
-          role_name,
-        },
-        relations: ['action_id'],
-      });
-      if (!check) {
-        const role = this.roleRepository.create({ role_name, ...menus });
-        await this.roleRepository.save(role);
-      }
+      await saveIfNotExist(
+        this.roleRepository,
+        { role_name: data.role_name, ...data.menus },
+        { role_name: data.role_name },
+      );
     }
   }
 }

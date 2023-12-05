@@ -22,7 +22,13 @@ import { jwtPayload } from './auth.inteface';
 import { Admin } from '../admin/entities/admin.entity';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { UpdateProfileAdminDto } from '../admin/dto/admin.dto';
-
+const ALLOWEDMIMETYPES = [
+  'image/png',
+  'image/jpeg',
+  'image/jpg',
+  'image/webp',
+  'image/webm',
+];
 @Injectable()
 export class AuthService extends BaseResponse {
   constructor(
@@ -72,53 +78,45 @@ export class AuthService extends BaseResponse {
     });
     if (!checkUserExists)
       throw new NotFoundException(
-        'Nomor Handphone Tidak Ditemukan Silahkan Daftar',
+        'Nomor Handphone Tidak Ditemukan, Silahkan Daftar',
       );
     const data = await this.authRepository.findOne({
       where: {
         telephone: payload.telephone,
       },
-      select: {
-        id: true,
-        avatar: true,
-        username: true,
-        email: true,
-        email_verified: true,
-        telephone: true,
-        alamat: true,
-        tanggal_lahir: true,
-        refresh_token: true,
-        created_at: true,
-        updated_at: true,
-      },
+      select: [
+        'id',
+        'avatar',
+        'username',
+        'email',
+        'email_verified',
+        'telephone',
+        'alamat',
+        'tanggal_lahir',
+        'refresh_token',
+        'created_at',
+        'updated_at',
+      ],
     });
-
+    const jwtPayload: jwtPayload = {
+      id: checkUserExists.id,
+      username: checkUserExists.username,
+      email: checkUserExists.email,
+      telephone: checkUserExists.telephone,
+      alamat: checkUserExists.alamat,
+      tanggal_lahir: checkUserExists.tanggal_lahir,
+      role_id: 'User',
+    };
     const checkPassword = await compare(
       payload.password,
       checkUserExists.password,
     );
 
     if (checkPassword) {
-      const jwtPayload: jwtPayload = {
-        id: checkUserExists.id,
-        username: checkUserExists.username,
-        email: checkUserExists.email,
-        telephone: checkUserExists.telephone,
-        alamat: checkUserExists.alamat,
-        tanggal_lahir: checkUserExists.tanggal_lahir,
-        role_id: 'User',
-      };
-
-      const access_token = await this.generateJWT(
-        jwtPayload,
-        '2m',
-        jwt_config.access_token_secret,
-      );
-      const refresh_token = await this.generateJWT(
-        jwtPayload,
-        '7d',
-        jwt_config.refresh_token_secret,
-      );
+      const [access_token, refresh_token] = await Promise.all([
+        this.generateJWT(jwtPayload, '1d', jwt_config.access_token_secret),
+        this.generateJWT(jwtPayload, '7d', jwt_config.refresh_token_secret),
+      ]);
 
       await this.authRepository.save({
         refresh_token: refresh_token,
@@ -143,58 +141,26 @@ export class AuthService extends BaseResponse {
         email: payload.email,
       },
     });
-    if (!checkUserExists) {
-      const data = await this.authRepository.save(payload);
-      const result = await this.authRepository.findOne({
-        where: {
-          email: data.email,
-        },
-      });
-      const jwtPayload: jwtPayload = {
-        id: result.id,
-        avatar: result.avatar,
-        username: result.username,
-        email: result.email,
-        email_verified: result.email_verified,
-        telephone: result.telephone,
-      };
-      const access_token = await this.generateJWT(
-        jwtPayload,
-        '1d',
-        jwt_config.access_token_secret,
-      );
-      const refresh_token = await this.generateJWT(
-        jwtPayload,
-        '7d',
-        jwt_config.refresh_token_secret,
-      );
-      return this._success('Berhasil Login', {
-        ...checkUserExists,
-        access_token: access_token,
-        refresh_token: refresh_token,
-      });
-    }
+
+    const userData =
+      checkUserExists || (await this.authRepository.save(payload));
     const jwtPayload: jwtPayload = {
-      id: checkUserExists.id,
-      avatar: checkUserExists.avatar,
-      username: checkUserExists.username,
-      email: checkUserExists.email,
-      email_verified: checkUserExists.email_verified,
-      telephone: checkUserExists.telephone,
+      id: userData.id,
+      avatar: userData.avatar,
+      username: userData.username,
+      email: userData.email,
+      email_verified: userData.email_verified,
+      telephone: userData.telephone,
+      role_id: 'User',
     };
-    const access_token = await this.generateJWT(
-      jwtPayload,
-      '1d',
-      jwt_config.access_token_secret,
-    );
-    const refresh_token = await this.generateJWT(
-      jwtPayload,
-      '7d',
-      jwt_config.refresh_token_secret,
-    );
+
+    const [access_token, refresh_token] = await Promise.all([
+      this.generateJWT(jwtPayload, '1d', jwt_config.access_token_secret),
+      this.generateJWT(jwtPayload, '7d', jwt_config.refresh_token_secret),
+    ]);
 
     return this._success('Berhasil Login', {
-      ...checkUserExists,
+      ...userData,
       access_token: access_token,
       refresh_token: refresh_token,
     });
@@ -225,16 +191,8 @@ export class AuthService extends BaseResponse {
       throw new NotFoundException('User Tidak Ditemukan');
     }
 
-    const allowedMimetypes = [
-      'image/png',
-      'image/jpeg',
-      'image/jpg',
-      'image/webp',
-      'image/webm',
-    ];
-
     if (file) {
-      if (allowedMimetypes.includes(file.mimetype)) {
+      if (ALLOWEDMIMETYPES.includes(file.mimetype)) {
         const { url } = await this.cloudinary.uploadImage(file, 'user');
         payload.avatar = url;
       } else {
@@ -363,7 +321,7 @@ export class AuthService extends BaseResponse {
           role_name: true,
           menus: {
             id: true,
-            name: true,
+            menu_name: true,
             permission: true,
           },
         },
@@ -386,15 +344,11 @@ export class AuthService extends BaseResponse {
     if (!check) {
       throw new HttpException(`Token Tidak Valid`, HttpStatus.NOT_FOUND);
     }
-    const allowedMimetypes = [
-      'image/png',
-      'image/jpeg',
-      'image/jpg',
-      'image/webp',
-      'image/webm',
-    ];
+    if (check.email === payload.email && !check.id)
+      throw new HttpException('Email Sudah Digunakan', HttpStatus.BAD_REQUEST);
+
     if (file) {
-      if (allowedMimetypes.includes(file.mimetype)) {
+      if (ALLOWEDMIMETYPES.includes(file.mimetype)) {
         const { public_id, url } = await this.cloudinary.uploadImage(
           file,
           'admin',
@@ -411,14 +365,6 @@ export class AuthService extends BaseResponse {
       payload.avatar = check.avatar;
       payload.id_avatar = check.id_avatar;
     }
-    const checkEmail = await this.adminRepository.findOne({
-      where: {
-        id: id,
-        email: payload.email,
-      },
-    });
-    if (!checkEmail)
-      throw new HttpException('Email Sudah Digunakan', HttpStatus.BAD_REQUEST);
     await this.adminRepository.save({
       ...payload,
       id: id,

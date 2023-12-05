@@ -12,7 +12,13 @@ import { Panduan } from './entities/panduan.entity';
 import { Like, Repository } from 'typeorm';
 import { ResponsePagination, ResponseSuccess } from 'src/utils/interface';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
-
+const ALLOWEDMIMETYPES = [
+  'image/png',
+  'image/jpeg',
+  'image/jpg',
+  'image/webp',
+  'image/webm',
+];
 @Injectable()
 export class PanduanService extends BaseResponse {
   constructor(
@@ -32,16 +38,9 @@ export class PanduanService extends BaseResponse {
         HttpStatus.BAD_REQUEST,
       );
     }
-    const allowedMimetypes = [
-      'image/png',
-      'image/jpeg',
-      'image/jpg',
-      'image/webp',
-      'image/webm',
-    ];
 
     if (file) {
-      if (allowedMimetypes.includes(file.mimetype)) {
+      if (ALLOWEDMIMETYPES.includes(file.mimetype)) {
         const { public_id, url } = await this.cloudinary.uploadImage(
           file,
           'pandaun',
@@ -159,16 +158,8 @@ export class PanduanService extends BaseResponse {
     const check = await this.panduanRepo.findOne({ where: { id } });
     if (!check) throw new NotFoundException('Panduan Tidak Ditemukan');
 
-    const allowedMimetypes = [
-      'image/png',
-      'image/jpeg',
-      'image/jpg',
-      'image/webp',
-      'image/webm',
-    ];
-
     if (file) {
-      if (allowedMimetypes.includes(file.mimetype)) {
+      if (ALLOWEDMIMETYPES.includes(file.mimetype)) {
         const { public_id, url } = await this.cloudinary.uploadImage(
           file,
           'panduan',
