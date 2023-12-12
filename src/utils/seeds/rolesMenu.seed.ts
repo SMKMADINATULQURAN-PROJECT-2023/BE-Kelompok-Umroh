@@ -45,6 +45,11 @@ export class RolesMenuSeeder {
         created_by: { id: 1 },
         permission: 'Create, Read, Update, Delete',
       },
+      {
+        menu_name: 'Status',
+        created_by: { id: 1 },
+        permission: 'Update',
+      },
     ];
 
     const saveIfNotExist = async (repository, data, condition) => {
