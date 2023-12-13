@@ -19,7 +19,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "prod":"pm2 node dist/main"
+    "prod": "pm2 node dist/main"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.9.1",
@@ -30,8 +30,10 @@
     "@nestjs/mapped-types": "^2.0.4",
     "@nestjs/passport": "^10.0.2",
     "@nestjs/platform-express": "^10.2.10",
+    "@nestjs/platform-socket.io": "^10.2.10",
     "@nestjs/serve-static": "^4.0.0",
     "@nestjs/typeorm": "^10.0.1",
+    "@nestjs/websockets": "^10.2.10",
     "@types/jsonwebtoken": "^9.0.3",
     "@types/slug": "^5.0.5",
     "bcrypt": "^5.1.0",

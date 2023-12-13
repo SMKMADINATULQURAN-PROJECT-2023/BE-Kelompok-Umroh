@@ -66,7 +66,7 @@ export class AuthController {
 
   @UseGuards(JwtGuard)
   @Put('update-profile')
-  @FileInterceptorCustom('file_update', 'user')
+  @FileInterceptorCustom('file_update_profile', 'user')
   async editProfile(
     @Req() req,
     @Body() payload: updateProfileDto,

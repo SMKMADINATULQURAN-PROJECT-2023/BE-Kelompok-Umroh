@@ -42,11 +42,10 @@ async function bootstrap() {
     }),
   );
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
-  await app.listen(process.env.PORT_API, () => {
-    Logger.debug(
-      `Server berjalan di http://localhost:${process.env.PORT_API}`,
-      'Bootstrap',
-    );
-  });
+  await app.listen(process.env.PORT_API);
+  Logger.debug(
+    `Application is running on: http://localhost:${process.env.PORT_API}`,
+    'Bootstrap',
+  );
 }
 bootstrap();

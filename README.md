@@ -172,6 +172,7 @@ Body
 
 |     Name      |  Status  |                          |
 | :-----------: | :------: | :----------------------: |
+| file_update_profile | required |  File  |
 |   username    | required |          String          |
 |     email     | Optional |          String          |
 |   telephone   | Required |          String          |

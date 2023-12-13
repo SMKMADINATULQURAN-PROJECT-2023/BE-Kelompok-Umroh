@@ -70,7 +70,7 @@ export class RolesMenuSeeder {
 
     const rolesData = [
       {
-        role_name: UserRole.ADMIN,
+        role_name: UserRole.SUPERADMIN,
         menus: menu_id,
       },
       {
