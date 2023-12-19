@@ -13,7 +13,7 @@ import {
   ResetPasswordDto,
   updateProfileDto,
 } from './auth.dto';
-import { hash, compare } from 'bcrypt';
+import { hash, compare } from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { jwt_config } from 'src/config/jwt.config';
 import { ResetPassword } from './entity/reset_password.entity';

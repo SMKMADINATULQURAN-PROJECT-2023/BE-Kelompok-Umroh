@@ -73,10 +73,6 @@ export class RolesMenuSeeder {
         role_name: UserRole.SUPERADMIN,
         menus: menu_id,
       },
-      {
-        role_name: UserRole.CONTENTCREATOR,
-        menus: menusData[1],
-      },
     ];
 
     for (const data of rolesData) {

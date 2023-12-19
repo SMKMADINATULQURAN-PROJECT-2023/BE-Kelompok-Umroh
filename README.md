@@ -170,15 +170,15 @@ Headers
 
 Body
 
-|     Name      |  Status  |                          |
-| :-----------: | :------: | :----------------------: |
-| file_update_profile | required |  File  |
-|   username    | required |          String          |
-|     email     | Optional |          String          |
-|   telephone   | Required |          String          |
-| tempat_lahir  | Required |          String          |
-| tanggal_lahir | Required |           Date           |
-| jenis_kelamin | Required | "Laki-Laki", "Perempuan" |
+|        Name         |  Status  |                          |
+| :-----------------: | :------: | :----------------------: |
+| file_update_profile | required |           File           |
+|      username       | required |          String          |
+|        email        | Optional |          String          |
+|      telephone      | Required |          String          |
+|    tempat_lahir     | Required |          String          |
+|    tanggal_lahir    | Required |           Date           |
+|    jenis_kelamin    | Required | "Laki-Laki", "Perempuan" |
 
 #### User Update Password
 
@@ -837,3 +837,187 @@ Params
 ```
 
 **Method : GET**
+
+## Role
+
+#### Create (Admin only)
+
+```markdown
+/role/create
+```
+
+**Method : POST**
+
+Body
+
+|   Name    |  Status  |        |
+| :-------: | :------: | :----: |
+| role_name | Required | String |
+
+Headers
+
+|     Name      |  Status  |        |
+| :-----------: | :------: | :----: |
+| Authorization | Required | String |
+
+#### Update (Admin only)
+
+```markdown
+/role/update/[id]
+```
+
+**Method : PUT**
+
+Body
+
+|   Name    |  Status  |        |
+| :-------: | :------: | :----: |
+| role_name | Required | String |
+
+Headers
+
+|     Name      |  Status  |        |
+| :-----------: | :------: | :----: |
+| Authorization | Required | String |
+
+#### Delete (Admin only)
+
+```markdown
+/role/delete/[id]
+```
+
+**Method : DELETE**
+
+Headers
+
+|     Name      |  Status  |        |
+| :-----------: | :------: | :----: |
+| Authorization | Required | String |
+
+#### List
+
+```markdown
+/role
+```
+
+**Method : GET**
+
+Params
+
+|   Name   |  Status  |         |
+| :------: | :------: | :-----: |
+|   page   | Optional | Integer |
+| pageSize | Optional | Integer |
+
+Headers
+
+|     Name      |  Status  |        |
+| :-----------: | :------: | :----: |
+| Authorization | Required | String |
+
+#### Detail
+
+```markdown
+/role/[id]
+```
+
+**Method : GET**
+
+Headers
+
+|     Name      |  Status  |        |
+| :-----------: | :------: | :----: |
+| Authorization | Required | String |
+
+## Menu
+
+#### Create (Admin only)
+
+```markdown
+/menu/create
+```
+
+**Method : POST**
+
+Body
+
+|   Name    |  Status  |        |                                                             |
+| :-------: | :------: | :----: | :---------------------------------------------------------: |
+| menu_name | Required |  Enum  | Admin, Dzikir, Artikel, Doa, Lokasi Ziarah, Panduan, Status |
+| pemission | Required | String |       Isi berdasarkan = Create, Read, Update, Delete        |
+
+Headers
+
+|     Name      |  Status  |        |
+| :-----------: | :------: | :----: |
+| Authorization | Required | String |
+
+#### Update (Admin only)
+
+```markdown
+/menu/update/[id]
+```
+
+**Method : PUT**
+
+Body
+
+|   Name    |  Status  |        |                                                             |
+| :-------: | :------: | :----: | :---------------------------------------------------------: |
+| menu_name | Required |  Enum  | Admin, Dzikir, Artikel, Doa, Lokasi Ziarah, Panduan, Status |
+| pemission | Required | String |       Isi berdasarkan = Create, Read, Update, Delete        |
+
+Headers
+
+|     Name      |  Status  |        |
+| :-----------: | :------: | :----: |
+| Authorization | Required | String |
+
+#### Delete (Admin only)
+
+```markdown
+/menu/delete/[id]
+```
+
+**Method : DELETE**
+
+Headers
+
+|     Name      |  Status  |        |
+| :-----------: | :------: | :----: |
+| Authorization | Required | String |
+
+#### List
+
+```markdown
+/menu
+```
+
+**Method : GET**
+
+Params
+
+|   Name   |  Status  |         |
+| :------: | :------: | :-----: |
+|   page   | Optional | Integer |
+| pageSize | Optional | Integer |
+
+Headers
+
+|     Name      |  Status  |        |
+| :-----------: | :------: | :----: |
+| Authorization | Required | String |
+
+#### Detail
+
+```markdown
+/menu/[id]
+```
+
+**Method : GET**
+
+Headers
+
+|     Name      |  Status  |        |
+| :-----------: | :------: | :----: |
+| Authorization | Required | String |

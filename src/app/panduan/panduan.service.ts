@@ -3,6 +3,7 @@ import {
   HttpException,
   HttpStatus,
   NotFoundException,
+  Inject,
 } from '@nestjs/common';
 import { CreatePanduanDto, FindPanduanDto } from './dto/panduan.dto';
 import { UpdatePanduanDto } from './dto/panduan.dto';
@@ -12,6 +13,7 @@ import { Panduan } from './entities/panduan.entity';
 import { Like, Repository } from 'typeorm';
 import { ResponsePagination, ResponseSuccess } from 'src/utils/interface';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { REQUEST } from '@nestjs/core';
 const ALLOWEDMIMETYPES = [
   'image/png',
   'image/jpeg',
@@ -25,6 +27,7 @@ export class PanduanService extends BaseResponse {
     @InjectRepository(Panduan)
     private readonly panduanRepo: Repository<Panduan>,
     private cloudinary: CloudinaryService,
+    @Inject(REQUEST) private req: any,
   ) {
     super();
   }
@@ -94,7 +97,7 @@ export class PanduanService extends BaseResponse {
         filterQuery['kategori_panduan'] = Like(`${kategori_panduan}`);
       }
       if (created_by == 'saya') {
-        filterQuery['created_by.id'] = created_by;
+        filterQuery['created_by.id'] = this.req.user.id;
       }
       if (status) {
         filterQuery['status'] = Like(`%${status}%`);

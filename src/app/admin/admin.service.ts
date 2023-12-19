@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import BaseResponse from 'src/utils/response/base.response';
 import { ResponsePagination, ResponseSuccess } from 'src/utils/interface';
-import { compare, hash } from 'bcrypt';
+import { compare, hash } from 'bcryptjs';
 import { Admin } from './entities/admin.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Role } from '../role/entity/role.entity';
@@ -196,7 +196,7 @@ export class AdminService extends BaseResponse {
           'admin',
         );
         payload.avatar = url;
-        payload.avatar = public_id;
+        payload.id_avatar = public_id;
       } else {
         throw new HttpException(
           ' file harus berekstensi .jpg, .jpeg, .png',

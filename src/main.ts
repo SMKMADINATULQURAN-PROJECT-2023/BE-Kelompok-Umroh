@@ -9,7 +9,6 @@ import * as dotenv from 'dotenv';
 import { RolesMenuSeeder } from './utils/seeds/rolesMenu.seed';
 import * as compression from 'compression';
 import { Logger } from '@nestjs/common';
-
 dotenv.config();
 
 async function bootstrap() {
@@ -42,7 +41,7 @@ async function bootstrap() {
     }),
   );
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
-  await app.listen(process.env.PORT_API);
+  await app.listen(`${process.env.PORT_API}`);
   Logger.debug(
     `Application is running on: http://localhost:${process.env.PORT_API}`,
     'Bootstrap',

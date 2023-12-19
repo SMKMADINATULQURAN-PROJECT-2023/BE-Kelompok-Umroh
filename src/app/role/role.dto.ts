@@ -1,4 +1,4 @@
-import { OmitType, PartialType } from '@nestjs/mapped-types';
+import { OmitType, PartialType, PickType } from '@nestjs/mapped-types';
 import { Type } from 'class-transformer';
 import {
   IsArray,
@@ -12,15 +12,9 @@ import {
 import { UserRole } from 'src/utils/interface';
 
 export class RoleDto {
-  @IsInt()
-  id: number;
-
   @IsEnum(UserRole)
   role_name: UserRole;
-}
 
-export class CreateRoleDto extends OmitType(RoleDto, ['id']) {}
-export class createRoleMenuDto {
   @IsNumber()
   @IsNotEmpty()
   menu_id: number;
@@ -29,4 +23,7 @@ export class createRoleMenuDto {
   @IsNotEmpty()
   role_id: number;
 }
+
+export class CreateRoleDto extends PickType(RoleDto, ['role_name']) {}
+export class createRoleMenuDto extends OmitType(RoleDto, ['role_name']) {}
 export class UpdateRoleDto extends PartialType(RoleDto) {}

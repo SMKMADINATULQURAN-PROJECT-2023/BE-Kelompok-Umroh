@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Admin } from 'src/app/admin/entities/admin.entity';
-import { hashSync } from 'bcrypt';
+import { hashSync } from 'bcryptjs';
 
 @Injectable()
 export class AdminSeeder {

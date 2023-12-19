@@ -1,5 +1,4 @@
 import { ExecutionContext, UnauthorizedException } from '@nestjs/common';
-
 import { AuthGuard } from '@nestjs/passport';
 
 export class JwtGuard extends AuthGuard('jwt_access_token') {

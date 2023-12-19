@@ -20,11 +20,12 @@ export class RoleController {
     return this.roleService.createRoleMenu(payload);
   }
 
-  @Get('list')
+  @Get('')
   async get(@Pagination() query) {
     return this.roleService.get(query);
   }
-  @Get('detail/:id')
+
+  @Get(':id')
   async detail(@Param('id') id: string) {
     return this.roleService.detail(+id);
   }
