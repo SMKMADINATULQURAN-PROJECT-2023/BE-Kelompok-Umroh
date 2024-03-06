@@ -64,6 +64,9 @@ export class UserDto {
 
 export class ResetPasswordDto {
   @IsString()
+  old_password: string;
+
+  @IsString()
   refresh_token: string;
 
   @IsString()

@@ -284,7 +284,7 @@ export class AuthService extends BaseResponse {
     const check = await this.authRepository.findOne({
       where: {
         refresh_token: payload.refresh_token,
-        id: id,
+        id,
       },
     });
 
@@ -294,6 +294,15 @@ export class AuthService extends BaseResponse {
         HttpStatus.UNPROCESSABLE_ENTITY, // jika tidak sah , berikan pesan token tidak valid
       );
     }
+    const verify = await compare(payload.old_password, check.password);
+
+    if (!verify) {
+      throw new HttpException(
+        'Password Lama Tidak Cocok',
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
+
     payload.new_password = await hash(payload.new_password, 12); //hash password
     await this.authRepository.save({
       password: payload.new_password,
