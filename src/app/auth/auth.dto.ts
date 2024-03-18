@@ -87,8 +87,13 @@ export class LoginGoogleDto extends PickType(UserDto, [
   'username',
   'email',
   'email_verified',
-  'telephone',
-]) {}
+]) {
+  @IsOptional()
+  @IsString()
+  @MaxLength(13)
+  @MinLength(9)
+  telephone: string;
+}
 export class LoginAdminDto extends PickType(UserDto, ['email', 'password']) {}
 export class updateProfileDto extends PickType(UserDto, [
   'username',
