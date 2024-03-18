@@ -76,7 +76,7 @@ Body
 #### Google Login
 
 ```markdown
-/auth/google-login
+/auth/login-google
 ```
 
 **Method : POST**
@@ -85,7 +85,11 @@ Body
 
 | Name  |  Status  |  Type  |
 | :---: | :------: | :----: |
+| avatar | Required | String |
+| username | Required | String |
 | email | Required | String |
+| email_verified | Required | String |
+| telephone | Required | String |
 
 #### Register
 
