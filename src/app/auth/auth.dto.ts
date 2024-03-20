@@ -1,4 +1,4 @@
-import { PickType } from '@nestjs/mapped-types';
+import { PartialType, PickType } from '@nestjs/mapped-types';
 import {
   IsBoolean,
   IsDate,
@@ -90,17 +90,7 @@ export class LoginGoogleDto extends PickType(UserDto, [
 ]) {
   @IsOptional()
   @IsString()
-  @MaxLength(13)
-  @MinLength(9)
   telephone: string;
 }
 export class LoginAdminDto extends PickType(UserDto, ['email', 'password']) {}
-export class updateProfileDto extends PickType(UserDto, [
-  'username',
-  'avatar',
-  'email',
-  'telephone',
-  'alamat',
-  'tanggal_lahir',
-  'jenis_kelamin',
-]) {}
+export class updateProfileDto extends PartialType(UserDto) {}

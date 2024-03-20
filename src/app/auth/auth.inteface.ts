@@ -7,6 +7,7 @@ export interface jwtPayload {
   telephone?: string;
   alamat?: string;
   tanggal_lahir?: Date;
+  jenis_kelamin?: string;
   role_id?: any;
   refresh_token?: string;
 }

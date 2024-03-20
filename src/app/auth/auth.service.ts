@@ -22,6 +22,7 @@ import { jwtPayload } from './auth.inteface';
 import { Admin } from '../admin/entities/admin.entity';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { UpdateProfileAdminDto } from '../admin/dto/admin.dto';
+import { check } from 'prettier';
 const ALLOWEDMIMETYPES = [
   'image/png',
   'image/jpeg',
@@ -93,6 +94,7 @@ export class AuthService extends BaseResponse {
         'telephone',
         'alamat',
         'tanggal_lahir',
+        'jenis_kelamin',
         'refresh_token',
         'created_at',
         'updated_at',
@@ -105,6 +107,7 @@ export class AuthService extends BaseResponse {
       telephone: checkUserExists.telephone,
       alamat: checkUserExists.alamat,
       tanggal_lahir: checkUserExists.tanggal_lahir,
+      jenis_kelamin: checkUserExists.jenis_kelamin,
       role_id: 'User',
     };
     const checkPassword = await compare(
@@ -142,15 +145,28 @@ export class AuthService extends BaseResponse {
       },
     });
 
-    const userData =
-      checkUserExists || (await this.authRepository.save(payload));
+    let userData = checkUserExists;
+    if (!checkUserExists) {
+      userData = await this.authRepository.save({
+        ...payload,
+      });
+    } else if (!checkUserExists.email_verified) {
+      userData = await this.authRepository.save({
+        ...payload,
+        id: checkUserExists.id,
+      });
+    } else {
+    }
+
     const jwtPayload: jwtPayload = {
       id: userData.id,
-      avatar: userData.avatar,
       username: userData.username,
       email: userData.email,
       email_verified: userData.email_verified,
       telephone: userData.telephone,
+      alamat: userData.alamat,
+      tanggal_lahir: userData.tanggal_lahir,
+      jenis_kelamin: userData.jenis_kelamin,
       role_id: 'User',
     };
 
@@ -158,6 +174,11 @@ export class AuthService extends BaseResponse {
       this.generateJWT(jwtPayload, '1d', jwt_config.access_token_secret),
       this.generateJWT(jwtPayload, '7d', jwt_config.refresh_token_secret),
     ]);
+
+    await this.authRepository.save({
+      refresh_token: refresh_token,
+      id: userData.id,
+    });
 
     return this._success('Berhasil Login', {
       ...userData,
@@ -191,15 +212,17 @@ export class AuthService extends BaseResponse {
       throw new NotFoundException('User Tidak Ditemukan');
     }
 
+    if (check.email !== '' && check.email_verified == true) {
+      throw new HttpException(
+        'Anda Masuk Via Google, Email Tidak Bisa Diubah',
+        HttpStatus.NOT_MODIFIED,
+      );
+    }
+    console.log(file?.path);
     if (file) {
       if (ALLOWEDMIMETYPES.includes(file.mimetype)) {
         const { url } = await this.cloudinary.uploadImage(file, 'user');
         payload.avatar = url;
-      } else {
-        throw new HttpException(
-          ' file harus berekstensi .jpg, .jpeg, .png',
-          HttpStatus.BAD_REQUEST,
-        );
       }
     } else {
       payload.avatar = check.avatar;
