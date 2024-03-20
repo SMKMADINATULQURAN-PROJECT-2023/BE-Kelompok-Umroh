@@ -89,7 +89,7 @@ Body
 | username | Required | String |
 | email | Required | String |
 | email_verified | Required | String |
-| telephone | Required | String |
+| telephone | Optional | String |
 
 #### Register
 
