@@ -17,37 +17,30 @@ export class RolesMenuSeeder {
     const menusData = [
       {
         menu_name: 'Admin',
-        created_by: { id: 1 },
         permission: 'Create, Read, Update, Delete',
       },
       {
         menu_name: 'Artikel',
-        created_by: { id: 1 },
         permission: 'Create, Read, Update, Delete',
       },
       {
         menu_name: 'Doa',
-        created_by: { id: 1 },
         permission: 'Create, Read, Update, Delete',
       },
       {
         menu_name: 'Dzikir',
-        created_by: { id: 1 },
         permission: 'Create, Read, Update, Delete',
       },
       {
         menu_name: 'Lokasi Ziarah',
-        created_by: { id: 1 },
         permission: 'Create, Read, Update, Delete',
       },
       {
         menu_name: 'Panduan',
-        created_by: { id: 1 },
         permission: 'Create, Read, Update, Delete',
       },
       {
         menu_name: 'Status',
-        created_by: { id: 1 },
         permission: 'Update',
       },
     ];

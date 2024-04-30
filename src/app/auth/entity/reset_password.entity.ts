@@ -14,7 +14,7 @@ export class ResetPassword extends BaseEntity {
   id: number;
 
   @ManyToOne(() => User)
-  @JoinColumn({ name: 'user_telephone', referencedColumnName: 'telephone' })
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
   user: User;
 
   @Column({ nullable: true })

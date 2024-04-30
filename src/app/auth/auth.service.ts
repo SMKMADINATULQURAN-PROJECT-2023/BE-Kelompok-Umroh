@@ -146,6 +146,7 @@ export class AuthService extends BaseResponse {
     });
 
     let userData = checkUserExists;
+    console.log(userData, payload);
     if (!checkUserExists) {
       userData = await this.authRepository.save({
         ...payload,
@@ -155,7 +156,6 @@ export class AuthService extends BaseResponse {
         ...payload,
         id: checkUserExists.id,
       });
-    } else {
     }
 
     const jwtPayload: jwtPayload = {

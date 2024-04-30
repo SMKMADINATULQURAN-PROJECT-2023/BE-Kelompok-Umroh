@@ -22,11 +22,11 @@ async function bootstrap() {
   const adminSeeder = app.get(AdminSeeder);
   await adminSeeder.create();
 
-  const dzikirPagi = app.get(DzikirPagiSeeder);
-  await dzikirPagi.create();
+  // const dzikirPagi = app.get(DzikirPagiSeeder);
+  // await dzikirPagi.create();
 
-  const dzikirPetang = app.get(DzikirPetangSeeder);
-  await dzikirPetang.create();
+  // const dzikirPetang = app.get(DzikirPetangSeeder);
+  // await dzikirPetang.create();
 
   app.enableCors();
   app.useGlobalPipes(
