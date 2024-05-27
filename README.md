@@ -36,6 +36,13 @@ Contributors:
       <br />
       <a href="https://github.com/wizardforcel">muhansyah</a>
     </td>
+    <td align="center">
+      <a href="https://github.com/rizkyalf11">
+        <img src="https://avatars.githubusercontent.com/u/107133530?v=4" width="100px;" alt="rizkyalf11"/>
+      </a>
+      <br />
+      <a href="https://github.com/rizkyalf11">rizkyalf11</a>
+    </td>
   </tr>
 </table>
 <br/><br/><br/><br/><br/>
