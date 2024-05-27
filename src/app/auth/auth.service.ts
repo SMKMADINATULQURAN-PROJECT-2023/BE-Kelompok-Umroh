@@ -117,8 +117,8 @@ export class AuthService extends BaseResponse {
 
     if (checkPassword) {
       const [access_token, refresh_token] = await Promise.all([
-        this.generateJWT(jwtPayload, '1d', jwt_config.access_token_secret),
-        this.generateJWT(jwtPayload, '7d', jwt_config.refresh_token_secret),
+        this.generateJWT(jwtPayload, '360d', jwt_config.access_token_secret),
+        this.generateJWT(jwtPayload, '360d', jwt_config.refresh_token_secret),
       ]);
 
       await this.authRepository.save({
@@ -171,8 +171,8 @@ export class AuthService extends BaseResponse {
     };
 
     const [access_token, refresh_token] = await Promise.all([
-      this.generateJWT(jwtPayload, '1d', jwt_config.access_token_secret),
-      this.generateJWT(jwtPayload, '7d', jwt_config.refresh_token_secret),
+      this.generateJWT(jwtPayload, '360d', jwt_config.access_token_secret),
+      this.generateJWT(jwtPayload, '360d', jwt_config.refresh_token_secret),
     ]);
 
     await this.authRepository.save({
