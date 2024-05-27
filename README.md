@@ -43,6 +43,13 @@ Contributors:
       <br />
       <a href="https://github.com/rizkyalf11">rizkyalf11</a>
     </td>
+    <td align="center">
+      <a href="https://github.com/Rayyasa">
+        <img src="https://avatars.githubusercontent.com/u/114627046?v=4" width="100px;" alt="rayyasa"/>
+      </a>
+      <br />
+      <a href="https://github.com/Rayyasa">Rayyasa</a>
+    </td>
   </tr>
 </table>
 <br/><br/><br/><br/><br/>
