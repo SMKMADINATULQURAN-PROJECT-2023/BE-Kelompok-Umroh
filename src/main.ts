@@ -14,6 +14,7 @@ dotenv.config();
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(compression());
+   app.enableCors();
 
   // Inisialisasi dan jalankan seeder di sini
   const rolesMenuSeeder = app.get(RolesMenuSeeder);
@@ -28,7 +29,7 @@ async function bootstrap() {
   // const dzikirPetang = app.get(DzikirPetangSeeder);
   // await dzikirPetang.create();
 
-  app.enableCors();
+ 
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
