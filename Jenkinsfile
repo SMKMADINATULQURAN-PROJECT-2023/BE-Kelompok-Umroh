@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "registry.local:5000/rihlatul-be"
+        IMAGE_NAME = "192.168.10.26:5000/rihlatul-be"
     }
 
     stages {
